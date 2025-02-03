@@ -56,29 +56,17 @@
             <div>
                 <h1>Bienvenue sur Farm – Votre partenaire en élevage</h1>
                 <h3>Trouvez les meilleurs animaux<h3>
-                        <h3>Choisissez des aliments adaptés pour une croissance optimale</h3>
-                        <h3>Optimisez vos revenus avec une bonne gestion</h3>
-                        <br>
-                        <form action="#situation" method="get">
-                            <button>Voir la situation de mon elevage</button>
-                        </form>
+                <h3>Choisissez des aliments adaptés pour une croissance optimale</h3>
+                <h3>Optimisez vos revenus avec une bonne gestion</h3> 
+                <br>      
+                <form action="#situation" method="get">
+                    <button>Voir la situation de mon elevage</button>
+                </form>
             </div>
         </div>
         <div id="situation">
             <h1>Situation des Animaux</h1>
-            <table border="1" cellspacing="0" id="resultTable">
-                <tr>
-                    <th>Date</th>
-                    <th>Type</th>
-                    <th>PoidsMin</th>
-                    <th>PoidsMax</th>
-                    <th>Prix Vente Par Kg</th>
-                    <th>JoursSansManger</th>
-                    <th>Perte Poids (%)</th>
-                    <th>Vivant</th>
-                    <th>Action</th>
-                </tr>
-            </table>
+
             <form id="dateForm">
                 <input type="date" id="debut" name="debut" placeholder="Date de début">
                 <button type="button" onclick="getData()">Confirmer</button>
@@ -101,61 +89,6 @@
             <script>
                 function getData() {
                     var debut = document.getElementById("debut").value;
-                    var xhr = new XMLHttpRequest();
-                    xhr.open("GET", "getSituation?debut=" + debut, true);
-                    xhr.onreadystatechange = function() {
-                        if (xhr.readyState === 4 && xhr.status === 200) {
-                            var data = JSON.parse(xhr.responseText);
-                            displayResults(data);
-                        }
-                    };
-                    xhr.send();
-                }
-
-                // Ajoute les nouvelles données
-                data.forEach(row => {
-                    var tr = document.createElement("tr");
-                    tr.innerHTML = `
-                        <td>${row.DateTransaction}</td>
-                        <td><b>${row.TypeAnimal}</b></td>
-                        <td>${row.PoidsMin}</td>
-                        <td>${row.PoidsMax}</td>
-                        <td>${row.PrixVenteParKg}</td>
-                        <td>${row.JoursSansManger}</td>
-                        <td>${row.PourcentagePertePoids}</td>
-                        <td>${row.Vivant ? "Oui" : "Non"}</td> <!-- Affiche 'Oui' ou 'Non' selon l'état de l'animal -->
-                        <td>
-                            <button onclick="vendre(${row.IdTransaction},${row.IdAnimal})">Vendre</button>
-                            <button onclick="nourrir(${row.IdAnimal})">Nourrir</button>
-                        </td>
-                    `;
-                    table.appendChild(tr);
-                });
-
-                function vendre(id, idAnimal) {
-                    var xhr = new XMLHttpRequest();
-                    xhr.open("GET", "vente?id=" + id + "&idAnimal=" + idAnimal, true);
-                    xhr.onreadystatechange = function() {
-                        if (xhr.readyState === 4 && xhr.status === 200) {
-                            window.location.href = "vente?id=" + id + "&idAnimal=" + idAnimal;
-                        }
-                    };
-                    xhr.send();
-                }
-
-                function nourrir(id) {
-                    var xhr = new XMLHttpRequest();
-                    xhr.open("GET", "nourrir?idAnimal=" + id, true); // Utilisation de 'id' au lieu de 'idAnimal'
-                    xhr.onreadystatechange = function() {
-                        if (xhr.readyState === 4 && xhr.status === 200) {
-                            window.location.href = "nourrir?idAnimal=" + id; // Utilisation de 'id' au lieu de 'idAnimal'
-                        }
-                    };
-                    xhr.send();
-                }
-
-                function displayResults(data) {
-                    var table = document.getElementById("resultTable");
 
                     var xhr = new XMLHttpRequest();
                     xhr.open("GET", "getSituation?debut=" + debut, true);
