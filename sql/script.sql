@@ -82,20 +82,20 @@ VALUES
 ('david@example.com', 'David', 'motdepasse101', '0667788990', 2500);
 
 -- Ajout d'animaux avec image
-INSERT INTO Animaux_Elevage (TypeAnimal, NomAnimal, PoidsMin, PoidsMax, PrixVenteParKg, JoursSansManger, PourcentagePertePoids, Image)
+INSERT INTO Animaux_Elevage (TypeAnimal, PoidsMin, PoidsMax, PrixVenteParKg, JoursSansManger, PourcentagePertePoids, Image)
 VALUES
-('Vache', 'Bessie', 500, 800, 3.5, 3, 0.2, 'logo.png'),
-('Mouton', 'Fluffy', 30, 50, 4.0, 2, 0.1, 'logo.png'),
-('Poulet', 'Cluck', 1.5, 3.5, 5.0, 1, 0.05, 'logo.png'),
-('Cheval', 'Thunder', 400, 600, 6.0, 5, 0.15, 'logo.png');
+('Vache',500, 800, 3.5, 3, 0.2, 'Mouton.png'),
+('Mouton', 30, 50, 4.0, 2, 0.1, 'Cheval.png'),
+('Poulet', 1.5, 3.5, 5.0, 1, 0.05, 'Poulet2.png'),
+('Cheval', 400, 600, 6.0, 5, 0.15, 'Vache.png');
 
 -- Ajout d'aliments avec image
 INSERT INTO Alimentation_Elevage (NomAliment, TypeAnimal, PourcentageGainPoids, PrixUnitaire, Stock, Image)
 VALUES
-('Foin', 'Vache', 0.05, 20.00, 100, 'logo.png'),
-('Herbe', 'Mouton', 0.04, 15.00, 150, 'logo.png'),
-('Maïs', 'Poulet', 0.1, 8.00, 200, 'logo.png'),
-('Avoine', 'Cheval', 0.08, 25.00, 80, 'logo.png');
+('Foin', 'Vache', 0.05, 20.00, 100, 'Foin.png'),
+('Herbe', 'Mouton', 0.04, 15.00, 150, 'Herbe.png'),
+('Maïs', 'Poulet', 0.1, 8.00, 200, 'Maïs.png'),
+('Avoine', 'Cheval', 0.08, 25.00, 80, 'Avoine.png');
 
 
 -- Ajout de transactions sur les aliments
