@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS Alimentation_Elevage (
 -- Table des transactions (animaux)
 CREATE TABLE IF NOT EXISTS TransactionsAnimaux_Elevage (
     IdTransaction INT AUTO_INCREMENT PRIMARY KEY,
-    TypeTransaction ENUM('achat', 'vente','vendu') NOT NULL,
+    TypeTransaction ENUM('achat', 'vente') NOT NULL,
     DateTransaction DATE NOT NULL,
     Etat INT NULL,
     IdAnimal INT NOT NULL,

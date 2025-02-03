@@ -104,11 +104,11 @@
                         `;
                     } else {
                         tr.innerHTML += `
-                        <button onclick="vendre(${row.IdAnimal})">Vendre</button>
+                        <button onclick="vendre(${row.IdTransaction},${row.IdAnimal})">Vendre</button>
                         `;
                     }
                     tr.innerHTML += `
-                        <button onclick="nourrir(${row.IdAnimal})">Nourrir</button>
+                        <button onclick="nourrir(${row.IdTransaction})">Nourrir</button>
                     </td>
                 `;
 
@@ -116,17 +116,17 @@
                 });
             }
 
-            function vendre(id) {
+            function vendre(id, idAnimal) {
                 var xhr = new XMLHttpRequest();
-                xhr.open("GET", "vente?id=" + id, true);
+                xhr.open("GET", "vente?id=" + id + "&idAnimal=" + idAnimal, true);
                 xhr.onreadystatechange = function() {
                     if (xhr.readyState === 4 && xhr.status === 200) {
-                        alert("Animal vendu !");
-                        window.location.href = "vente";
+                        window.location.href = "vente?id=" + id + "&idAnimal=" + idAnimal;
                     }
                 };
                 xhr.send();
             }
+
 
             function nourrir(id) {
                 var xhr = new XMLHttpRequest();
