@@ -31,7 +31,31 @@ class AdminModel {
         return $data;
     }
 
-
+    public function updateAnimaux($typeAnimal, $poidsMin, $poidsMax, $prixVente, $joursSansManger, $pourcentagePertePoids, $idAnimal)
+    {
+    
+            // Récupération des données du formulaire
+            foreach ($_POST['typeAnimal'] as $idAnimal => $typeAnimal) {
+                $poidsMin = $_POST['poidsMin'][$idAnimal];
+                $poidsMax = $_POST['poidsMax'][$idAnimal];
+                $prixVente = $_POST['prixVente'][$idAnimal];
+                $joursSansManger = $_POST['joursSansManger'][$idAnimal];
+                $pourcentagePertePoids = $_POST['pourcentagePertePoids'][$idAnimal];
+    
+                // Préparation de la requête SQL pour mettre à jour les informations de l'animal
+                $stmt = $this->db->prepare("UPDATE Animaux_Elevage 
+                                            SET TypeAnimal = ?, PoidsMin = ?, PoidsMax = ?, PrixVenteParKg = ?, 
+                                                JoursSansManger = ?, PourcentagePertePoids = ? 
+                                            WHERE IdAnimal = ?");
+                
+                // Exécution de la requête avec les nouvelles valeurs
+                $stmt->execute([$typeAnimal, $poidsMin, $poidsMax, $prixVente, $joursSansManger, $pourcentagePertePoids, $idAnimal]);
+            }
+    
+            // Message de succès après mise à jour
+            return "Mise à jour réussie!";
+    }
+    
     public function deleteAnimaux($idAnimaux)
     {
         // Suppression de l'Animaux dans la table Animaux

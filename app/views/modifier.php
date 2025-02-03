@@ -10,7 +10,7 @@
     <script src="public/assets/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="public/assets/css/connexion.css">
     <link rel="icon" href="">
-    <title>Admin - Formulaire</title>
+    <title>Admin - Modifier Animaux</title>
 </head>
 
 <body>
@@ -44,44 +44,45 @@
             <div id="alert" class="alert alert-success" role="alert"><?= $extra['message'] ?></div>
         <?php endif; ?>
 
-        <h2>Formulaire d'ajout d'animaux</h2>
-        <form action="updateAnimal" method="post" enctype="multipart/form-data">
-            <div class="form-group">
-                <label for="typeAnimal">Espèce</label>
-                <input type="text" class="form-control" id="typeAnimal" name="typeAnimal" value="<?= isset($animaux['TypeAnimal']) ? $animaux['TypeAnimal'] : '' ?>" required>
-            </div>
-            <div class="form-group">
-                <label for="poidsMin">Poids Minimal Vente</label>
-                <input type="number" class="form-control" id="poidsMin" name="poidsMin" value="<?= isset($animaux['PoidsMin']) ? $animaux['PoidsMin'] : '' ?>" required>
-            </div>
-            <div class="form-group">
-                <label for="poidsMax">Poids Maximal</label>
-                <input type="number" class="form-control" id="poidsMax" name="poidsMax" value="<?= isset($animaux['PoidsMax']) ? $animaux['PoidsMax'] : '' ?>" required>
-            </div>
-            <div class="form-group">
-                <label for="prixVente">Prix de vente (par kg)</label>
-                <input type="number" step="0.01" class="form-control" id="prixVente" name="prixVente" value="<?= isset($animaux['PrixVenteParKg']) ? $animaux['PrixVenteParKg'] : '' ?>" required>
-            </div>
-            <div class="form-group">
-                <label for="joursSansManger">Nombre de jours sans manger</label>
-                <input type="number" class="form-control" id="joursSansManger" name="joursSansManger" value="<?= isset($animaux['JoursSansManger']) ? $animaux['JoursSansManger'] : '' ?>" required>
-            </div>
-            <div class="form-group">
-                <label for="pourcentagePertePoids">% Perte de poids</label>
-                <input type="number" step="0.01" class="form-control" id="pourcentagePertePoids" name="pourcentagePertePoids" value="<?= isset($animaux['PourcentagePertePoids']) ? $animaux['PourcentagePertePoids'] : '' ?>" required>
-            </div>
-            <div class="form-group">
-                <label for="image">Image</label>
-                <input type="file" class="form-control-file" id="image" name="image">
-                <?php if (!empty($animaux['Image'])) : ?>
-                    <div class="mt-2">
-                        <img src="public/assets/images/<?= $animaux['Image'] ?>" alt="Image" width="100">
-                    </div>
-                <?php else : ?>
-                    <p>Pas d'image actuelle</p>
-                <?php endif; ?>
-            </div>
-            <button type="submit" class="btn btn-primary">Valider</button>
+        <h2>Liste des animaux - Modifier</h2>
+        <form action="update" method="post" enctype="multipart/form-data">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Espèce</th>
+                        <th>Poids Minimal Vente</th>
+                        <th>Poids Maximal</th>
+                        <th>Prix de vente (par kg)</th>
+                        <th>Nombre de jour sans manger</th>
+                        <th>% perte de poids</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($data as $animaux) : ?>
+                        <tr>
+                            <td>
+                                <input type="text" name="typeAnimal[<?= $animaux['IdAnimal'] ?>]" value="<?= $animaux['TypeAnimal'] ?>" required>
+                            </td>
+                            <td>
+                                <input type="number" name="poidsMin[<?= $animaux['IdAnimal'] ?>]" value="<?= $animaux['PoidsMin'] ?>" required>
+                            </td>
+                            <td>
+                                <input type="number" name="poidsMax[<?= $animaux['IdAnimal'] ?>]" value="<?= $animaux['PoidsMax'] ?>" required>
+                            </td>
+                            <td>
+                                <input type="number" step="0.01" name="prixVente[<?= $animaux['IdAnimal'] ?>]" value="<?= $animaux['PrixVenteParKg'] ?>" required>
+                            </td>
+                            <td>
+                                <input type="number" name="joursSansManger[<?= $animaux['IdAnimal'] ?>]" value="<?= $animaux['JoursSansManger'] ?>" required>
+                            </td>
+                            <td>
+                                <input type="number" step="0.01" name="pourcentagePertePoids[<?= $animaux['IdAnimal'] ?>]" value="<?= $animaux['PourcentagePertePoids'] ?>" required>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+            <p align="right"><input type="submit" value="Valider"></p>
         </form>
     </div>
 

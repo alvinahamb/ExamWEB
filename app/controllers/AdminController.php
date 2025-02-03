@@ -53,4 +53,8 @@ class AdminController
 
         Flight::render('admin', ['data' => $data, 'extra' => $data2]);
     }
+
+    public function updateAnimaux(){
+        
+    }
 }

@@ -21,6 +21,7 @@ $router->get('/admin', [ $AdminController, 'admin' ]);
 $router->post('/adminLogin', [ $AdminController, 'CheckLogin' ]);
 $router->get('/delete', [ $AdminController, 'deleteAnimaux' ]);
 $router->get('/modifier', [ $AdminController, 'modifierAnimaux' ]);
+$router->post('/update', [ $AdminController, 'updateAnimaux' ]);
 
 $UserController = new UserController();
 $router->get('/', [ $UserController, 'login' ]);

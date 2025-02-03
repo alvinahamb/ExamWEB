@@ -82,12 +82,12 @@ VALUES
 ('david@example.com', 'David', 'motdepasse101', '0667788990', 2500);
 
 -- Ajout d'animaux avec image
-INSERT INTO Animaux_Elevage (TypeAnimal, NomAnimal, PoidsMin, PoidsMax, PrixVenteParKg, JoursSansManger, PourcentagePertePoids, Image)
+INSERT INTO Animaux_Elevage (TypeAnimal, PoidsMin, PoidsMax, PrixVenteParKg, JoursSansManger, PourcentagePertePoids, Image)
 VALUES
-('Vache', 'Bessie', 500, 800, 3.5, 3, 0.2, 'logo.png'),
-('Mouton', 'Fluffy', 30, 50, 4.0, 2, 0.1, 'logo.png'),
-('Poulet', 'Cluck', 1.5, 3.5, 5.0, 1, 0.05, 'logo.png'),
-('Cheval', 'Thunder', 400, 600, 6.0, 5, 0.15, 'logo.png');
+('Vache', 500, 800, 3.5, 3, 0.2, 'logo.png'),
+('Mouton', 30, 50, 4.0, 2, 0.1, 'logo.png'),
+('Poulet', 1.5, 3.5, 5.0, 1, 0.05, 'logo.png'),
+('Cheval', 400, 600, 6.0, 5, 0.15, 'logo.png');
 
 -- Ajout d'aliments avec image
 INSERT INTO Alimentation_Elevage (NomAliment, TypeAnimal, PourcentageGainPoids, PrixUnitaire, Stock, Image)
