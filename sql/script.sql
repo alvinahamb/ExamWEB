@@ -45,7 +45,7 @@ CREATE TABLE TransactionsAnimaux_Elevage (
     IdTransaction INT AUTO_INCREMENT PRIMARY KEY,
     TypeTransaction ENUM('achat', 'vente') NOT NULL,
     DateTransaction DATE NOT NULL,
-    `Etat` INT NULL,
+    Etat INT NULL,
     IdAnimal INT NOT NULL,
     IdUtilisateur INT NOT NULL,
     Poids DECIMAL(6,2) NOT NULL,
