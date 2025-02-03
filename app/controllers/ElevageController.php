@@ -18,6 +18,18 @@ class ElevageController
         $data = $model->getAliments();
         Flight::render('achatAliment',$data);
     }
+    public function goToAchatAnimaux()
+    {
+        $model= new ElevageModel(Flight::db());
+        $data = $model->getAnimaux();
+        Flight::render('achatAnimaux',$data);
+    }
+    public function goToStock()
+    {
+        $model= new ElevageModel(Flight::db());
+        $data = $model-> getAlimentByUser($_SESSION['IdUser']);
+        Flight::render('stockAliment',$data);
+    }
 
     public function achatAliment(){
         $id=$_GET['id'];
@@ -27,6 +39,15 @@ class ElevageController
         $data = $model->getAliments();
         $message = "Achat effectué avec succès";
         Flight::render('achatAliment',['data'=>$data,'message'=>$message]);
+    }
+
+    public function achatAnimaux(){
+        $id=$_GET['id'];
+        $model= new ElevageModel(Flight::db());
+        $model->achatAnimaux($id,$_SESSION['IdUser']);
+        $data = $model->getAnimaux();
+        $message = "Achat effectué avec succès";
+        Flight::render('achatAnimaux',['data'=>$data,'message'=>$message]);
     }
 }
 ?>

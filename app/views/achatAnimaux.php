@@ -30,7 +30,7 @@
         </div>
         <div>
             <ul class="nav nav-tabs nav-justified">
-                <li><a href="#">Achat Animaux</a></li>
+                <li><a href="goToAchatAnimaux">Achat Animaux</a></li>
                 <li><a href="goToAchatAliment">Achat Aliments</a></li>
                 <li>
                 <form action="deconnexion" method="get">
@@ -46,14 +46,14 @@
         <?php }
         foreach ($data as $d) { ?>
             <div class="col-md-3">
-                <p><b>Nom aliment:<?=$d['NomAliment']?></b></p>
-                <p>Type animal:<?=$d['TypeAnimal']?></p>
-                <p>Gain en poids:<?=$d['PourcentageGainPoids']?>%</p>
-                <p>Prix unitaire:<?=$d['PrixUnitaire']?></p>
-                <p>En stock:<?=$d['Stock']?></p>
-                <form action="achatAliment" method="get">
-                    <input type="hidden" name="id" value="<?=$d['IdAliment']?>">
-                    <input type="number" name="quantite" placeholder="Quantite" required>
+                <p><b>Type:<?=$d['TypeAnimal']?></b></p>
+                <p>PoidsMin:<?=$d['PoidsMin']?></p>
+                <p>PoidsMax:<?=$d['PoidsMax']?>%</p>
+                <p>Prix Vente Par Kg:<?=$d['PrixVenteParKg']?></p>
+                <p>JoursSansManger:<?=$d['JoursSansManger']?></p>
+                <p>PourcentagePertePoids:<?=$d['PourcentagePertePoids']?></p>
+                <form action="achatAnimaux" method="get">
+                    <input type="hidden" name="id" value="<?=$d['IdAnimal']?>">
                     <button type="submit">Acheter</button>
                 </form>
             </div>
