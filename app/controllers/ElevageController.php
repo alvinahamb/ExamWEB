@@ -35,18 +35,24 @@ class ElevageController
         $id=$_GET['id'];
         $quantite=$_GET['quantite'];
         $model= new ElevageModel(Flight::db());
-        $model->achatAliment($id,$quantite,$_SESSION['IdUser']);
+        $confirmation=$model->achatAliment($id,$quantite,$_SESSION['IdUser']);
         $data = $model->getAliments();
         $message = "Achat effectué avec succès";
+        if ($confirmation==1) {
+            $message = "Action impossible,solde insuffisant";
+        }
         Flight::render('achatAliment',['data'=>$data,'message'=>$message]);
     }
 
     public function achatAnimaux(){
         $id=$_GET['id'];
         $model= new ElevageModel(Flight::db());
-        $model->achatAnimaux($id,$_SESSION['IdUser']);
+        $confirmation=$model->achatAnimaux($id,$_SESSION['IdUser']);
         $data = $model->getAnimaux();
         $message = "Achat effectué avec succès";
+        if ($confirmation==1) {
+            $message = "Action impossible,solde insuffisant";
+        }
         Flight::render('achatAnimaux',['data'=>$data,'message'=>$message]);
     }
 
