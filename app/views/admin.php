@@ -18,11 +18,15 @@
         <div class="logo">
             <a href="home"><img width="80" height="80" src="assets/images/logo.png" alt="logo"></a>
         </div>
-        <div class="nav" style="display: flex;">
-            <ul>
+        <div>
+            <ul class="nav nav-tabs nav-justified">
+                <li><a href="#">list3</a></li>
+                <li><a href="#">list4</a></li>
+                <li>
                 <form action="deconnexion" method="get">
-                    <li><button class="button">Deconnexion</button></li>
+                    <button class="button">Deconnexion</button>
                 </form>
+                </li>
             </ul>
         </div>
     </div>
@@ -36,6 +40,9 @@
             </div>
         </div>
     </div>
+    <footer>
+        <p>Kasaina ETU003287 & Blessed ETU003326 & Kiady ETU3244</p>
+    </footer>
 </body>
 
 </html>
