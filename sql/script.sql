@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS Alimentation_Elevage (
     PourcentageGainPoids FLOAT NOT NULL,
     PrixUnitaire DECIMAL(10,2) NOT NULL,
     Stock INT DEFAULT 0,
-    Image VARCHAR(50) NULL
+    Image VARCHAR(50) NOT NULL
 );
 
 -- Table des transactions (animaux)

@@ -50,26 +50,26 @@
     </div>
     <div style="margin-top: 13vh;">
         <h1>Stock d'aliments</h1>
-        <div class="row">
         <?php
         foreach ($data as $d) { ?>
-            <div class="col-md-3" style="padding:1vh">
-                <div class="card">
-                    <div class="card-img">
-                        <img src="public/assets/images/Foin.png" alt="image">
+            <div class="col-md-4" id="card">
+                <div class="row" >
+                    <div class="col-md-6">
+                        <img src="public/assets/images/<?= $d['Image'] ?>" alt="<?= $d['Image'] ?>">
                     </div>
-                    <div>
-                    <p><b>Nom aliment:<?= $d['NomAliment'] ?></b></p>
-                    <p>Type animal:<?= $d['TypeAnimal'] ?></p>
-                    <p>Gain en poids:<?= $d['PourcentageGainPoids'] ?>%</p>
-                    <p>Quantite:<?= $d['Quantite'] ?></p>
+                    <div class="col-md-6">
+                        <p><b>Nom aliment: <?= $d['NomAliment'] ?></b></p>
+                        <p>Type animal: <?= $d['TypeAnimal'] ?></p>
+                        <p>Gain en poids: <?= $d['PourcentageGainPoids'] ?>%</p>
+                        <p>Quantite: <?= $d['Quantite'] ?></p>
                     </div>
                 </div>
             </div>
         <?php }
         ?>
-            </div>
     </div>
+    </div>
+
 </body>
 
 </html>
