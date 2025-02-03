@@ -113,7 +113,7 @@ class ElevageModel
         // Préparation et exécution de la requête pour récupérer les aliments correspondant au type d'animal
         $stmt = $this->db->prepare("SELECT * FROM Alimentation_Elevage WHERE TypeAnimal=?");
         $stmt->execute([$typeAnimal]);
-        return $stmt->fetchAll(); // Renvoie un tableau de résultats
+        return $stmt->fetch(); // Renvoie un tableau de résultats
     }
 
     
@@ -193,20 +193,38 @@ class ElevageModel
     }
     
     public function checkSurPoidsAnimaux($idAnimal, $idAliment, $quantite){
-        
+        $poidsPlus=$this->getAlimentByAnimaux($idAnimal)['PourcentageGainPoids'];
+        $poidsActuel=$this->getAnimalById($idAnimal)['Poids'];
+        $poidsMax=$this->getAnimalById($idAnimal)['PoidsMax'];
+        $supposePoids=$poidsPlus*$poidsActuel;
+        if($poidsMax<$supposePoids+$poidsActuel){
+            return false;
+        }
+        return true;
     }
 
-    public function nourrirAnimaux($idAnimal, $idUtilisateur, $quantite, $aliment, $date){
-        // Préparation de la requête SQL pour insérer les données dans Nutrition_Elevage
-        $sql = "INSERT INTO Nutrition_Elevage (IdAnimal, IdUtilisateur, IdAliment, DateNourrissage, QuantiteNourriture)
-                VALUES (?, ?, ?, ?, ?)";
+    public function nourrirAnimaux($idAnimal, $idUtilisateur, $quantite, $aliment, $date) {
+        // Vérification du stock et du poids de l'animal
+        if ($this->checkStockAliment($aliment, $quantite) && $this->checkSurPoidsAnimaux($idAnimal, $aliment, $quantite)) {
+            $sql = "INSERT INTO Nutrition_Elevage (IdAnimal, IdUtilisateur, IdAliment, DateNourrissage, QuantiteNourriture)
+                    VALUES (?, ?, ?, ?, ?)";
     
-        // Exécution de la requête avec les paramètres reçus
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute([$idAnimal, $idUtilisateur, $aliment, $date, $quantite]);
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute([$idAnimal, $idUtilisateur, $aliment, $date, $quantite]);
     
-        // Retourne une confirmation ou gère les erreurs
-        return $stmt->rowCount() > 0 ? true : false;
+            $poidsPlus = $this->getAlimentByAnimaux($idAnimal)['PourcentageGainPoids'];
+            $poidsActuel = $this->getAnimalById($idAnimal)['Poids'];
+    
+            $nouveauPoids = $poidsActuel + ($poidsActuel * $poidsPlus);
+    
+            $updateSql = "UPDATE Animaux SET Poids = ? WHERE IdAnimal = ?";
+            $updateStmt = $this->db->prepare($updateSql);
+            $updateStmt->execute([$nouveauPoids, $idAnimal]);
+            return $stmt->rowCount() > 0 && $updateStmt->rowCount() > 0 ? true : false;
+        }
+    
+        return false;
     }
+    
     
 }

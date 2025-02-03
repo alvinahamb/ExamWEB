@@ -60,8 +60,8 @@ class ElevageController
         Flight::render('home',['data'=>$data,'message'=>$message]);
     }
 
-    public function nourrirAnimaux(){
-        $idAnimal = $_GET['idAnimal']; // idAnimal reste récupéré via GET pour une URL propre
+    public function nourriAnimaux(){
+        $idAnimal = $_POST['idAnimal']; // idAnimal reste récupéré via GET pour une URL propre
         $quantite = $_POST['quantite']; // Quantité reçue du formulaire
         $aliment = $_POST['aliment'];   // Aliment sélectionné dans le formulaire
         $date = $_POST['date'];         // Date du nourrissage sélectionnée

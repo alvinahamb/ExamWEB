@@ -51,7 +51,7 @@ $router->get('/goToAchatAnimaux', [ $ElevageController, 'goToAchatAnimaux' ]);
 $router->get('/achatAnimaux', [ $ElevageController, 'achatAnimaux' ]);
 $router->get('/vente', [ $ElevageController, 'venteAnimaux' ]);
 $router->get('/nourrir', [ $ElevageController, 'pageNourrir' ]);
-$router->get('/formulaireNourrir', [ $ElevageController, 'nourriAnimaux' ]);
+$router->post('/formulaireNourrir', [ $ElevageController, 'nourriAnimaux' ]);
 $router->get('/reintialiser', [ $ElevageController, 'goToReintialiser' ]);
 $router->get('/reintialisationCapital', [ $ElevageController, 'reintialisation' ]);
 
