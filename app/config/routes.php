@@ -40,6 +40,8 @@ $router->post('/CheckLogin', [ $UserController, 'CheckLogin' ]);
 $router->post('/CheckSignUp', [ $UserController, 'InsertSignup' ]);
 $router->get('/deconnexion', [ $UserController, 'deconnexion' ]);
 $router->get('/home', [ $UserController, 'home' ]);
+$router->get('/getSituation', [ $UserController, 'situation' ]);
+
 $ElevageController = new ElevageController();
 $router->get('/goToAchatAliment', [ $ElevageController, 'goToAchatAliment' ]);
 $router->get('/achatAliment', [ $ElevageController, 'achatAliment' ]);

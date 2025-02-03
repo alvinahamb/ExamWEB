@@ -9,7 +9,8 @@ use Flight;
 
 class UserController
 {
-    public function __construct() {
+    public function __construct()
+    {
         session_start();
     }
 
@@ -21,7 +22,7 @@ class UserController
     {
         Flight::render('signup');
     }
-    
+
     public function deconnexion()
     {
         session_unset();
@@ -32,6 +33,7 @@ class UserController
     public function CheckLogin()
     {
         $modele = new UserModel(Flight::db());
+        $model = new ElevageModel(Flight::db());
         $nom = $_POST['email'];
         $mdp = $_POST['password'];
         $result = $modele->CheckLogin($nom, $mdp);
@@ -40,22 +42,33 @@ class UserController
             Flight::render('login', $data);
         } else {
             $_SESSION['IdUser'] = $modele->getIdUser($nom, $mdp);
-            $data = ['habitation' => "okey"];
-            Flight::render('home',$data);
+            $data = $model->getAnimauxByUser($_SESSION['IdUser']);
+            Flight::render('home', $data);
         }
     }
 
     public function home()
     {
-        $model= new ElevageModel(Flight::db());
+        $model = new ElevageModel(Flight::db());
+        // $debut = $_GET['debut'];
+        // $fin = $_GET['fin'];
         if (isset($_SESSION['IdUser'])) {
-            $data= $model->getAnimauxByUser( $_SESSION['IdUser']);
-            Flight::render('home',$data);
-        }
-        else {
+            // $data= $model->getAnimauxByUserDate($_SESSION['IdUser'],$debut,$fin);
+            $data = $model->getAnimauxByUser($_SESSION['IdUser']);
+            Flight::render('home', $data);
+        } else {
             $data = ['message' => "You need to login first!"];
             Flight::render('login', $data);
         }
+    }
+
+    public function situation()
+    {
+        $model = new ElevageModel(Flight::db());
+        $debut = $_GET['debut'];
+        $fin = $_GET['fin'];
+        $data = $model->getAnimauxByUserDate($_SESSION['IdUser'], $debut, $fin);
+        Flight::render('home',[json_encode($data)]);
     }
 
     public function InsertSignup()
@@ -65,7 +78,7 @@ class UserController
         $nom = $_POST['username'];
         $mdp = $_POST['password'];
         $phone = $_POST['phone'];
-        $result = $modele->InsertSignup($email,$nom,$mdp,$phone);
+        $result = $modele->InsertSignup($email, $nom, $mdp, $phone);
         if ($result == 0) {
             $data = ['erreur' => "Username or email already taken"];
             Flight::render('signup', $data);

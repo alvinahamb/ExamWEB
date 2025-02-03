@@ -22,7 +22,7 @@
                         <button class="button">Admin</button>
                     </form>
                 </li>
-                <li><a href="elevage">Elevage</a></li>
+                <li><a href="/home">Elevage</a></li>
                 <li><a href="goToStock">Stock</a></li>
             </ul>
         </div>
@@ -46,14 +46,15 @@
         <h1>Home</h1>
         <p>Welcome to the home page!</p>
         <p>
+        <form action="getSituation" method="get">
             <input type="date" name="debut" placeholder="date debut">
             <input type="date" name="fin" placeholder="date fin">
-        <form action="getSituation" method="get">
             <button>Confirmer</button>
         </form>
         </p>
         <?php foreach ($data as $d) { ?>
             <div class="col-md-3">
+                <p>Date:<?= $d['DateTransaction'] ?></p>
                 <p><b>Type:<?= $d['TypeAnimal'] ?></b></p>
                 <p>PoidsMin:<?= $d['PoidsMin'] ?></p>
                 <p>PoidsMax:<?= $d['PoidsMax'] ?>%</p>
