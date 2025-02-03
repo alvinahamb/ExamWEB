@@ -43,6 +43,7 @@
     </div>
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
     <div style="margin-top:15vh">
         <h1>Situation des Animaux</h1>
@@ -50,6 +51,8 @@
             <div id="alert" class="alert alert-success" role="alert"><?= $message ?></div>
         <?php endif; ?>
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
     <div style="margin-top: 12vh;">
@@ -60,6 +63,9 @@
         <div class="home">
             <div>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
@@ -79,6 +85,7 @@
 
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         <table border="1" cellspacing="0" id="resultTable">
             <tr>
                 <th>Date</th>
@@ -95,11 +102,16 @@
 =======
 =======
 >>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
             <form id="dateForm">
                 <input type="date" id="debut" name="debut" placeholder="Date de début">
                 <button type="button" onclick="getData()">Confirmer</button>
             </form>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
@@ -121,6 +133,7 @@
             <script>
                 function getData() {
                     var debut = document.getElementById("debut").value;
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 
                     var xhr = new XMLHttpRequest();
@@ -186,6 +199,9 @@
 
 =======
 
+=======
+
+>>>>>>> Stashed changes
                     var xhr = new XMLHttpRequest();
                     xhr.open("GET", "getSituation?debut=" + debut, true);
                     xhr.onreadystatechange = function() {
@@ -200,6 +216,9 @@
                 function displayResults(data) {
                     var table = document.getElementById("resultTable");
 
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
                     // Supprime les anciennes lignes (sauf l'en-tête)
                     while (table.rows.length > 1) {
@@ -264,6 +283,9 @@
             </script>
         </div>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
