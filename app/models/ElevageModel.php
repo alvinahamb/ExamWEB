@@ -105,6 +105,19 @@ class ElevageModel
         $stmt->execute([$id]);
         return $stmt->fetch();
     }
+    
+    public function getAlimentByAnimaux($idAnimaux)
+    {
+        // Correction ici : ajout du $ pour la variable typeAnimal
+        $typeAnimal = $this->getAlimentById($idAnimaux)['TypeAnimal'];
+
+        // Préparation et exécution de la requête pour récupérer les aliments correspondant au type d'animal
+        $stmt = $this->db->prepare("SELECT * FROM Alimentation_Elevage WHERE TypeAnimal=?");
+        $stmt->execute([$typeAnimal]);
+        return $stmt->fetchAll(); // Renvoie un tableau de résultats
+    }
+
+    
     public function getCapital($id)
     {
         $stmt = $this->db->prepare("SELECT * FROM Utilisateur_Elevage WHERE IdUtilisateur=?");
@@ -156,4 +169,36 @@ class ElevageModel
         $stmt->execute(['vente', $id]);
         $this->updateCapital($idUser, $capital);
     }
+    
+    public function checkStockAliment($idAliment, $quantite) {
+        
+        $stmt = $this->db->prepare("SELECT Stock FROM Alimentation_Elevage WHERE IdAliment = ?");
+        $stmt->execute([$idAliment]);
+    
+        $result = $stmt->fetch();
+    
+        if ($result && $result['Stock'] >= $quantite) {
+            return true;  // Le stock est suffisant
+        } else {
+            return false;  // Stock insuffisant ou aliment inexistant
+        }
+    }
+    
+    public function checkSurPoidsAnimaux($idAnimal, $idAliment, $quantite){
+        
+    }
+
+    public function nourrirAnimaux($idAnimal, $idUtilisateur, $quantite, $aliment, $date){
+        // Préparation de la requête SQL pour insérer les données dans Nutrition_Elevage
+        $sql = "INSERT INTO Nutrition_Elevage (IdAnimal, IdUtilisateur, IdAliment, DateNourrissage, QuantiteNourriture)
+                VALUES (?, ?, ?, ?, ?)";
+    
+        // Exécution de la requête avec les paramètres reçus
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$idAnimal, $idUtilisateur, $aliment, $date, $quantite]);
+    
+        // Retourne une confirmation ou gère les erreurs
+        return $stmt->rowCount() > 0 ? true : false;
+    }
+    
 }

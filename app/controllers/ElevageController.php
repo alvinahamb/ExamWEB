@@ -59,5 +59,27 @@ class ElevageController
         $data = $model->getAnimaux();
         Flight::render('home',['data'=>$data,'message'=>$message]);
     }
+
+    public function nourrirAnimaux(){
+        $idAnimal = $_GET['idAnimal']; // idAnimal reste récupéré via GET pour une URL propre
+        $quantite = $_POST['quantite']; // Quantité reçue du formulaire
+        $aliment = $_POST['aliment'];   // Aliment sélectionné dans le formulaire
+        $date = $_POST['date'];         // Date du nourrissage sélectionnée
+        $model = new ElevageModel(Flight::db());
+        $confirmation = $model->nourrirAnimaux($idAnimal, $_SESSION['IdUser'], $quantite, $aliment, $date);
+        $message = "Nutrition effectuée avec succès";
+        $data = $model->getAnimaux();
+        Flight::render('home', ['data' => $data, 'message' => $message]);
+    }
+    
+
+    public function pageNourrir(){
+        $idAnimal=$_GET['idAnimal'];
+        $model= new ElevageModel(Flight::db());
+        $data=$model->getAnimalById($idAnimal);
+        $data2=$model->getAlimentByAnimaux($idAnimal);
+        Flight::render('pageNourrir', ['data'=>$data, 'aliment'=>$data2]);
+    }
+
 }
 ?>

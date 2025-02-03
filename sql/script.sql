@@ -114,3 +114,15 @@ VALUES
 ('vente', '2025-02-02', 1, 2, 2, 45, 180.00),
 ('achat', '2025-02-03', NULL, 3, 3, 3.2, 16.00),
 ('vente', '2025-02-04', 1, 4, 4, 500, 3000.00);
+
+CREATE TABLE Nutrition_Elevage (
+    IdNutrition INT AUTO_INCREMENT PRIMARY KEY,
+    IdAnimal INT,
+    IdUtilisateur INT,
+    IdAliment INT,
+    DateNourrissage DATETIME,
+    QuantiteNourriture INT,  -- Quantité d'aliment donnée (en unités ou kg, selon ta logique)
+    FOREIGN KEY (IdAnimal) REFERENCES Animaux_Elevage(IdAnimal),
+    FOREIGN KEY (IdUtilisateur) REFERENCES Utilisateur_Elevage(IdUtilisateur),
+    FOREIGN KEY (IdAliment) REFERENCES Alimentation_Elevage(IdAliment)
+);

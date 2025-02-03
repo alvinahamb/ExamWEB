@@ -42,8 +42,12 @@
             </ul>
         </div>
     </div>
+
     <div style="margin-top:15vh">
         <h1>Situation des Animaux</h1>
+        <?php if (isset($message)): ?>
+            <div id="alert" class="alert alert-success" role="alert"><?= $message ?></div>
+        <?php endif; ?>
 
         <form id="dateForm">
             <input type="date" id="debut" name="debut" placeholder="Date de début">
@@ -98,17 +102,11 @@
                     <td>${row.JoursSansManger}</td>
                     <td>${row.PourcentagePertePoids}</td>
                     <td>`
-                    if (row.TypeTransaction === "vente") {
-                        tr.innerHTML += `
-                        Vente en cours
-                        `;
-                    } else {
                         tr.innerHTML += `
                         <button onclick="vendre(${row.IdTransaction},${row.IdAnimal})">Vendre</button>
                         `;
-                    }
                     tr.innerHTML += `
-                        <button onclick="nourrir(${row.IdTransaction})">Nourrir</button>
+                        <button onclick="nourrir(${row.IdAnimal})">Nourrir</button>
                     </td>
                 `;
 
@@ -127,17 +125,17 @@
                 xhr.send();
             }
 
-
             function nourrir(id) {
                 var xhr = new XMLHttpRequest();
-                xhr.open("GET", "nourrir?id=" + id, true);
+                xhr.open("GET", "nourrir?idAnimal=" + id, true);  // Utilisation de 'id' au lieu de 'idAnimal'
                 xhr.onreadystatechange = function() {
                     if (xhr.readyState === 4 && xhr.status === 200) {
-                        alert("Animal nourri !");
+                        window.location.href = "nourrir?idAnimal=" + id;  // Utilisation de 'id' au lieu de 'idAnimal'
                     }
                 };
                 xhr.send();
             }
+
         </script>
     </div>
 </body>
