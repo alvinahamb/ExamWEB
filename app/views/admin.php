@@ -16,7 +16,7 @@
 <body>
     <div class="menu-fixe" style="box-shadow: 5px 5px 5px rgba(126, 126, 126, 0.575);">
         <div class="logo">
-            <a href="home"><img width="80" height="80" src="assets/images/logo.png" alt="logo"></a>
+            <a href="home"><img width="80" height="80" src="public/assets/images/logo.png" alt="logo"></a>
         </div>
         <div>
             <ul class="nav nav-tabs nav-justified">

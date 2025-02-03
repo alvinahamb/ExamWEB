@@ -16,7 +16,7 @@ class UserModel
 
     public function getIdUser($nom, $mdp)
     {
-        $stmt = $this->db->prepare("SELECT * FROM Utilisateur WHERE Email = ? AND MotDePasse = ?");
+        $stmt = $this->db->prepare("SELECT * FROM Utilisateur_Elevage WHERE Email = ? AND MotDePasse = ?");
         $stmt->execute([$nom, $mdp]);
         $row = $stmt->fetch();
         return $row['IdUtilisateur'];
@@ -24,7 +24,7 @@ class UserModel
 
     public function CheckLogin($nom, $mdp)
     {
-        $stmt = $this->db->prepare("SELECT * FROM Utilisateur WHERE Email = ? AND MotDePasse = ?");
+        $stmt = $this->db->prepare("SELECT * FROM Utilisateur_Elevage WHERE Email = ? AND MotDePasse = ?");
         $stmt->execute([$nom, $mdp]);
         if ($stmt->rowCount() > 0) {
             return 1;
@@ -35,7 +35,7 @@ class UserModel
 
     public function CheckSignup($email,$nom)
     {
-        $stmt = $this->db->prepare("SELECT * FROM Utilisateur WHERE Nom = ? OR Email = ?");
+        $stmt = $this->db->prepare("SELECT * FROM Utilisateur_Elevage WHERE Nom = ? OR Email = ?");
         $stmt->execute([$nom,$email]);
         if ($stmt->rowCount() > 0) {
             return 0;
@@ -46,7 +46,7 @@ class UserModel
 
     public function InsertSignup($email,$nom,$mdp,$phone)
     {
-        $stmt = $this->db->prepare("INSERT INTO Utilisateur (Email, Nom, MotDePasse, Numero) VALUES (?,?,?,?)");
+        $stmt = $this->db->prepare("INSERT INTO Utilisateur_Elevage (Email, Nom, MotDePasse, Numero) VALUES (?,?,?,?)");
         if ($this->CheckSignup($email,$nom) == 0) {
             return 0;
         }

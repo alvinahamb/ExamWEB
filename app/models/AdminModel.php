@@ -15,7 +15,7 @@ class AdminModel {
 
     public function CheckLogin($nom, $mdp)
     {
-        $stmt = $this->db->prepare("SELECT * FROM Admin WHERE Nom = ? AND MotDePasse = ?");
+        $stmt = $this->db->prepare("SELECT * FROM Admin_Elevage WHERE Nom = ? AND MotDePasse = ?");
         $stmt->execute([$nom, $mdp]);
         if ($stmt->rowCount() > 0) {
             return 1;

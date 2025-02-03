@@ -16,7 +16,7 @@
 <body>
     <div class="menu-fixe">
         <div class="logo">
-            <a href="home"><img width="80" height="80" src="assets/images/logo.png" alt="logo"></a>
+            <a href="home"><img width="80" height="80" src="public/assets/images/logo.png" alt="logo"></a>
         </div>
     </div>
     <div style="margin-top: 15vh;">
@@ -29,7 +29,7 @@
             <div class="col-md-4" style="margin-top:10vh;font-family:'Times New Roman', Times, serif;">
                 <h1>Admin:</h1>
                 <form action="adminLogin" method="POST">
-                    <p><input type="text" name="username" class="form-control" placeholder="Username" value="Blessed" required></p>
+                    <p><input type="text" name="username" class="form-control" placeholder="Username" value="admin" required></p>
                     <p><input type="password" name="password" class="form-control" placeholder="Password" value="blessed" required></p>
                     <p><button class="btn btn-lg btn-primary btn-block" type="submit">Login</button></p>
                 </form>

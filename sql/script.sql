@@ -9,7 +9,7 @@ CREATE TABLE Utilisateur_Elevage (
     Nom VARCHAR(100) NOT NULL,
     MotDePasse VARCHAR(255) NOT NULL,
     Numero VARCHAR(15) NOT NULL,
-    Capital int not null 
+    Capital INT NOT NULL
 );
 
 CREATE TABLE Admin_Elevage (
@@ -24,7 +24,7 @@ CREATE TABLE Animaux_Elevage (
     IdAnimal INT AUTO_INCREMENT PRIMARY KEY,
     TypeAnimal VARCHAR(50) NOT NULL,
     PoidsMin FLOAT NOT NULL,
-    PoidsmAX FLOAT NOT NULL,
+    PoidsMax FLOAT NOT NULL,
     PrixVenteParKg FLOAT NOT NULL,
     JoursSansManger INT NOT NULL,
     PourcentagePertePoids FLOAT NOT NULL
@@ -40,33 +40,36 @@ CREATE TABLE Alimentation_Elevage (
     Stock INT DEFAULT 0
 );
 
--- Table des transactions
+-- Table des transactions (animaux)
 CREATE TABLE TransactionsAnimaux_Elevage (
     IdTransaction INT AUTO_INCREMENT PRIMARY KEY,
-    TyeTransaction ENUM('achat', 'vente') NOT NULL,
+    TypeTransaction ENUM('achat', 'vente') NOT NULL,
     DateTransaction DATE NOT NULL,
-    Etat INT NULL,
+    `Etat` INT NULL,
     IdAnimal INT NOT NULL,
     IdUtilisateur INT NOT NULL,
     Poids DECIMAL(6,2) NOT NULL,
     Montant_total DECIMAL(10,2) NOT NULL,
-    FOREIGN KEY (IdAnimal) REFERENCES Animaux_Elevage(IdAnimal) ON DELETE SET NULL,
-    FOREIGN KEY (IdUtilisateur) REFERENCES Utilisateurs_Elevage(IdAnimal) ON DELETE SET NULL
+    FOREIGN KEY (IdAnimal) REFERENCES Animaux_Elevage(IdAnimal), 
+    FOREIGN KEY (IdUtilisateur) REFERENCES Utilisateur_Elevage(IdUtilisateur)
 );
 
+-- Table des transactions (aliments)
 CREATE TABLE TransactionsAlimentation_Elevage (
     IdTransaction INT AUTO_INCREMENT PRIMARY KEY,
     DateTransaction DATE NOT NULL,
     IdAliment INT NOT NULL,
     Quantite INT NOT NULL,
     IdUtilisateur INT NOT NULL,
-    FOREIGN KEY (IdAliment) REFERENCES Alimentation_Elevage(IdAliment) ON DELETE CASCADE, 
-    FOREIGN KEY (IdUtilisateur) REFERENCES Utilisateurs_Elevage(IdAnimal) ON DELETE SET NULL
+    FOREIGN KEY (IdAliment) REFERENCES Alimentation_Elevage(IdAliment), 
+    FOREIGN KEY (IdUtilisateur) REFERENCES Utilisateur_Elevage(IdUtilisateur) 
 );
 
-INSERT INTO Admin (Email, Nom, MotDePasse) 
+-- Ajout d'un administrateur
+INSERT INTO Admin_Elevage (Email, Nom, MotDePasse) 
 VALUES ('admin@gmail.com', 'admin', 'admin');
 
-INSERT INTO Utilisateur (Email, Nom, MotDePasse, Numero) 
+-- Ajout d'un utilisateur
+INSERT INTO Utilisateur_Elevage (Email, Nom, MotDePasse, Numero, Capital) 
 VALUES 
-('user1@gmail.com', 'User One', 'password1', '0123456789');
+('user1@gmail.com', 'User One', 'password1', '0123456789', 1000);
