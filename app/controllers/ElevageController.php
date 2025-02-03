@@ -54,7 +54,7 @@ class ElevageController
         $id=$_GET['id'];
         $idAnimal=$_GET['idAnimal'];
         $model= new ElevageModel(Flight::db());
-        $confirmation=$model->venteAnimaux($id,$idAnimal,$_SESSION['IdUser']);
+        $model->venteAnimaux($id,$idAnimal,$_SESSION['IdUser']);
         $message = "Vente effectué avec succès";
         $data = $model->getAnimaux();
         Flight::render('home',['data'=>$data,'message'=>$message]);
@@ -81,5 +81,18 @@ class ElevageController
         Flight::render('pageNourrir', ['data'=>$data, 'aliment'=>$data2]);
     }
 
+    public function goToReintialiser(){
+        $model = new ElevageModel(Flight::db());
+        $data=$model->getCapital($_SESSION['IdUser']);
+        Flight::render('reintialisation',$data);
+    }
+
+    public function reintialisation(){
+        $model = new ElevageModel(Flight::db());
+        $montant=$_GET['capital'];
+        $model->reintialiser($_SESSION['IdUser'],$montant);
+        $data = ['message'=> 'Reintialisation reussi!'];
+        Flight::render('home',$data);
+    }
 }
 ?>

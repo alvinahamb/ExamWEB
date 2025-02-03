@@ -41,6 +41,7 @@ $router->post('/CheckSignUp', [ $UserController, 'InsertSignup' ]);
 $router->get('/deconnexion', [ $UserController, 'deconnexion' ]);
 $router->get('/home', [ $UserController, 'home' ]);
 $router->get('/getSituation', [ $UserController, 'situation' ]);
+$router->get('/elevage', [ $UserController, 'elevage' ]);
 
 $ElevageController = new ElevageController();
 $router->get('/goToAchatAliment', [ $ElevageController, 'goToAchatAliment' ]);
@@ -51,6 +52,8 @@ $router->get('/achatAnimaux', [ $ElevageController, 'achatAnimaux' ]);
 $router->get('/vente', [ $ElevageController, 'venteAnimaux' ]);
 $router->get('/nourrir', [ $ElevageController, 'pageNourrir' ]);
 $router->get('/formulaireNourrir', [ $ElevageController, 'nourriAnimaux' ]);
+$router->get('/reintialiser', [ $ElevageController, 'goToReintialiser' ]);
+$router->get('/reintialisationCapital', [ $ElevageController, 'reintialisation' ]);
 
 $router->get('/hello-world/@name', function($name) {
 	echo '<h1>Hello world! Oh hey '.$name.'!</h1>';

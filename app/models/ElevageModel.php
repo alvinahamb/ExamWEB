@@ -79,7 +79,6 @@ class ElevageModel
         $stmt->execute([$id, $date]);
         return $stmt->fetchAll();
     }
-    
 
     public function getAnimaux()
     {
@@ -164,10 +163,19 @@ class ElevageModel
         $prixkg = $animal['PrixVenteParKg'];
         $poid = $animal['Poids']; 
         $Montant_total = $poid * $prixkg;
-        $capital = $this->getCapital($idUser)['Capital']+$Montant_total;	
+        $capital = $this->getCapital($idUser)['Capital']+$Montant_total;
+        // var_dump($Montant_total,$prixkg,$poid,$capital); exit;	
         $stmt = $this->db->prepare("UPDATE TransactionsAnimaux_Elevage SET TypeTransaction=? WHERE IdTransaction=?");
         $stmt->execute(['vente', $id]);
-        $this->updateCapital($idUser, $capital);
+        $this->updateCapital($idUser,$capital);
+    }
+
+    public function reintialiser($id,$montant){
+        $stmt1 = $this->db->prepare("DELETE FROM TransactionsAnimaux_Elevage");
+        $stmt1->execute();
+        $stmt2 = $this->db->prepare("DELETE FROM TransactionsAlimentation_Elevage");
+        $stmt2->execute();
+        $this->updateCapital($id,$montant);
     }
     
     public function checkStockAliment($idAliment, $quantite) {

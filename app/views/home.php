@@ -9,6 +9,7 @@
     <script src="public/assets/js/jquery.min.js"></script>
     <script src="public/assets/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="public/assets/css/base.css">
+    <link rel="stylesheet" href="public/assets/css/home.css">
     <link rel="icon" href="">
     <title>Elevage</title>
 </head>
@@ -23,7 +24,12 @@
                         <button class="button">Admin</button>
                     </form>
                 </li>
-                <li><a href="/home">Elevage</a></li>
+                <li>
+                    <form action="reintialiser" method="get">
+                        <button class="button">Reintialiser</button>
+                    </form>
+                </li>
+                <li><a href="home">Elevage</a></li>
                 <li><a href="goToStock">Stock</a></li>
             </ul>
         </div>
@@ -34,6 +40,7 @@
             <ul class="nav nav-tabs nav-justified">
                 <li><a href="goToAchatAnimaux">Achat Animaux</a></li>
                 <li><a href="goToAchatAliment">Achat Aliments</a></li>
+                <!-- <li><a href="#">Moi</a></li> -->
                 <li>
                     <form action="deconnexion" method="get">
                         <button class="button">Deconnexion</button>
@@ -42,8 +49,14 @@
             </ul>
         </div>
     </div>
-
     <div style="margin-top:15vh">
+    <div class="home">
+    <?php if (isset($data['message'])) { ?>
+            <div id="alert" class="alert alert-success" role="alert"><?= $data['message'] ?></div>
+        <?php }
+        ?>
+    </div>
+    <div class="situation">
         <h1>Situation des Animaux</h1>
         <?php if (isset($message)): ?>
             <div id="alert" class="alert alert-success" role="alert"><?= $message ?></div>
@@ -58,11 +71,12 @@
             <tr>
                 <th>Date</th>
                 <th>Type</th>
-                <th>PoidsMin</th>
+                <th>Poids</th>
                 <th>PoidsMax</th>
                 <th>Prix Vente Par Kg</th>
                 <th>JoursSansManger</th>
                 <th>Perte Poids (%)</th>
+                <th>Prix d'achat</th>
                 <th>Actions</th>
             </tr>
         </table>
@@ -96,11 +110,12 @@
                     tr.innerHTML = `
                     <td>${row.DateTransaction}</td>
                     <td><b>${row.TypeAnimal}</b></td>
-                    <td>${row.PoidsMin}</td>
+                    <td>${row.Poids}</td>
                     <td>${row.PoidsMax}</td>
                     <td>${row.PrixVenteParKg}</td>
                     <td>${row.JoursSansManger}</td>
                     <td>${row.PourcentagePertePoids}</td>
+                    <td>${row.Montant_total}</td>
                     <td>`
                         tr.innerHTML += `
                         <button onclick="vendre(${row.IdTransaction},${row.IdAnimal})">Vendre</button>
@@ -119,7 +134,8 @@
                 xhr.open("GET", "vente?id=" + id + "&idAnimal=" + idAnimal, true);
                 xhr.onreadystatechange = function() {
                     if (xhr.readyState === 4 && xhr.status === 200) {
-                        window.location.href = "vente?id=" + id + "&idAnimal=" + idAnimal;
+                        window.location.reload();
+                        alert("Animal vendu !");
                     }
                 };
                 xhr.send();
@@ -138,6 +154,9 @@
 
         </script>
     </div>
+    <footer>
+        <p>Kasaina ETU003287 & Blessed ETU003326 & Kiady ETU003244</p>
+    </footer>
 </body>
 
 </html>

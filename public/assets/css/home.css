@@ -1,0 +1,13 @@
+.home{
+    height: 82vh;
+    width: 100%;
+    background-color: aqua;
+    margin-top: 12vh;
+}
+.situation{
+    min-height: 50vh;
+    height: fit-content;
+    width: 100%;
+    background-color: rgb(42, 42, 42);
+    margin-bottom: 8vh;
+}
