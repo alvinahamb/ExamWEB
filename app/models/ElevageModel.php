@@ -75,7 +75,7 @@ class ElevageModel
         $stmt = $this->db->prepare("SELECT * FROM TransactionsAnimaux_Elevage t 
         JOIN Animaux_Elevage a ON t.IdAnimal = a.IdAnimal 
         WHERE IdUtilisateur=? 
-        AND (t.TypeTransaction = 'achat') AND (DateTransaction BETWEEN ? AND ?)");
+        AND (t.TypeTransaction = 'achat') AND (DateTransaction = ?)");
         $stmt->execute([$id, $date]);
         return $stmt->fetchAll();
     }
