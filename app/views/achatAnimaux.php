@@ -47,8 +47,9 @@
         foreach ($data as $d) { ?>
             <div class="col-md-3">
                 <p><b>Type:<?=$d['TypeAnimal']?></b></p>
+                <p>Poids:<?=$d['Poids']?></p>
                 <p>PoidsMin:<?=$d['PoidsMin']?></p>
-                <p>PoidsMax:<?=$d['PoidsMax']?>%</p>
+                <p>PoidsMax:<?=$d['PoidsMax']?></p>
                 <p>Prix Vente Par Kg:<?=$d['PrixVenteParKg']?></p>
                 <p>JoursSansManger:<?=$d['JoursSansManger']?></p>
                 <p>PourcentagePertePoids:<?=$d['PourcentagePertePoids']?></p>

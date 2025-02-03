@@ -74,6 +74,25 @@ class ElevageModel
         return $stmt->fetch();
     }
 
+    public function getCapital($id)
+    {
+        $stmt = $this->db->prepare("SELECT * FROM Utilisateur_Elevage WHERE IdUtilisateur=?");
+        $stmt->execute([$id]);
+        return $stmt->fetch();
+    }
+
+    public function updateCapital($id, $montant)
+    {
+        $money = $this->getCapital($id)['Capital'] - $montant;
+        if ($money < 0) {
+            return 1;
+        } else {
+            $stmt = $this->db->prepare("UPDATE Utilisateur_Elevage SET Capital=? WHERE IdUtilisateur=?");
+            $stmt->execute([$money, $id]);
+            return 0;
+        }
+    }
+
     public function achatAnimaux($id, $idUser)
     {
         $poid = $this->getAnimalById($id)['Poids'];
@@ -81,5 +100,11 @@ class ElevageModel
         $Montant_total = $poid * $prixkg;
         $stmt = $this->db->prepare("INSERT INTO TransactionsAnimaux_Elevage (TypeTransaction,DateTransaction, IdAnimal,IdUtilisateur, Poids, Montant_total)  VALUES (?,NOW(),?,?,?,?)");
         $stmt->execute(['achat', $id, $idUser, $poid, $Montant_total]);
+        $result=$this->updateCapital($idUser, $Montant_total);
+        if ($result==0) {
+            return 0;
+        } else {
+            return 1;
+        }
     }
 }
