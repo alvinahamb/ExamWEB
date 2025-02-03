@@ -1,0 +1,22 @@
+body{
+    font-family: 'Times New Roman', Times, serif;
+}
+body h1{
+    text-align: center;
+}
+.card{
+    background-color: aqua;
+    align-items: center;
+    display: flex;
+}
+.card-img{
+    width: 70%; /* Adapte la largeur du div à son conteneur */
+    height: 100%; /* Fixe une hauteur, ajustez selon vos besoins */
+    overflow: hidden; /* Cache les parties de l'image qui débordent */
+}
+
+.card-img img {
+    width: 100%; /* L'image occupe toute la largeur du div */
+    height: 100%; /* L'image occupe toute la hauteur du div */
+    object-fit: cover; /* Assure que l'image couvre toute la zone sans déformation */
+}

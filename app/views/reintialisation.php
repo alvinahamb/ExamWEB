@@ -15,7 +15,7 @@
 </head>
 
 <body>
-<div class="menu-fixe-acceuil">
+    <div class="menu-fixe-acceuil">
         <div>
             <ul class="nav nav-tabs nav-justified">
                 <li>
@@ -48,13 +48,16 @@
             </ul>
         </div>
     </div>
-    <div style="margin-top: 13vh;">
-        Reintialisation:
-        <p>Capital actuelle:<?=$data['Capital']?></p>
-        <form action="reintialisationCapital" method="get">
-            <input type="number" name="capital" placeholder="nouveau capital" required>
-            <input type="submit" value="Reintialiser">
-        </form>
+    <div style="margin-top: 13vh;padding:20vh;">
+        <div class="reintialisation">
+            <h1><b>Reintialisation:</b></h1>
+            <H4>Capital actuelle:<?= $data['Capital'] ?></h4>
+            <form action="reintialisationCapital" method="get">
+                <input type="number" name="capital" class="form-control" placeholder="nouveau capital" required>
+                <br>
+                <button type="submit">Reintialiser</button>
+            </form>
+        </div>
     </div>
 </body>
 

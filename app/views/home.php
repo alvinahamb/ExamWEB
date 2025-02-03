@@ -14,7 +14,6 @@
 </head>
 
 <body>
-
     <div class="menu-fixe-acceuil">
         <div>
             <ul class="nav nav-tabs nav-justified">
@@ -42,18 +41,37 @@
             </ul>
         </div>
     </div>
+<<<<<<< Updated upstream
 
     <div style="margin-top:15vh">
         <h1>Situation des Animaux</h1>
         <?php if (isset($message)): ?>
             <div id="alert" class="alert alert-success" role="alert"><?= $message ?></div>
         <?php endif; ?>
+=======
+    <div style="margin-top: 12vh;">
+        <?php if (isset($data['message'])) { ?>
+            <div id="alert" class="alert alert-success" role="alert"><?= $data['message'] ?></div>
+        <?php }
+        ?>
+        <div class="home">
+            <div>
+>>>>>>> Stashed changes
 
-        <form id="dateForm">
-            <input type="date" id="debut" name="debut" placeholder="Date de début">
-            <button type="button" onclick="getData()">Confirmer</button>
-        </form>
+                <h1>Bienvenue sur Farm – Votre partenaire en élevage</h1>
+                <h3>Trouvez les meilleurs animaux<h3>
+                <h3>Choisissez des aliments adaptés pour une croissance optimale</h3>
+                <h3>Optimisez vos revenus avec une bonne gestion</h3> 
+                <br>      
+                <form action="#situation" method="get">
+                    <button>Voir la situation de mon elevage</button>
+                </form>
+            </div>
+        </div>
+        <div id="situation">
+            <h1>Situation des Animaux</h1>
 
+<<<<<<< Updated upstream
         <table border="1" cellspacing="0" id="resultTable">
             <tr>
                 <th>Date</th>
@@ -67,30 +85,43 @@
                 <th>Action</th>
             </tr>
         </table>
+=======
+            <form id="dateForm">
+                <input type="date" id="debut" name="debut" placeholder="Date de début">
+                <button type="button" onclick="getData()">Confirmer</button>
+            </form>
+>>>>>>> Stashed changes
 
-        <script>
-            function getData() {
-                var debut = document.getElementById("debut").value;
+            <table border="1" cellspacing="0" id="resultTable">
+                <tr>
+                    <th>Date</th>
+                    <th>Type</th>
+                    <th>Poids</th>
+                    <th>PoidsMax</th>
+                    <th>Prix Vente Par Kg</th>
+                    <th>JoursSansManger</th>
+                    <th>Perte Poids (%)</th>
+                    <th>Prix d'achat</th>
+                    <th>Actions</th>
+                </tr>
+            </table>
 
-                var xhr = new XMLHttpRequest();
-                xhr.open("GET", "getSituation?debut=" + debut, true);
-                xhr.onreadystatechange = function() {
-                    if (xhr.readyState === 4 && xhr.status === 200) {
-                        var data = JSON.parse(xhr.responseText);
-                        displayResults(data);
-                    }
-                };
-                xhr.send();
-            }
+            <script>
+                function getData() {
+                    var debut = document.getElementById("debut").value;
 
-            function displayResults(data) {
-                var table = document.getElementById("resultTable");
-
-                // Supprime les anciennes lignes (sauf l'en-tête)
-                while (table.rows.length > 1) {
-                    table.deleteRow(1);
+                    var xhr = new XMLHttpRequest();
+                    xhr.open("GET", "getSituation?debut=" + debut, true);
+                    xhr.onreadystatechange = function() {
+                        if (xhr.readyState === 4 && xhr.status === 200) {
+                            var data = JSON.parse(xhr.responseText);
+                            displayResults(data);
+                        }
+                    };
+                    xhr.send();
                 }
 
+<<<<<<< Updated upstream
                 // Ajoute les nouvelles données
                 data.forEach(row => {
                     var tr = document.createElement("tr");
@@ -136,6 +167,73 @@
             }
 
         </script>
+=======
+                function displayResults(data) {
+                    var table = document.getElementById("resultTable");
+
+                    // Supprime les anciennes lignes (sauf l'en-tête)
+                    while (table.rows.length > 1) {
+                        table.deleteRow(1);
+                    }
+
+                    // Ajoute les nouvelles données
+                    data.forEach(row => {
+                        var tr = document.createElement("tr");
+                        tr.innerHTML = `
+                    <td>${row.DateTransaction}</td>
+                    <td><b>${row.TypeAnimal}</b></td>
+                    <td>${row.Poids}</td>
+                    <td>${row.PoidsMax}</td>
+                    <td>${row.PrixVenteParKg}</td>
+                    <td>${row.JoursSansManger}</td>
+                    <td>${row.PourcentagePertePoids}</td>
+                    <td>${row.Montant_total}</td>
+                    <td>`
+                        if (row.TypeTransaction === "vente") {
+                            tr.innerHTML += `
+                        Vente en cours
+                        `;
+                        } else {
+                            tr.innerHTML += `
+                        <button onclick="vendre(${row.IdTransaction},${row.IdAnimal})">Vendre</button>
+                        `;
+                        }
+                        tr.innerHTML += `
+                        <button onclick="nourrir(${row.IdTransaction})">Nourrir</button>
+                    </td>
+                `;
+
+                        table.appendChild(tr);
+                    });
+                }
+
+                function vendre(id, idAnimal) {
+                    var xhr = new XMLHttpRequest();
+                    xhr.open("GET", "vente?id=" + id + "&idAnimal=" + idAnimal, true);
+                    xhr.onreadystatechange = function() {
+                        if (xhr.readyState === 4 && xhr.status === 200) {
+                            window.location.reload();
+                            alert("Animal vendu !");
+                        }
+                    };
+                    xhr.send();
+                }
+
+
+
+                function nourrir(id) {
+                    var xhr = new XMLHttpRequest();
+                    xhr.open("GET", "nourrir?id=" + id, true);
+                    xhr.onreadystatechange = function() {
+                        if (xhr.readyState === 4 && xhr.status === 200) {
+                            alert("Animal nourri !");
+                        }
+                    };
+                    xhr.send();
+                }
+            </script>
+        </div>
+>>>>>>> Stashed changes
     </div>
     <footer>
         <p>Kasaina ETU003287 & Blessed ETU003326 & Kiady ETU003244</p>
