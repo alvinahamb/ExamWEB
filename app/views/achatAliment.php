@@ -30,7 +30,7 @@
         </div>
         <div>
             <ul class="nav nav-tabs nav-justified">
-                <li><a href="#">Achat Animaux</a></li>
+                <li><a href="goToAchatAnimaux">Achat Animaux</a></li>
                 <li><a href="goToAchatAliment">Achat Aliments</a></li>
                 <li>
                 <form action="deconnexion" method="get">
