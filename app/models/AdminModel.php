@@ -23,5 +23,12 @@ class AdminModel {
             return 0;
         }
     }
+    
+    public function getAnimaux()
+    {
+        $stmt = $this->db->query("SELECT * FROM Animaux_Elevage");
+        $data=$stmt->fetchAll();
+        return $data;
+    }
 
 }

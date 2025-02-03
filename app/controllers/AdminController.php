@@ -25,7 +25,7 @@ class AdminController
         if ($result == 0) {
             Flight::render('adminLogin', $data);
         } else {
-            $data = ['contenue' => "okey"];
+            $data = $modele->getAnimaux();
             Flight::render('admin', $data);
         }
     }
