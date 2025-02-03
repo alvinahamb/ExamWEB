@@ -76,7 +76,7 @@ class ElevageModel
 
     public function achatAnimaux($id, $idUser)
     {
-        $poid = 2;
+        $poid = $this->getAnimalById($id)['Poids'];
         $prixkg = $this->getAnimalById($id)['PrixVenteParKg'];
         $Montant_total = $poid * $prixkg;
         $stmt = $this->db->prepare("INSERT INTO TransactionsAnimaux_Elevage (TypeTransaction,DateTransaction, IdAnimal,IdUtilisateur, Poids, Montant_total)  VALUES (?,NOW(),?,?,?,?)");
