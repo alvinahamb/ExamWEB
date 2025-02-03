@@ -166,9 +166,10 @@
                 }
             </script>
         </div>
-        <footer>
-            <p>Kasaina ETU003287 & Blessed ETU003326 & Kiady ETU003244</p>
-        </footer>
+    </div>
+    <footer>
+        <p>Kasaina ETU003287 & Blessed ETU003326 & Kiady ETU003244</p>
+    </footer>
 </body>
 
 </html>
