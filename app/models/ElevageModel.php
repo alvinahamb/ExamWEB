@@ -68,17 +68,18 @@ class ElevageModel
         $stmt->execute([$id]);
         return $stmt->fetchAll();
     }
-
-    public function getAnimauxByUserDate($id, $debut, $fin)
+    
+    public function getAnimauxByUserDate($id, $date)
     {
         $stmt = $this->db->prepare("SELECT * FROM TransactionsAnimaux_Elevage t 
-        JOIN Animaux_Elevage a ON t.IdAnimal = a.IdAnimal 
-        WHERE IdUtilisateur=? 
-        AND (t.TypeTransaction = 'vente' OR t.TypeTransaction = 'achat') AND (DateTransaction BETWEEN ? AND ?)");
-        $stmt->execute([$id, $debut, $fin]);
+            JOIN Animaux_Elevage a ON t.IdAnimal = a.IdAnimal 
+            WHERE IdUtilisateur = ? 
+            AND (t.TypeTransaction = 'vente' OR t.TypeTransaction = 'achat') 
+            AND DateTransaction = ?");
+        $stmt->execute([$id, $date]);
         return $stmt->fetchAll();
     }
-
+    
 
     public function getAnimaux()
     {

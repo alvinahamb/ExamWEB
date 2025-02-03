@@ -47,7 +47,6 @@
 
         <form id="dateForm">
             <input type="date" id="debut" name="debut" placeholder="Date de début">
-            <input type="date" id="fin" name="fin" placeholder="Date de fin">
             <button type="button" onclick="getData()">Confirmer</button>
         </form>
 
@@ -67,10 +66,9 @@
         <script>
             function getData() {
                 var debut = document.getElementById("debut").value;
-                var fin = document.getElementById("fin").value;
 
                 var xhr = new XMLHttpRequest();
-                xhr.open("GET", "getSituation?debut=" + debut + "&fin=" + fin, true);
+                xhr.open("GET", "getSituation?debut=" + debut, true);
                 xhr.onreadystatechange = function() {
                     if (xhr.readyState === 4 && xhr.status === 200) {
                         var data = JSON.parse(xhr.responseText);

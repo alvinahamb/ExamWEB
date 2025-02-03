@@ -65,11 +65,10 @@ class UserController
 
     public function situation()
 {
-    if (isset($_GET['debut']) && isset($_GET['fin'])) {
+    if (isset($_GET['debut'])) {
         $model = new ElevageModel(Flight::db());
         $debut = $_GET['debut'];
-        $fin = $_GET['fin'];
-        $data = $model->getAnimauxByUserDate($_SESSION['IdUser'], $debut, $fin);
+        $data = $model->getAnimauxByUserDate($_SESSION['IdUser'], $debut);
 
         // Retourne du JSON si AJAX
         header('Content-Type: application/json');
