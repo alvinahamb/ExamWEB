@@ -42,6 +42,7 @@
         </div>
     </div>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
     <div style="margin-top:15vh">
         <h1>Situation des Animaux</h1>
@@ -49,6 +50,8 @@
             <div id="alert" class="alert alert-success" role="alert"><?= $message ?></div>
         <?php endif; ?>
 =======
+=======
+>>>>>>> Stashed changes
     <div style="margin-top: 12vh;">
         <?php if (isset($data['message'])) { ?>
             <div id="alert" class="alert alert-success" role="alert"><?= $data['message'] ?></div>
@@ -56,6 +59,9 @@
         ?>
         <div class="home">
             <div>
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
                 <h1>Bienvenue sur Farm – Votre partenaire en élevage</h1>
@@ -72,6 +78,7 @@
             <h1>Situation des Animaux</h1>
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         <table border="1" cellspacing="0" id="resultTable">
             <tr>
                 <th>Date</th>
@@ -86,10 +93,15 @@
             </tr>
         </table>
 =======
+=======
+>>>>>>> Stashed changes
             <form id="dateForm">
                 <input type="date" id="debut" name="debut" placeholder="Date de début">
                 <button type="button" onclick="getData()">Confirmer</button>
             </form>
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
             <table border="1" cellspacing="0" id="resultTable">
@@ -109,6 +121,7 @@
             <script>
                 function getData() {
                     var debut = document.getElementById("debut").value;
+<<<<<<< Updated upstream
 
                     var xhr = new XMLHttpRequest();
                     xhr.open("GET", "getSituation?debut=" + debut, true);
@@ -171,6 +184,23 @@
                 function displayResults(data) {
                     var table = document.getElementById("resultTable");
 
+=======
+
+                    var xhr = new XMLHttpRequest();
+                    xhr.open("GET", "getSituation?debut=" + debut, true);
+                    xhr.onreadystatechange = function() {
+                        if (xhr.readyState === 4 && xhr.status === 200) {
+                            var data = JSON.parse(xhr.responseText);
+                            displayResults(data);
+                        }
+                    };
+                    xhr.send();
+                }
+
+                function displayResults(data) {
+                    var table = document.getElementById("resultTable");
+
+>>>>>>> Stashed changes
                     // Supprime les anciennes lignes (sauf l'en-tête)
                     while (table.rows.length > 1) {
                         table.deleteRow(1);
@@ -233,6 +263,9 @@
                 }
             </script>
         </div>
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
     </div>
     <footer>
