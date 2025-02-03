@@ -42,7 +42,7 @@ class UserController
             Flight::render('login', $data);
         } else {
             $_SESSION['IdUser'] = $modele->getIdUser($nom, $mdp);
-            $data = $model->getAnimauxByUser($_SESSION['IdUser']);
+            // $data = $model->getAnimauxByUser($_SESSION['IdUser']);
             Flight::render('home', $data);
         }
     }
@@ -54,8 +54,9 @@ class UserController
         // $fin = $_GET['fin'];
         if (isset($_SESSION['IdUser'])) {
             // $data= $model->getAnimauxByUserDate($_SESSION['IdUser'],$debut,$fin);
-            $data = $model->getAnimauxByUser($_SESSION['IdUser']);
-            Flight::render('home', $data);
+            // $data = $model->getAnimauxByUser($_SESSION['IdUser']);
+            // Flight::render('home', $data);
+            Flight::render('home');
         } else {
             $data = ['message' => "You need to login first!"];
             Flight::render('login', $data);
@@ -63,13 +64,24 @@ class UserController
     }
 
     public function situation()
-    {
+{
+    if (isset($_GET['debut']) && isset($_GET['fin'])) {
         $model = new ElevageModel(Flight::db());
         $debut = $_GET['debut'];
         $fin = $_GET['fin'];
         $data = $model->getAnimauxByUserDate($_SESSION['IdUser'], $debut, $fin);
-        Flight::render('home',$data);
+
+        // Retourne du JSON si AJAX
+        header('Content-Type: application/json');
+        echo json_encode($data);
+        exit;
     }
+
+    // Sinon, charge la page HTML normale
+    Flight::render('situation');
+}
+
+
 
     public function InsertSignup()
     {
