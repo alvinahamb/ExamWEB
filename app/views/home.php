@@ -27,12 +27,12 @@
             </ul>
         </div>
         <div class="logo">
-            <a href="home"><img width="80" height="80" src="public/assets/images/logo.png" alt="logo"></a>
+            <a href="home"><img width="50" height="50" src="public/assets/images/logo.png" alt="logo"></a>
         </div>
         <div>
             <ul class="nav nav-tabs nav-justified">
-                <li><a href="#">list3</a></li>
-                <li><a href="#">list4</a></li>
+                <li><a href="#">Achat Animaux</a></li>
+                <li><a href="goToAchatAliment">Achat Aliments</a></li>
                 <li>
                 <form action="deconnexion" method="get">
                     <button class="button">Deconnexion</button>
