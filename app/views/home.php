@@ -9,6 +9,7 @@
     <script src="public/assets/js/jquery.min.js"></script>
     <script src="public/assets/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="public/assets/css/base.css">
+    <link rel="stylesheet" href="public/assets/css/home.css">
     <link rel="icon" href="">
     <title>Elevage</title>
 </head>
@@ -23,7 +24,12 @@
                         <button class="button">Admin</button>
                     </form>
                 </li>
-                <li><a href="/home">Elevage</a></li>
+                <li>
+                    <form action="reintialiser" method="get">
+                        <button class="button">Reintialiser</button>
+                    </form>
+                </li>
+                <li><a href="home">Elevage</a></li>
                 <li><a href="goToStock">Stock</a></li>
             </ul>
         </div>
@@ -34,6 +40,7 @@
             <ul class="nav nav-tabs nav-justified">
                 <li><a href="goToAchatAnimaux">Achat Animaux</a></li>
                 <li><a href="goToAchatAliment">Achat Aliments</a></li>
+                <li><a href="#">Moi</a></li>
                 <li>
                     <form action="deconnexion" method="get">
                         <button class="button">Deconnexion</button>
@@ -42,7 +49,13 @@
             </ul>
         </div>
     </div>
-    <div style="margin-top:15vh">
+    <div class="home">
+    <?php if (isset($data['message'])) { ?>
+            <div id="alert" class="alert alert-success" role="alert"><?= $data['message'] ?></div>
+        <?php }
+        ?>
+    </div>
+    <div class="situation">
         <h1>Situation des Animaux</h1>
 
         <form id="dateForm">
@@ -144,6 +157,9 @@
             }
         </script>
     </div>
+    <footer>
+        <p>Kasaina ETU003287 & Blessed ETU003326 & Kiady ETU003244</p>
+    </footer>
 </body>
 
 </html>

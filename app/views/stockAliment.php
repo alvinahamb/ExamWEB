@@ -21,7 +21,7 @@
                         <button class="button">Admin</button>
                     </form>
                 </li>
-                <li><a href="#">list1</a></li>
+                <li><a href="home">Elevage</a></li>
                 <li><a href="goToStock">Stock</a></li>
             </ul>
         </div>

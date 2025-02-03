@@ -156,4 +156,12 @@ class ElevageModel
         $stmt->execute(['vente', $id]);
         $this->updateCapital($idUser,$capital);
     }
+
+    public function reintialiser($id,$montant){
+        $stmt1 = $this->db->prepare("DELETE FROM TransactionsAnimaux_Elevage");
+        $stmt1->execute();
+        $stmt2 = $this->db->prepare("DELETE FROM TransactionsAlimentation_Elevage");
+        $stmt2->execute();
+        $this->updateCapital($id,$montant);
+    }
 }

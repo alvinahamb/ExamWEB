@@ -59,5 +59,19 @@ class ElevageController
         $data = $model->getAnimaux();
         Flight::render('home',['data'=>$data,'message'=>$message]);
     }
+
+    public function goToReintialiser(){
+        $model = new ElevageModel(Flight::db());
+        // $model->reintialiser();
+        Flight::render('reintialisation');
+    }
+
+    public function reintialisation(){
+        $model = new ElevageModel(Flight::db());
+        $montant=$_GET['capital'];
+        $model->reintialiser($_SESSION['IdUser'],$montant);
+        $data = ['message'=> 'Reintialisation reussi!'];
+        Flight::render('home',$data);
+    }
 }
 ?>

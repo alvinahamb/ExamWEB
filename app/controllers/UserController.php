@@ -64,21 +64,21 @@ class UserController
     }
 
     public function situation()
-{
-    if (isset($_GET['debut'])) {
-        $model = new ElevageModel(Flight::db());
-        $debut = $_GET['debut'];
-        $data = $model->getAnimauxByUserDate($_SESSION['IdUser'], $debut);
+    {
+        if (isset($_GET['debut'])) {
+            $model = new ElevageModel(Flight::db());
+            $debut = $_GET['debut'];
+            $data = $model->getAnimauxByUserDate($_SESSION['IdUser'], $debut);
 
-        // Retourne du JSON si AJAX
-        header('Content-Type: application/json');
-        echo json_encode($data);
-        exit;
+            // Retourne du JSON si AJAX
+            header('Content-Type: application/json');
+            echo json_encode($data);
+            exit;
+        }
+
+        // Sinon, charge la page HTML normale
+        Flight::render('situation');
     }
-
-    // Sinon, charge la page HTML normale
-    Flight::render('situation');
-}
 
 
 
