@@ -20,8 +20,9 @@
         </div>
         <div>
             <ul class="nav nav-tabs nav-justified">
-                <li><a href="#">list3</a></li>
-                <li><a href="#">list4</a></li>
+                <li><a href="modifier">Modifier</a></li>
+                <li><a href="#">Ajouter</a></li>
+                <li><a href="#">Aliments</a></li>
                 <li>
                 <form action="deconnexion" method="get">
                     <button class="button">Deconnexion</button>
@@ -38,7 +39,10 @@
                     <h1>Admin</h1>
                     <p>Welcome to the admin page!</p>
                 </div>
-                <?php if (isset($extra['message'])): ?>
+            </div>
+        </div>
+
+        <?php if (isset($extra['message'])): ?>
             <div id="alert" class="alert alert-success" role="alert"><?= $extra['message'] ?></div>
         <?php endif; ?>
         <h2>Liste des animaux</h2>
@@ -46,11 +50,13 @@
             <thead>
                 <tr>
                     <th>Espece</th>
-                    <th>Poids Minimal</th>
+                    <th>Poids Minimal Vente</th>
                     <th>Poids Maximal</th>
                     <th>Prix de vente (par kg)</th>
                     <th>Nombre de jour sans manger</th>
-                    <th>Pourcentage perte de poids</th>
+                    <th>% perte de poids</th>
+                    <th>Image</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -59,9 +65,9 @@
                         <td><?= $animaux['TypeAnimal'] ?></td>
                         <td><?= $animaux['PoidsMin'] ?></td>
                         <td><?= $animaux['PoidsMax'] ?></td>
-                        <td><?= $animaux['PrixVenteParKg'] ?></td>
-                        <td><?= $animaux['JoursSansManger'] ?>$</td>
-                        <td><?= $animaux['PourcentagePertePoids'] ?>$</td>
+                        <td><?= $animaux['PrixVenteParKg'] ?>$</td>
+                        <td><?= $animaux['JoursSansManger'] ?></td>
+                        <td><?= $animaux['PourcentagePertePoids'] ?></td>
                         <td>
                             <?php if (!empty($animaux['Image'])) : ?>
                                 <img src="public/assets/images/<?= $animaux['Image'] ?>" alt="Image" width="100">
@@ -70,16 +76,12 @@
                             <?php endif; ?>
                         </td>
                         <td class="table-actions">
-                            <a href="/edit?id=<?= $animaux['IdAnimal'] ?>" class="btn btn-warning btn-sm">Modifier</a>
-                            <a href="/delete?id=<?= $animaux['IdAnimal'] ?>" class="btn btn-danger btn-sm">Supprimer</a>
+                            <a href="delete?id=<?= $animaux['IdAnimal'] ?>">Supprimer</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>
         </table>
-            </div>
-        </div>
-
     </div>
     <footer>
         <p>Kasaina ETU003287 & Blessed ETU003326 & Kiady ETU003244</p>

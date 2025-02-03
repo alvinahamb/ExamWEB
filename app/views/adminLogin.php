@@ -30,7 +30,7 @@
                 <h1>Admin:</h1>
                 <form action="adminLogin" method="POST">
                     <p><input type="text" name="username" class="form-control" placeholder="Username" value="admin" required></p>
-                    <p><input type="password" name="password" class="form-control" placeholder="Password" value="blessed" required></p>
+                    <p><input type="password" name="password" class="form-control" placeholder="Password" value="admin" required></p>
                     <p><button class="btn btn-lg btn-primary btn-block" type="submit">Login</button></p>
                 </form>
             </div>

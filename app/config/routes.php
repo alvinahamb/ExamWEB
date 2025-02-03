@@ -19,6 +19,8 @@ use flight\net\Router;
 $AdminController = new AdminController();
 $router->get('/admin', [ $AdminController, 'admin' ]);
 $router->post('/adminLogin', [ $AdminController, 'CheckLogin' ]);
+$router->get('/delete', [ $AdminController, 'deleteAnimaux' ]);
+$router->get('/modifier', [ $AdminController, 'modifierAnimaux' ]);
 
 $UserController = new UserController();
 $router->get('/', [ $UserController, 'login' ]);

@@ -31,4 +31,19 @@ class AdminModel {
         return $data;
     }
 
+
+    public function deleteAnimaux($idAnimaux)
+    {
+        // Suppression de l'Animaux dans la table Animaux
+        $stmt = $this->db->prepare("DELETE FROM Animaux_Elevage WHERE IdAnimal = ?");
+        $stmt->execute([$idAnimaux]);
+    
+        // Vérification du nombre de lignes affectées
+        if ($stmt->rowCount() > 0) {
+            return "Suppression réussie!";
+        } else {
+            return "Aucune espece trouvée à supprimer!";
+        }
+    }
+
 }

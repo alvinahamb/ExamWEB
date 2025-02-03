@@ -29,4 +29,28 @@ class AdminController
             Flight::render('admin', $data);
         }
     }
+    public function modifierAnimaux()
+    {
+        $modele = new AdminModel(Flight::db());
+        $data = $modele->getAnimaux();
+        Flight::render('modifier', $data);
+    }
+    
+    public function deleteAnimaux()
+    {
+        $modele = new AdminModel(Flight::db());
+        $id = $_GET['id'];
+        $result = $modele->deleteAnimaux($id);
+        $data = $modele->getAnimaux();
+
+        if ($result === false) {
+            $data2 = ['message' => "Erreur technique lors de la suppression"];
+        } else if ($result === 0) {
+            $data2 = ['message' => "Aucune espece trouvée avec cet ID"];
+        } else {
+            $data2 = ['message' => "L'espece a bien été supprimée"];
+        }
+
+        Flight::render('admin', ['data' => $data, 'extra' => $data2]);
+    }
 }
