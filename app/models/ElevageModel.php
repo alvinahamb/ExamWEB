@@ -79,7 +79,6 @@ class ElevageModel
         $stmt->execute([$id, $date]);
         return $stmt->fetchAll();
     }
-    
 
     public function getAnimaux()
     {
