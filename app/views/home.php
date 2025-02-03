@@ -22,8 +22,8 @@
                         <button class="button">Admin</button>
                     </form>
                 </li>
-                <li><a href="#">list1</a></li>
-                <li><a href="#">list2</a></li>
+                <li><a href="elevage">Elevage</a></li>
+                <li><a href="goToStock">Stock</a></li>
             </ul>
         </div>
         <div class="logo">
@@ -31,7 +31,7 @@
         </div>
         <div>
             <ul class="nav nav-tabs nav-justified">
-                <li><a href="#">Achat Animaux</a></li>
+                <li><a href="goToAchatAnimaux">Achat Animaux</a></li>
                 <li><a href="goToAchatAliment">Achat Aliments</a></li>
                 <li>
                 <form action="deconnexion" method="get">

@@ -31,6 +31,9 @@ $router->get('/home', [ $UserController, 'home' ]);
 $ElevageController = new ElevageController();
 $router->get('/goToAchatAliment', [ $ElevageController, 'goToAchatAliment' ]);
 $router->get('/achatAliment', [ $ElevageController, 'achatAliment' ]);
+$router->get('/goToStock', [ $ElevageController, 'goToStock' ]);
+$router->get('/goToAchatAnimaux', [ $ElevageController, 'goToAchatAnimaux' ]);
+$router->get('/achatAnimaux', [ $ElevageController, 'achatAnimaux' ]);
 
 $router->get('/hello-world/@name', function($name) {
 	echo '<h1>Hello world! Oh hey '.$name.'!</h1>';
