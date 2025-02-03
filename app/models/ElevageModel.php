@@ -20,7 +20,7 @@ class ElevageModel
         $stmt->execute();
         return $stmt->fetchAll();
     }
-    
+
 
     public function getUserById($id)
     {
@@ -28,28 +28,29 @@ class ElevageModel
         $stmt->execute([$id]);
         return $stmt->fetch();
     }
-    
-    public function checkSoldeApresAchat($idUser, $achat){
+
+    public function checkSoldeApresAchat($idUser, $achat)
+    {
         $capital = $this->getUserById($idUser)['Capital'];
-        if($capital - $achat < 0){
+        if ($capital - $achat < 0) {
             return false;
         }
         return true;
     }
-    
+
     public function achatAliment($id, $quantite, $idUser)
     {
         $prixUnitaire = $this->getAlimentById($id)['PrixUnitaire'];
         $prix = $prixUnitaire * $quantite;
-        
-        if($this->checkSoldeApresAchat($idUser, $prix)){
-            $stmtUpdate=this->updateCapital($idUser, $prix);
-            
+
+        if ($this->checkSoldeApresAchat($idUser, $prix)) {
+            $stmtUpdate = $this->updateCapital($idUser, $prix);
+
             $stmt = $this->db->prepare("INSERT INTO TransactionsAlimentation_Elevage (DateTransaction, IdAliment, Quantite, IdUtilisateur) VALUES (NOW(), ?, ?, ?)");
             $stmt->execute([$id, $quantite, $idUser]);
         }
     }
-    
+
 
     public function getAlimentByUser($id)
     {
@@ -64,7 +65,7 @@ class ElevageModel
         $stmt = $this->db->prepare("SELECT * FROM TransactionsAnimaux_Elevage t 
                                 JOIN Animaux_Elevage a ON t.IdAnimal = a.IdAnimal 
                                 WHERE IdUtilisateur=? 
-                                AND (t.TypeTransaction = 'vente' OR t.TypeTransaction = 'achat')");
+                                AND (t.TypeTransaction = 'achat')");
         $stmt->execute([$id]);
         return $stmt->fetchAll();
     }
@@ -74,7 +75,7 @@ class ElevageModel
         $stmt = $this->db->prepare("SELECT * FROM TransactionsAnimaux_Elevage t 
         JOIN Animaux_Elevage a ON t.IdAnimal = a.IdAnimal 
         WHERE IdUtilisateur=? 
-        AND (t.TypeTransaction = 'vente' OR t.TypeTransaction = 'achat') AND (DateTransaction BETWEEN ? AND ?)");
+        AND (t.TypeTransaction = 'achat') AND (DateTransaction BETWEEN ? AND ?)");
         $stmt->execute([$id, $debut, $fin]);
         return $stmt->fetchAll();
     }
@@ -101,6 +102,8 @@ class ElevageModel
     public function getAlimentById($id)
     {
         $stmt = $this->db->prepare("SELECT * FROM Alimentation_Elevage WHERE IdAliment=?");
+        $stmt->execute([$id]);
+        return $stmt->fetch();
     }
     public function getCapital($id)
     {
@@ -109,7 +112,7 @@ class ElevageModel
         return $stmt->fetch();
     }
 
-    public function updateCapital($id, $montant)
+    public function updateCapitalAchat($id, $montant)
     {
         $money = $this->getCapital($id)['Capital'] - $montant;
         if ($money < 0) {
@@ -121,18 +124,36 @@ class ElevageModel
         }
     }
 
+    public function updateCapital($id, $montant)
+    {
+        $stmt = $this->db->prepare("UPDATE Utilisateur_Elevage SET Capital=? WHERE IdUtilisateur=?");
+        $stmt->execute([$montant, $id]);
+    }
+
     public function achatAnimaux($id, $idUser)
     {
         $poid = $this->getAnimalById($id)['Poids'];
         $prixkg = $this->getAnimalById($id)['PrixVenteParKg'];
         $Montant_total = $poid * $prixkg;
-        $stmt = $this->db->prepare("INSERT INTO TransactionsAnimaux_Elevage (TypeTransaction,DateTransaction, IdAnimal,IdUtilisateur, Poids, Montant_total)  VALUES (?,NOW(),?,?,?,?)");
-        $stmt->execute(['achat', $id, $idUser, $poid, $Montant_total]);
-        $result=$this->updateCapital($idUser, $Montant_total);
-        if ($result==0) {
+        $result = $this->updateCapitalAchat($idUser, $Montant_total);
+        if ($result == 0) {
+            $stmt = $this->db->prepare("INSERT INTO TransactionsAnimaux_Elevage (TypeTransaction,DateTransaction, IdAnimal,IdUtilisateur, Poids, Montant_total)  VALUES (?,NOW(),?,?,?,?)");
+            $stmt->execute(['achat', $id, $idUser, $poid, $Montant_total]);
             return 0;
         } else {
             return 1;
         }
+    }
+
+    public function venteAnimaux($id,$idAnimal,$idUser)
+    {
+        $animal = $this->getAnimalById($idAnimal);
+        $prixkg = $animal['PrixVenteParKg'];
+        $poid = $animal['Poids']; 
+        $Montant_total = $poid * $prixkg;
+        $capital = $this->getCapital($idUser)['Capital']+$Montant_total;	
+        $stmt = $this->db->prepare("UPDATE TransactionsAnimaux_Elevage SET TypeTransaction=? WHERE IdTransaction=?");
+        $stmt->execute(['vente', $id]);
+        $this->updateCapital($idUser, $capital);
     }
 }
