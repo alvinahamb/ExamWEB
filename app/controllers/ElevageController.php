@@ -62,8 +62,8 @@ class ElevageController
 
     public function goToReintialiser(){
         $model = new ElevageModel(Flight::db());
-        // $model->reintialiser();
-        Flight::render('reintialisation');
+        $data=$model->getCapital($_SESSION['IdUser']);
+        Flight::render('reintialisation',$data);
     }
 
     public function reintialisation(){

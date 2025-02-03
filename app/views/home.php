@@ -40,7 +40,7 @@
             <ul class="nav nav-tabs nav-justified">
                 <li><a href="goToAchatAnimaux">Achat Animaux</a></li>
                 <li><a href="goToAchatAliment">Achat Aliments</a></li>
-                <li><a href="#">Moi</a></li>
+                <!-- <li><a href="#">Moi</a></li> -->
                 <li>
                     <form action="deconnexion" method="get">
                         <button class="button">Deconnexion</button>

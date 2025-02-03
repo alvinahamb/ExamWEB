@@ -50,6 +50,7 @@
     </div>
     <div style="margin-top: 13vh;">
         Reintialisation:
+        <p>Capital actuelle:<?=$data['Capital']?></p>
         <form action="reintialisationCapital" method="get">
             <input type="number" name="capital" placeholder="nouveau capital" required>
             <input type="submit" value="Reintialiser">
