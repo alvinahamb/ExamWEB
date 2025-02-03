@@ -26,6 +26,7 @@ CREATE TABLE IF NOT EXISTS Animaux_Elevage (
     TypeAnimal VARCHAR(50) NOT NULL,
     PoidsMin FLOAT NOT NULL,
     PoidsMax FLOAT NOT NULL,
+    Poids FLOAT NOT NULL,
     PrixVenteParKg FLOAT NOT NULL,
     JoursSansManger INT NOT NULL,
     PourcentagePertePoids FLOAT NOT NULL,
@@ -82,12 +83,12 @@ VALUES
 ('david@example.com', 'David', 'motdepasse101', '0667788990', 2500);
 
 -- Ajout d'animaux avec image
-INSERT INTO Animaux_Elevage (TypeAnimal, PoidsMin, PoidsMax, PrixVenteParKg, JoursSansManger, PourcentagePertePoids, Image)
+INSERT INTO Animaux_Elevage (TypeAnimal, PoidsMin, PoidsMax, Poids, PrixVenteParKg, JoursSansManger, PourcentagePertePoids, Image)
 VALUES
-('Vache',500, 800, 3.5, 3, 0.2, 'Mouton.png'),
-('Mouton', 30, 50, 4.0, 2, 0.1, 'Cheval.png'),
-('Poulet', 1.5, 3.5, 5.0, 1, 0.05, 'Poulet2.png'),
-('Cheval', 400, 600, 6.0, 5, 0.15, 'Vache.png');
+('Vache',500, 800,700, 3.5, 3, 0.2, 'Mouton.png'),
+('Mouton', 30, 50, 31, 4.0, 2, 0.1, 'Cheval.png'),
+('Poulet', 1.5, 3.5, 2.5, 5.0, 1, 0.05, 'Poulet2.png'),
+('Cheval', 400, 600, 550, 6.0, 5, 0.15, 'Vache.png');
 
 -- Ajout d'aliments avec image
 INSERT INTO Alimentation_Elevage (NomAliment, TypeAnimal, PourcentageGainPoids, PrixUnitaire, Stock, Image)
