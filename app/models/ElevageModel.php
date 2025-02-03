@@ -20,12 +20,36 @@ class ElevageModel
         $stmt->execute();
         return $stmt->fetchAll();
     }
+    
 
+    public function getUserById($id)
+    {
+        $stmt = $this->db->prepare("SELECT * FROM Utilisateur_Elevage WHERE IdUtilisateur=?");
+        $stmt->execute([$id]);
+        return $stmt->fetch();
+    }
+    
+    public function checkSoldeApresAchat($idUser, $achat){
+        $capital = $this->getUserById($idUser)['Capital'];
+        if($capital - $achat < 0){
+            return false;
+        }
+        return true;
+    }
+    
     public function achatAliment($id, $quantite, $idUser)
     {
-        $stmt = $this->db->prepare("INSERT INTO TransactionsAlimentation_Elevage (DateTransaction, IdAliment, Quantite, IdUtilisateur)  VALUES (NOW(),?,?,?)");
-        $stmt->execute([$id, $quantite, $idUser]);
+        $prixUnitaire = $this->getAlimentById($id)['PrixUnitaire'];
+        $prix = $prixUnitaire * $quantite;
+        
+        if($this->checkSoldeApresAchat($idUser, $prix)){
+            $stmtUpdate=this->updateCapital($idUser, $prix);
+            
+            $stmt = $this->db->prepare("INSERT INTO TransactionsAlimentation_Elevage (DateTransaction, IdAliment, Quantite, IdUtilisateur) VALUES (NOW(), ?, ?, ?)");
+            $stmt->execute([$id, $quantite, $idUser]);
+        }
     }
+    
 
     public function getAlimentByUser($id)
     {
@@ -74,6 +98,10 @@ class ElevageModel
         return $stmt->fetch();
     }
 
+    public function getAlimentById($id)
+    {
+        $stmt = $this->db->prepare("SELECT * FROM Alimentation_Elevage WHERE IdAliment=?");
+    }
     public function getCapital($id)
     {
         $stmt = $this->db->prepare("SELECT * FROM Utilisateur_Elevage WHERE IdUtilisateur=?");
