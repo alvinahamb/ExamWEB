@@ -12,9 +12,8 @@
     <link rel="icon" href="">
     <title></title>
 </head>
-
 <body>
-    <div class="menu-fixe-acceuil">
+<div class="menu-fixe-acceuil">
         <div>
             <ul class="nav nav-tabs nav-justified">
                 <li>
@@ -41,13 +40,25 @@
             </ul>
         </div>
     </div>
-    <div style="margin-top: 15vh;">
-        <h1>Home</h1>
-        <p>Welcome to the home page!</p>
+    <div style="margin-top: 13vh;">
+        <?php if (isset($message)) { ?>
+            <div class="alert alert-success" role="alert"><?=$message?></div>
+        <?php }
+        foreach ($data as $d) { ?>
+            <div class="col-md-3">
+                <p><b>Nom aliment:<?=$d['NomAliment']?></b></p>
+                <p>Type animal:<?=$d['TypeAnimal']?></p>
+                <p>Gain en poids:<?=$d['PourcentageGainPoids']?>%</p>
+                <p>Prix unitaire:<?=$d['PrixUnitaire']?></p>
+                <p>En stock:<?=$d['Stock']?></p>
+                <form action="achatAliment" method="get">
+                    <input type="hidden" name="id" value="<?=$d['IdAliment']?>">
+                    <input type="number" name="quantite" placeholder="Quantite" required>
+                    <button type="submit">Acheter</button>
+                </form>
+            </div>
+       <?php }
+        ?>
     </div>
-    <footer>
-        <p>Kasaina ETU003287 & Blessed ETU003326 & Kiady ETU3244</p>
-    </footer>
 </body>
-
 </html>
