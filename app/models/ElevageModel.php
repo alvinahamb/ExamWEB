@@ -69,16 +69,35 @@ class ElevageModel
         $stmt->execute([$id]);
         return $stmt->fetchAll();
     }
-    
+
     public function getAnimauxByUserDate($id, $date)
     {
-        $stmt = $this->db->prepare("SELECT * FROM TransactionsAnimaux_Elevage t 
-        JOIN Animaux_Elevage a ON t.IdAnimal = a.IdAnimal 
-        WHERE IdUtilisateur=? 
-        AND (t.TypeTransaction = 'achat') AND (DateTransaction = ?)");
+        // Requête SQL pour récupérer les animaux
+        $stmt = $this->db->prepare("SELECT a.IdAnimal, a.TypeAnimal, a.PoidsMin, a.PoidsMax, a.PrixVenteParKg, 
+                                        a.JoursSansManger, a.PourcentagePertePoids, t.DateTransaction
+                                    FROM TransactionsAnimaux_Elevage t
+                                    JOIN Animaux_Elevage a ON t.IdAnimal = a.IdAnimal 
+                                    WHERE t.IdUtilisateur = ? 
+                                    AND t.TypeTransaction = 'achat' 
+                                    AND t.DateTransaction = ?");
         $stmt->execute([$id, $date]);
-        return $stmt->fetchAll();
+
+        // Récupération des résultats
+        $animals = $stmt->fetchAll();
+
+        // Calcul de l'état de vie de chaque animal
+        foreach ($animals as &$animal) {
+            // Calcul du poids actuel après perte
+            $poidsActuel = $animal['PoidsMax'] - ($animal['PourcentagePertePoids'] * $animal['PoidsMax'] * $animal['JoursSansManger']);
+
+            // Vérification si l'animal est vivant (poids actuel >= poids minimum)
+            $animal['Vivant'] = $poidsActuel >= $animal['PoidsMin'];
+        }
+
+        // Retourne les animaux avec la colonne 'Vivant' ajoutée
+        return $animals;
     }
+
 
     public function getAnimaux()
     {
@@ -224,6 +243,26 @@ class ElevageModel
         }
     
         return false;
+    }
+    
+    public function VieAnimal($idAnimal) {
+        // Récupérer les informations de l'animal
+        $sql = "SELECT Poids, PoidsMin, PourcentagePertePoids, JoursSansManger FROM Animaux_Elevage WHERE IdAnimal = ?";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$idAnimal]);
+        $animal = $stmt->fetch();
+    
+        if ($animal) {
+            // Calcul du poids actuel de l'animal
+            $poidsActuel = $animal['Poids'] - ($animal['PourcentagePertePoids'] * $animal['Poids'] * $animal['JoursSansManger']);
+    
+            // Vérifier si l'animal est vivant
+            if ($poidsActuel >= $animal['PoidsMin']) {
+                return "En vie";  // L'animal est vivant
+            }
+        }
+    
+        return "Mort";  // L'animal n'est plus vivant
     }
     
     

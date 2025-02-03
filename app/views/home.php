@@ -63,7 +63,8 @@
                 <th>Prix Vente Par Kg</th>
                 <th>JoursSansManger</th>
                 <th>Perte Poids (%)</th>
-                <th>Actions</th>
+                <th>Vivant</th>
+                <th>Action</th>
             </tr>
         </table>
 
@@ -94,25 +95,23 @@
                 data.forEach(row => {
                     var tr = document.createElement("tr");
                     tr.innerHTML = `
-                    <td>${row.DateTransaction}</td>
-                    <td><b>${row.TypeAnimal}</b></td>
-                    <td>${row.PoidsMin}</td>
-                    <td>${row.PoidsMax}</td>
-                    <td>${row.PrixVenteParKg}</td>
-                    <td>${row.JoursSansManger}</td>
-                    <td>${row.PourcentagePertePoids}</td>
-                    <td>`
-                        tr.innerHTML += `
-                        <button onclick="vendre(${row.IdTransaction},${row.IdAnimal})">Vendre</button>
-                        `;
-                    tr.innerHTML += `
-                        <button onclick="nourrir(${row.IdAnimal})">Nourrir</button>
-                    </td>
-                `;
-
+                        <td>${row.DateTransaction}</td>
+                        <td><b>${row.TypeAnimal}</b></td>
+                        <td>${row.PoidsMin}</td>
+                        <td>${row.PoidsMax}</td>
+                        <td>${row.PrixVenteParKg}</td>
+                        <td>${row.JoursSansManger}</td>
+                        <td>${row.PourcentagePertePoids}</td>
+                        <td>${row.Vivant ? "Oui" : "Non"}</td> <!-- Affiche 'Oui' ou 'Non' selon l'état de l'animal -->
+                        <td>
+                            <button onclick="vendre(${row.IdTransaction},${row.IdAnimal})">Vendre</button>
+                            <button onclick="nourrir(${row.IdAnimal})">Nourrir</button>
+                        </td>
+                    `;
                     table.appendChild(tr);
                 });
             }
+
 
             function vendre(id, idAnimal) {
                 var xhr = new XMLHttpRequest();
