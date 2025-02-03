@@ -150,9 +150,10 @@ class ElevageModel
         $prixkg = $animal['PrixVenteParKg'];
         $poid = $animal['Poids']; 
         $Montant_total = $poid * $prixkg;
-        $capital = $this->getCapital($idUser)['Capital']+$Montant_total;	
+        $capital = $this->getCapital($idUser)['Capital']+$Montant_total;
+        // var_dump($Montant_total,$prixkg,$poid,$capital); exit;	
         $stmt = $this->db->prepare("UPDATE TransactionsAnimaux_Elevage SET TypeTransaction=? WHERE IdTransaction=?");
         $stmt->execute(['vente', $id]);
-        $this->updateCapital($idUser, $capital);
+        $this->updateCapital($idUser,$capital);
     }
 }

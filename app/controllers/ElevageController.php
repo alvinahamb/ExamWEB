@@ -54,7 +54,7 @@ class ElevageController
         $id=$_GET['id'];
         $idAnimal=$_GET['idAnimal'];
         $model= new ElevageModel(Flight::db());
-        $confirmation=$model->venteAnimaux($id,$idAnimal,$_SESSION['IdUser']);
+        $model->venteAnimaux($id,$idAnimal,$_SESSION['IdUser']);
         $message = "Vente effectué avec succès";
         $data = $model->getAnimaux();
         Flight::render('home',['data'=>$data,'message'=>$message]);

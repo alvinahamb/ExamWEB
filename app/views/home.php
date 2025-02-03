@@ -54,11 +54,12 @@
             <tr>
                 <th>Date</th>
                 <th>Type</th>
-                <th>PoidsMin</th>
+                <th>Poids</th>
                 <th>PoidsMax</th>
                 <th>Prix Vente Par Kg</th>
                 <th>JoursSansManger</th>
                 <th>Perte Poids (%)</th>
+                <th>Prix d'achat</th>
                 <th>Actions</th>
             </tr>
         </table>
@@ -92,11 +93,12 @@
                     tr.innerHTML = `
                     <td>${row.DateTransaction}</td>
                     <td><b>${row.TypeAnimal}</b></td>
-                    <td>${row.PoidsMin}</td>
+                    <td>${row.Poids}</td>
                     <td>${row.PoidsMax}</td>
                     <td>${row.PrixVenteParKg}</td>
                     <td>${row.JoursSansManger}</td>
                     <td>${row.PourcentagePertePoids}</td>
+                    <td>${row.Montant_total}</td>
                     <td>`
                     if (row.TypeTransaction === "vente") {
                         tr.innerHTML += `
@@ -121,11 +123,13 @@
                 xhr.open("GET", "vente?id=" + id + "&idAnimal=" + idAnimal, true);
                 xhr.onreadystatechange = function() {
                     if (xhr.readyState === 4 && xhr.status === 200) {
-                        window.location.href = "vente?id=" + id + "&idAnimal=" + idAnimal;
+                        window.location.reload();
+                        alert("Animal vendu !");
                     }
                 };
                 xhr.send();
             }
+
 
 
             function nourrir(id) {
