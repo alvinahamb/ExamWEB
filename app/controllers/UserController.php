@@ -68,7 +68,7 @@ class UserController
         $debut = $_GET['debut'];
         $fin = $_GET['fin'];
         $data = $model->getAnimauxByUserDate($_SESSION['IdUser'], $debut, $fin);
-        Flight::render('home',[json_encode($data)]);
+        Flight::render('home',$data);
     }
 
     public function InsertSignup()
