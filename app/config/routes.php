@@ -20,8 +20,17 @@ $AdminController = new AdminController();
 $router->get('/admin', [ $AdminController, 'admin' ]);
 $router->post('/adminLogin', [ $AdminController, 'CheckLogin' ]);
 $router->get('/delete', [ $AdminController, 'deleteAnimaux' ]);
+$router->get('/deleteAliments', [ $AdminController, 'deleteAliments' ]);
 $router->get('/modifier', [ $AdminController, 'modifierAnimaux' ]);
+$router->get('/modifierAliment', [ $AdminController, 'modifierAliment' ]);
+$router->get('/ajouter', [ $AdminController, 'ajouterAnimaux' ]);
+$router->get('/ajouterAliment', [ $AdminController, 'ajouterAliment' ]);
+$router->post('/addAnimal', [ $AdminController, 'addAnimal' ]);
+$router->post('/addAliment', [ $AdminController, 'addAliment' ]);
 $router->post('/update', [ $AdminController, 'updateAnimaux' ]);
+$router->post('/updateAliments', [ $AdminController, 'updateAliments' ]);
+$router->get('/aliments', [ $AdminController, 'aliments' ]);
+$router->get('/animaux', [ $AdminController, 'animaux' ]);
 
 $UserController = new UserController();
 $router->get('/', [ $UserController, 'login' ]);

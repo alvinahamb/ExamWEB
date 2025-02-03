@@ -20,9 +20,9 @@
         </div>
         <div>
             <ul class="nav nav-tabs nav-justified">
-                <li><a href="modifier">Modifier</a></li>
-                <li><a href="ajouter">Ajouter</a></li>
-                <li><a href="aliments">Aliments</a></li>
+                <li><a href="modifierAliment">Modifier</a></li>
+                <li><a href="ajouterAliment">Ajouter</a></li>
+                <li><a href="animaux">Animaux</a></li>
                 <li>
                 <form action="deconnexion" method="get">
                     <button class="button">Deconnexion</button>
@@ -45,38 +45,36 @@
         <?php if (isset($extra['message'])): ?>
             <div id="alert" class="alert alert-success" role="alert"><?= $extra['message'] ?></div>
         <?php endif; ?>
-        <h2>Liste des animaux</h2>
+        <h2>Liste des aliments</h2>
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>Espece</th>
-                    <th>Poids Minimal Vente</th>
-                    <th>Poids Maximal</th>
-                    <th>Prix de vente (par kg)</th>
-                    <th>Nombre de jour sans manger</th>
-                    <th>% perte de poids</th>
+                    <th>NomAliment</th>
+                    <th>TypeAnimal</th>
+                    <th>% Gain Poids</th>
+                    <th>Prix Unitaire ($)</th>
+                    <th>Stock</th>
                     <th>Image</th>
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($data as $animaux) : ?>
+                <?php foreach ($data as $aliments) : ?>
                     <tr>
-                        <td><?= $animaux['TypeAnimal'] ?></td>
-                        <td><?= $animaux['PoidsMin'] ?></td>
-                        <td><?= $animaux['PoidsMax'] ?></td>
-                        <td><?= $animaux['PrixVenteParKg'] ?>$</td>
-                        <td><?= $animaux['JoursSansManger'] ?></td>
-                        <td><?= $animaux['PourcentagePertePoids'] ?></td>
+                        <td><?= $aliments['NomAliment'] ?></td>
+                        <td><?= $aliments['TypeAnimal'] ?></td>
+                        <td><?= $aliments['PourcentageGainPoids'] ?></td>
+                        <td><?= $aliments['PrixUnitaire'] ?>$</td>
+                        <td><?= $aliments['Stock'] ?></td>
                         <td>
-                            <?php if (!empty($animaux['Image'])) : ?>
-                                <img src="<?php echo file_exists('public/assets/images/' . $animaux['Image']) ? 'public/assets/images/' . $animaux['Image'] : 'public/uploads/' . $animaux['Image']; ?>" alt="Image" width="100">
+                            <?php if (!empty($aliments['Image'])) : ?>
+                                <img src="<?php echo file_exists('public/assets/images/' . $aliments['Image']) ? 'public/assets/images/' . $aliments['Image'] : 'public/uploads/' . $aliments['Image']; ?>" alt="Image" width="100">
                             <?php else : ?>
                                 <span>Pas d'image</span>
                             <?php endif; ?>
                         </td>
                         <td class="table-actions">
-                            <a href="delete?id=<?= $animaux['IdAnimal'] ?>">Supprimer</a>
+                            <a href="deleteAliments?id=<?= $aliments['IdAliment'] ?>">Supprimer</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>

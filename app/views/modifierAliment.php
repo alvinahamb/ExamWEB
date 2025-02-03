@@ -10,7 +10,7 @@
     <script src="public/assets/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="public/assets/css/connexion.css">
     <link rel="icon" href="">
-    <title>Admin - Modifier Animaux</title>
+    <title>Admin - Modifier Aliments</title>
 </head>
 
 <body>
@@ -20,8 +20,8 @@
         </div>
         <div>
             <ul class="nav nav-tabs nav-justified">
-                <li><a href="ajouter">Ajouter</a></li>
-                <li><a href="aliments">Aliments</a></li>
+                <li><a href="ajouterAliment">Ajouter</a></li>
+                <li><a href="animaux">Animaux</a></li>
                 <li>
                     <form action="deconnexion" method="get">
                         <button class="button">Deconnexion</button>
@@ -44,39 +44,35 @@
             <div id="alert" class="alert alert-success" role="alert"><?= $extra['message'] ?></div>
         <?php endif; ?>
 
-        <h2>Liste des animaux - Modifier</h2>
-        <form action="update" method="post" enctype="multipart/form-data">
+        <h2>Liste des Aliments - Modifier</h2>
+        <form action="updateAliments" method="post" enctype="multipart/form-data">
             <table class="table table-bordered">
                 <thead>
                     <tr>
-                        <th>Espèce</th>
-                        <th>Poids Minimal Vente</th>
-                        <th>Poids Maximal</th>
-                        <th>Prix de vente (par kg)</th>
-                        <th>Nombre de jour sans manger</th>
-                        <th>% perte de poids</th>
+                    <th>NomAliment</th>
+                    <th>TypeAnimal</th>
+                    <th>% Gain Poids</th>
+                    <th>Prix Unitaire ($)</th>
+                    <th>Stock</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($data as $animaux) : ?>
+                    <?php foreach ($data as $Aliments) : ?>
                         <tr>
                             <td>
-                                <input type="text" name="typeAnimal[<?= $animaux['IdAnimal'] ?>]" value="<?= $animaux['TypeAnimal'] ?>" required>
+                                <input type="text" name="NomAliment[<?= $Aliments['IdAliment'] ?>]" value="<?= $Aliments['NomAliment'] ?>" required>
                             </td>
                             <td>
-                                <input type="number" name="poidsMin[<?= $animaux['IdAnimal'] ?>]" value="<?= $animaux['PoidsMin'] ?>" required>
+                                <input type="text" name="TypeAnimal[<?= $Aliments['IdAliment'] ?>]" value="<?= $Aliments['TypeAnimal'] ?>" required>
                             </td>
                             <td>
-                                <input type="number" name="poidsMax[<?= $animaux['IdAnimal'] ?>]" value="<?= $animaux['PoidsMax'] ?>" required>
+                                <input type="number" name="PourcentageGainPoids[<?= $Aliments['IdAliment'] ?>]" value="<?= $Aliments['PourcentageGainPoids'] ?>" required>
                             </td>
                             <td>
-                                <input type="number" step="0.01" name="prixVente[<?= $animaux['IdAnimal'] ?>]" value="<?= $animaux['PrixVenteParKg'] ?>" required>
+                                <input type="number" step="0.01" name="PrixUnitaire[<?= $Aliments['IdAliment'] ?>]" value="<?= $Aliments['PrixUnitaire'] ?>" required>
                             </td>
                             <td>
-                                <input type="number" name="joursSansManger[<?= $animaux['IdAnimal'] ?>]" value="<?= $animaux['JoursSansManger'] ?>" required>
-                            </td>
-                            <td>
-                                <input type="number" step="0.01" name="pourcentagePertePoids[<?= $animaux['IdAnimal'] ?>]" value="<?= $animaux['PourcentagePertePoids'] ?>" required>
+                                <input type="number" name="Stock[<?= $Aliments['IdAliment'] ?>]" value="<?= $Aliments['Stock'] ?>" required>
                             </td>
                         </tr>
                     <?php endforeach; ?>
