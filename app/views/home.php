@@ -34,16 +34,45 @@
                 <li><a href="goToAchatAnimaux">Achat Animaux</a></li>
                 <li><a href="goToAchatAliment">Achat Aliments</a></li>
                 <li>
-                <form action="deconnexion" method="get">
-                    <button class="button">Deconnexion</button>
-                </form>
+                    <form action="deconnexion" method="get">
+                        <button class="button">Deconnexion</button>
+                    </form>
                 </li>
             </ul>
         </div>
     </div>
     <div style="margin-top: 15vh;">
+        <p>Capital:</p>
         <h1>Home</h1>
         <p>Welcome to the home page!</p>
+        <p>
+            <input type="date" name="debut" placeholder="date debut">
+            <input type="date" name="fin" placeholder="date fin">
+        <form action="getSituation" method="get">
+            <button>Confirmer</button>
+        </form>
+        </p>
+        <?php foreach ($data as $d) { ?>
+            <div class="col-md-3">
+                <p><b>Type:<?= $d['TypeAnimal'] ?></b></p>
+                <p>PoidsMin:<?= $d['PoidsMin'] ?></p>
+                <p>PoidsMax:<?= $d['PoidsMax'] ?>%</p>
+                <p>Prix Vente Par Kg:<?= $d['PrixVenteParKg'] ?></p>
+                <p>JoursSansManger:<?= $d['JoursSansManger'] ?></p>
+                <p>PourcentagePertePoids:<?= $d['PourcentagePertePoids'] ?></p>
+                <div style="display: flex;">
+                    <form action="#" method="get">
+                        <input type="hidden" name="id" value="<?= $d['IdAnimal'] ?>">
+                        <button type="submit">Vendre</button>
+                    </form>
+                    <form action="#" method="get">
+                        <input type="hidden" name="id" value="<?= $d['IdAnimal'] ?>">
+                        <button type="submit">Nourir</button>
+                    </form>
+                </div>
+            </div>
+        <?php }
+        ?>
     </div>
     <footer>
         <p>Kasaina ETU003287 & Blessed ETU003326 & Kiady ETU3244</p>

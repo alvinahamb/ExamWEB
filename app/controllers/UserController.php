@@ -3,7 +3,7 @@
 namespace app\controllers;
 
 use app\models\UserModel;
-use app\models\GeneralModel;
+use app\models\ElevageModel;
 
 use Flight;
 
@@ -47,8 +47,10 @@ class UserController
 
     public function home()
     {
+        $model= new ElevageModel(Flight::db());
         if (isset($_SESSION['IdUser'])) {
-            Flight::render('home');
+            $data= $model->getAnimauxByUser( $_SESSION['IdUser']);
+            Flight::render('home',$data);
         }
         else {
             $data = ['message' => "You need to login first!"];

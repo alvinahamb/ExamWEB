@@ -34,6 +34,17 @@ class ElevageModel
         return $stmt->fetchAll();
     }
 
+    public function getAnimauxByUser($id)
+{
+    $stmt = $this->db->prepare("SELECT * FROM TransactionsAnimaux_Elevage t 
+                                JOIN Animaux_Elevage a ON t.IdAnimal = a.IdAnimal 
+                                WHERE IdUtilisateur = ? 
+                                AND (t.TypeTransaction = 'vente' OR t.TypeTransaction = 'achat')");
+    $stmt->execute([$id]);
+    return $stmt->fetchAll();
+}
+
+
     public function getAnimaux()
     {
         $stmt1 = $this->db->prepare("SELECT * FROM TransactionsAnimaux_Elevage t JOIN Animaux_Elevage a ON a.IdAnimal=t.IdAnimal WHERE TypeTransaction='vente'");
