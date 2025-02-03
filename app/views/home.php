@@ -102,9 +102,9 @@
                         <td>${row.PrixVenteParKg}</td>
                         <td>${row.JoursSansManger}</td>
                         <td>${row.PourcentagePertePoids}</td>
-                        <td>${row.Vivant ? "Oui" : "Non"}</td> <!-- Affiche 'Oui' ou 'Non' selon l'état de l'animal -->
+                        <td>${row.Vivant}</td> <!-- Affiche 'Oui' ou 'Non' selon l'état de l'animal -->
                         <td>
-                            <button onclick="vendre(${row.IdTransaction},${row.IdAnimal})">Vendre</button>
+                            <button onclick="vendre(${row.IdTransaction},${row.IdAnimal},${row.DateTransaction})">Vendre</button>
                             <button onclick="nourrir(${row.IdAnimal})">Nourrir</button>
                         </td>
                     `;
@@ -113,12 +113,12 @@
             }
 
 
-            function vendre(id, idAnimal) {
+            function vendre(id, idAnimal, date) {
                 var xhr = new XMLHttpRequest();
-                xhr.open("GET", "vente?id=" + id + "&idAnimal=" + idAnimal, true);
+                xhr.open("GET", "vente?id=" + id + "&idAnimal=" + idAnimal + "&date=" + date, true);
                 xhr.onreadystatechange = function() {
                     if (xhr.readyState === 4 && xhr.status === 200) {
-                        window.location.href = "vente?id=" + id + "&idAnimal=" + idAnimal;
+                        window.location.href = "vente?id=" + id + "&idAnimal=" + idAnimal + "&date=" + date;
                     }
                 };
                 xhr.send();

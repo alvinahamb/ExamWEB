@@ -48,15 +48,15 @@
             <!-- Affichage des détails de l'animal -->
             <div class="card mb-4">
                 <div class="card-header">
-                    <h5><?= htmlspecialchars($data['TypeAnimal']) ?> - Détails</h5>
+                    <h5><?= $data['TypeAnimal'] ?> - Détails</h5>
                 </div>
                 <div class="card-body">
-                    <p><strong>Poids :</strong> <?= htmlspecialchars($data['Poids']) ?> kg</p>
-                    <p><strong>Poids Min :</strong> <?= htmlspecialchars($data['PoidsMin']) ?> kg</p>
-                    <p><strong>Poids Max :</strong> <?= htmlspecialchars($data['PoidsMax']) ?> kg</p>
-                    <p><strong>Prix par kg :</strong> <?= htmlspecialchars($data['PrixVenteParKg']) ?> €</p>
-                    <p><strong>Jours sans manger :</strong> <?= htmlspecialchars($data['JoursSansManger']) ?> jours</p>
-                    <p><strong>Perte de poids :</strong> <?= htmlspecialchars($data['PourcentagePertePoids']) ?> %</p>
+                    <p><strong>Poids :</strong> <?= $data['Poids'] ?> kg</p>
+                    <p><strong>Poids Min :</strong> <?= $data['PoidsMin'] ?> kg</p>
+                    <p><strong>Poids Max :</strong> <?= $data['PoidsMax'] ?> kg</p>
+                    <p><strong>Prix par kg :</strong> <?= $data['PrixVenteParKg'] ?> €</p>
+                    <p><strong>Jours sans manger :</strong> <?= $data['JoursSansManger'] ?> jours</p>
+                    <p><strong>Perte de poids :</strong> <?= $data['PourcentagePertePoids'] ?> %</p>
 
                     <?php if (!empty($data['Image'])) : ?>
                         <img src="<?php echo file_exists('public/assets/images/' . $data['Image']) ? 'public/assets/images/' . $data['Image'] : 'public/uploads/' . $data['Image']; ?>" alt="Image" width="100">
@@ -69,13 +69,13 @@
             <!-- Formulaire pour nourrir l'animal -->
             <h3>Aliments recommandés pour cet animal</h3>
             <form action="formulaireNourrir" method="post" class="mb-4">
-                <input type="hidden" name="idAnimal" value="<?= htmlspecialchars($data['IdAnimal']) ?>">
+                <input type="hidden" name="idAnimal" value="<?= $data['IdAnimal'] ?>">
 
                 <div class="mb-3">
                     <label for="aliment" class="form-label">Sélectionner un aliment :</label>
                     <select name="aliment" id="aliment" class="form-select" required>
                         <?php foreach ($aliment as $item): ?>
-                            <option value="<?= $item['IdAliment'] ?>"><?= htmlspecialchars($item['NomAliment']) ?> - <?= $item['PrixUnitaire'] ?> €</option>
+                            <option value="<?= $item['IdAliment'] ?>"><?= $item['NomAliment'] ?> - <?= $item['PrixUnitaire'] ?> €</option>
                         <?php endforeach; ?>
                     </select>
                 </div>
@@ -95,7 +95,7 @@
 
             <!-- Message de confirmation -->
             <?php if (isset($message)): ?>
-                <div class="alert alert-success"><?= htmlspecialchars($message) ?></div>
+                <div class="alert alert-success"><?= $message ?></div>
             <?php endif; ?>
         </div>
     </div>
