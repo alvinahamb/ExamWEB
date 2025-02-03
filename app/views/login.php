@@ -26,7 +26,7 @@
             </ul>
         </div>
     </div>
-    <div style="margin-top: 15vh;">
+    <div style="margin-top: 12vh;">
         <?php if (isset($erreur)) { ?>
             <div id="alert" class="alert alert-danger" role="alert"><?= $erreur ?></div>
         <?php }
@@ -52,9 +52,9 @@
                 </form>
             </div>
         </div>
-        <div style="height: 5vh;width:100%;background-color:rgba(240, 248, 255, 0.318);text-align:center;color:azure;font-size:larger;">
-            <!-- <p>ETU003287 & ETU003326</p> -->
-        </div>
+        <footer>
+            <p>Kasaina ETU003287 & Blessed ETU003326 & Kiady ETU3244</p>
+        </footer>
     </div>
 </body>
 

@@ -15,31 +15,39 @@
 
 <body>
     <div class="menu-fixe-acceuil">
-        <div class="logo">
-            <a href="home"><img width="80" height="80" src="assets/images/logo.png" alt="ok"></a>
+        <div>
+            <ul class="nav nav-tabs nav-justified">
+                <li>
+                    <form action="admin" method="get">
+                        <button class="button">Admin</button>
+                    </form>
+                </li>
+                <li><a href="#">list1</a></li>
+                <li><a href="#">list2</a></li>
+            </ul>
         </div>
-        <div class="nav">
-            <ul>
-                <!-- <li style="font-size: x-large;font-weight:bolder;">ETU003287 & ETU003326</li> -->
-                <form action="admin" method="get">
-                    <li><button class="button">Admin</button></li>
-                </form>
+        <div class="logo">
+            <a href="home"><img width="80" height="80" src="assets/images/logo.png" alt="logo"></a>
+        </div>
+        <div>
+            <ul class="nav nav-tabs nav-justified">
+                <li><a href="#">list3</a></li>
+                <li><a href="#">list4</a></li>
+                <li>
                 <form action="deconnexion" method="get">
-                    <li><button class="button">Deconnexion</button></li>
+                    <button class="button">Deconnexion</button>
                 </form>
+                </li>
             </ul>
         </div>
     </div>
-    <div>
-        <div style="margin-top: 15vh;">
-            <div class="row">
-                <div class="col-md-12">
-                    <h1>Home</h1>
-                    <p>Welcome to the home page!</p>
-                </div>
-            </div>
-        </div>
+    <div style="margin-top: 15vh;">
+        <h1>Home</h1>
+        <p>Welcome to the home page!</p>
     </div>
+    <footer>
+        <p>Kasaina ETU003287 & Blessed ETU003326 & Kiady ETU3244</p>
+    </footer>
 </body>
 
 </html>
