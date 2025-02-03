@@ -124,6 +124,7 @@
                 xhr.onreadystatechange = function() {
                     if (xhr.readyState === 4 && xhr.status === 200) {
                         alert("Animal vendu !");
+                        window.location.href = "vente";
                     }
                 };
                 xhr.send();
