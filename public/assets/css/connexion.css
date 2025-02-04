@@ -1,4 +1,10 @@
 /* header  */
+body{
+    font-family: 'Times New Roman', Times, serif;
+}
+body h3{
+    text-align: center;
+}
 .menu-fixe {
     position: fixed;
     top: 0;
@@ -38,7 +44,7 @@
 }
 
 #formulaire {
-    background-color: rgba(197, 197, 197, 0.342);
+    background-color: rgb(255, 255, 255);
     margin-top: 15vh;
     width: 60vh;
 }
@@ -57,12 +63,13 @@
     border: none;
     border-radius: 2vh;
     color: #ffffff;
-    background-color: #000000;
+    background-color: #063203;
 }
 
 .btn:hover {
     background-color: #868686;
-    color: #000000;
+    border: #000000 solid 1px;
+    color: #ffffff;
 }
 
 footer {
@@ -73,4 +80,12 @@ footer {
     position: fixed;
     bottom: 0;
     width: 100%;
+}
+
+.login{
+    background-image: url('../../design_images/back1\ \(1\).png');
+}
+
+.signup{
+    background-image: url('../../design_images/back1\ \(1\).png');
 }

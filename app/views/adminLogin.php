@@ -28,7 +28,7 @@
         <span class="input-highlight"></span>
     </div>
     <div class="input-container">
-        <input id="password" name="password" class="input-field" type="password" value="blessed" required>
+        <input id="password" name="password" class="input-field" type="password" value="admin" required>
         <label for="password" class="input-label">Password</label>
         <span class="input-highlight"></span>
     </div>
