@@ -57,14 +57,14 @@
                 <h1>Bienvenue sur Farm – Votre partenaire en élevage</h1>
                 <h3>Trouvez les meilleurs animaux</h3>
                 <h3>Choisissez des aliments adaptés pour une croissance optimale</h3>
-                <h3>Optimisez vos revenus avec une bonne gestion</h3>
-                <br>
-                <form action="#situationDown" method="post">
+                <h3>Optimisez vos revenus avec une bonne gestion</h3> 
+                <br>      
+                <form action="#situation" method="get">
                     <button>Voir la situation de mon elevage</button>
                 </form>
             </div>
         </div>
-        <div id="situationDown" style="margin-top:15vh">
+        <div id="situation">
             <h1>Situation des Animaux</h1>
             <?php if (isset($message)): ?>
                 <div id="alert" class="alert alert-success" role="alert"><?= $message ?></div>
