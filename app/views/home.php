@@ -84,7 +84,8 @@
                     <th>Prix Vente Par Kg</th>
                     <th>JoursSansManger</th>
                     <th>Perte Poids (%)</th>
-                    <th>Vivant</th>
+                    <th>Date Mort</th>
+                    <th>Image</th>
                     <th>Action</th>
                 </tr>
             </table>
@@ -123,7 +124,8 @@
                         <td>${row.PrixVenteParKg}</td>
                         <td>${row.JoursSansManger}</td>
                         <td>${row.PourcentagePertePoids}</td>
-                        <td>${row.Vivant}</td> <!-- Affiche 'Oui' ou 'Non' selon l'état de l'animal -->
+                        <td>${row.DateMort}</td> 
+                        <td><img src="${row.ImagePath}" alt="Image" width="100"></td>
                         <td>
                             <button onclick="vendre(${row.IdTransaction},${row.IdAnimal},${row.DateTransaction})">Vendre</button>
                             <button onclick="nourrir(${row.IdAnimal})">Nourrir</button>

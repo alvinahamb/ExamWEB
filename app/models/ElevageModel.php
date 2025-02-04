@@ -75,7 +75,7 @@ class ElevageModel
     public function getAnimauxByUserDate($id, $date)
     {
         $stmt = $this->db->prepare("
-            SELECT a.IdAnimal, a.TypeAnimal, a.PoidsMin, a.PoidsMax, a.Poids, a.PrixVenteParKg, 
+            SELECT a.Image, a.IdAnimal, a.TypeAnimal, a.PoidsMin, a.PoidsMax, a.Poids, a.PrixVenteParKg, 
                 a.JoursSansManger, a.PourcentagePertePoids, t.DateTransaction
             FROM TransactionsAnimaux_Elevage t
             JOIN Animaux_Elevage a ON t.IdAnimal = a.IdAnimal
@@ -90,40 +90,51 @@ class ElevageModel
         ");
         $stmt->execute([$id, $date]);
         $animals = $stmt->fetchAll();
-    
+
         foreach ($animals as &$animal) {
             if (empty($animal['DateTransaction'])) {
                 $animal['Vivant'] = "Non"; 
+                $animal['DateMort'] = "Inconnue"; 
                 continue;
             }
-    
+            $animal['ImagePath'] = file_exists('public/assets/images/' . $animal['Image']) 
+                ? 'public/assets/images/' . $animal['Image'] 
+                : 'public/uploads/' . $animal['Image'];
+
             $dateTransaction = new \DateTime($animal['DateTransaction']);
             $dateNow = new \DateTime($date);
             $diff = $dateTransaction->diff($dateNow)->days;
-    
+
             if ($diff > $animal['JoursSansManger']) {
                 $animal['Vivant'] = "Non"; // L'animal est mort
+
+                // Calcul de la date de décès
+                $dateMort = clone $dateTransaction;
+                $dateMort->modify('+' . $animal['JoursSansManger'] . ' days');
+                $animal['DateMort'] = $dateMort->format('Y-m-d');
             } else {
                 $animal['Vivant'] = "Oui"; // L'animal est vivant
+                $animal['DateMort'] = "Encore vivant";
             }
-    
-            if ($diff > 0) {
+
+            if ($diff > 0 && $animal['Vivant'] === "Oui") {
                 // Perte de poids par jour en fonction du pourcentage
                 $poidsPerdu = $diff * ($animal['PourcentagePertePoids'] / 100);
                 $nouveauPoids = $animal['Poids'] - $poidsPerdu;
-    
+
                 // Si le poids tombe en dessous du poids minimal, on rétablit le poids minimal
                 if ($nouveauPoids < $animal['PoidsMin']) {
                     $nouveauPoids = $animal['PoidsMin'];
                 }
-    
+
                 // Mise à jour du poids de l'animal après la perte
                 $animal['Poids'] = $nouveauPoids;
             }
         }
-    
+
         return $animals;
-    }    
+    }
+    
 
     public function getAnimaux()
     {
