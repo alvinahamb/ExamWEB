@@ -128,7 +128,6 @@
                         <td><img src="${row.ImagePath}" alt="Image" width="100"></td>
                         <td>
                             <button onclick="vendre(${row.IdTransaction},${row.IdAnimal},${row.DateTransaction})">Vendre</button>
-                            <button onclick="nourrir(${row.IdAnimal})">Nourrir</button>
                         </td>
                     `;
                         table.appendChild(tr);
