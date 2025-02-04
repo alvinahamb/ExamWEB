@@ -129,24 +129,35 @@
                         <td>${row.DateMort}</td> 
                         <td><img src="${row.ImagePath}" alt="Image" width="100"></td>
                         <td>
-                            <button onclick="vendre(${row.IdTransaction},${row.IdAnimal},${row.DateTransaction})">Vendre</button>
+                            <button onclick="vendre(${row.IdTransaction}, ${row.IdAnimal})">Vendre</button>
                         </td>
+
                     `;
                         table.appendChild(tr);
                     });
                 }
 
+                function vendre(id, idAnimal) {
+                    // Récupérer la date du champ "debut"
+                    var date = document.getElementById("debut").value;
 
-                function vendre(id, idAnimal, date) {
+                    // Vérifier si une date a été saisie
+                    if (!date) {
+                        alert("Veuillez sélectionner une date dans le champ 'debut'.");
+                        return;
+                    }
+
+                    // Envoi de la requête avec la date sélectionnée
                     var xhr = new XMLHttpRequest();
                     xhr.open("GET", "vente?id=" + id + "&idAnimal=" + idAnimal + "&date=" + date, true);
-                    xhr.onreadystatechange = function() {
+                    xhr.onreadystatechange = function () {
                         if (xhr.readyState === 4 && xhr.status === 200) {
                             window.location.href = "vente?id=" + id + "&idAnimal=" + idAnimal + "&date=" + date;
                         }
                     };
                     xhr.send();
                 }
+
 
                 function nourrir(id) {
                     var xhr = new XMLHttpRequest();
