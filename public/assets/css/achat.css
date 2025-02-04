@@ -8,14 +8,12 @@ body h1,h4{
 }
 .card{
     width: 100%;
-    min-height: 45vh;
-    height: fit-content;
+    height: 45vh;
     padding: 2vh;
     border-radius: 2vh;
     margin-bottom: 3vh;
     border: #063203 solid 1px;
     background-color: #ffffff;
-    margin-bottom: 2vh;
 }
 
 #card-img img {
