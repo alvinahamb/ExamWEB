@@ -15,12 +15,18 @@
 </head>
 
 <body>
-    <div class="menu-fixe-acceuil">
+    
+<div class="menu-fixe-acceuil">
         <div>
             <ul class="nav nav-tabs nav-justified">
                 <li>
                     <form action="admin" method="get">
                         <button class="button">Admin</button>
+                    </form>
+                </li>
+                <li>
+                    <form action="reintialiser" method="get">
+                        <button class="button">Reintialisation</button>
                     </form>
                 </li>
                 <li><a href="home">Elevage</a></li>

@@ -15,7 +15,8 @@
 </head>
 
 <body>
-    <div class="menu-fixe-acceuil">
+    
+<div class="menu-fixe-acceuil">
         <div>
             <ul class="nav nav-tabs nav-justified">
                 <li>
@@ -25,7 +26,7 @@
                 </li>
                 <li>
                     <form action="reintialiser" method="get">
-                        <button class="button">Reintialiser</button>
+                        <button class="button">Reintialisation</button>
                     </form>
                 </li>
                 <li><a href="home">Elevage</a></li>
@@ -39,7 +40,6 @@
             <ul class="nav nav-tabs nav-justified">
                 <li><a href="goToAchatAnimaux">Achat Animaux</a></li>
                 <li><a href="goToAchatAliment">Achat Aliments</a></li>
-                <!-- <li><a href="#">Moi</a></li> -->
                 <li>
                     <form action="deconnexion" method="get">
                         <button class="button">Deconnexion</button>

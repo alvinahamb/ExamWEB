@@ -33,7 +33,6 @@ class UserController
     public function CheckLogin()
     {
         $modele = new UserModel(Flight::db());
-        $model = new ElevageModel(Flight::db());
         $nom = $_POST['email'];
         $mdp = $_POST['password'];
         $result = $modele->CheckLogin($nom, $mdp);
