@@ -74,3 +74,9 @@ footer {
     bottom: 0;
     width: 100%;
 }
+
+.login {
+    background-image: url('../../design_images/back1 (1).jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
