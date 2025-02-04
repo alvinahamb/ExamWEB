@@ -71,7 +71,24 @@ class ElevageModel
         $stmt->execute([$id]);
         return $stmt->fetchAll();
     }
-    
+
+    public function getIdAlimentByAnimal($idAnimal)
+    {
+        // Préparer la requête pour récupérer l'ID de l'aliment associé à cet animal
+        $stmt = $this->db->prepare("
+            SELECT IdAliment
+            FROM Animaux_Aliments
+            WHERE IdAnimal = ?
+        ");
+        $stmt->execute([$idAnimal]);
+
+        // Récupérer le résultat
+        $aliment = $stmt->fetch();
+
+        // Si un aliment est trouvé, retourner son ID, sinon retourner null
+        return $aliment ? $aliment['IdAliment'] : null;
+    }
+
     public function getAnimauxByUserDate($idUser, $date)
     {
         $stmt = $this->db->prepare("
@@ -106,6 +123,8 @@ class ElevageModel
             $alimentsParUtilisateur[$aliment['IdAliment']] = $aliment['Quantite'];
         }
 
+        $responseMessage = ''; // Initialisation du message de réponse
+
         foreach ($animals as &$animal) {
             if (empty($animal['DateTransaction'])) {
                 $animal['Vivant'] = "Non";
@@ -128,7 +147,7 @@ class ElevageModel
                 $animal['DateMort'] = "Encore vivant";
 
                 // Vérification des aliments disponibles pour l'utilisateur
-                $idAlimentAnimal = $this->getIdAlimentByAnimaux($animal['IdAnimal']);
+                $idAlimentAnimal = $this->getIdAlimentByAnimal($animal['IdAnimal']);
                 if (isset($alimentsParUtilisateur[$idAlimentAnimal]) && $alimentsParUtilisateur[$idAlimentAnimal] > 0) {
                     // L'utilisateur possède l'aliment nécessaire
                     $animal['EtatAliment'] = "Disponible";
@@ -140,8 +159,10 @@ class ElevageModel
                 // Conditions de vente automatique
                 if ($animal['AutoVente'] == 1 && $animal['Poids'] >= $animal['PoidsMin']) {
                     $this->venteAnimaux($animal['IdTransaction'], $animal['IdAnimal'], $idUser, $date);
+                    $responseMessage .= "L'animal ID " . $animal['IdAnimal'] . " a été vendu automatiquement. ";
                 } elseif ($animal['DateVente'] !== null && $dateNow >= new \DateTime($animal['DateVente'])) {
                     $this->venteAnimaux($animal['IdTransaction'], $animal['IdAnimal'], $idUser, $date);
+                    $responseMessage .= "L'animal ID " . $animal['IdAnimal'] . " a été vendu selon la date de vente. ";
                 }
             }
 
@@ -151,7 +172,11 @@ class ElevageModel
                 : 'public/uploads/' . $animal['Image'];
         }
 
-        return $animals;
+        // Retourner les animaux et le message de réponse
+        return [
+            'animals' => $animals,
+            'message' => $responseMessage
+        ];
     }
 
     
@@ -305,7 +330,7 @@ class ElevageModel
     
     public function venteAnimaux($id, $idAnimal, $idUser, $date)
     {
-        $animals = $this->getAnimauxByUserDate($idUser, $date);
+        $animals = $this->getAnimauxByUserDate($idUser, $date)['animals'];
         $animal = null;
 
         foreach ($animals as $a) {
@@ -375,7 +400,7 @@ class ElevageModel
         return true;
     }
     public function nourrirAnimaux($idAnimal, $idUtilisateur, $quantite, $aliment, $date) {
-        $animals = $this->getAnimauxByUserDate($idUtilisateur, $date);
+        $animals = $this->getAnimauxByUserDate($idUtilisateur, $date)['animals'];
         $animal = null;
         foreach ($animals as $a) {
             if ($a['IdAnimal'] == $idAnimal) {

@@ -61,23 +61,29 @@ class UserController
             Flight::render('login', $data);
         }
     }
-
+    
     public function situation()
     {
         if (isset($_GET['debut'])) {
             $model = new ElevageModel(Flight::db());
             $debut = $_GET['debut'];
-            $data = $model->getAnimauxByUserDate($_SESSION['IdUser'], $debut);
-
+            $result = $model->getAnimauxByUserDate($_SESSION['IdUser'], $debut);
+            $data = $result['animals'];
+            $message = $result['message'];
+    
             // Retourne du JSON si AJAX
             header('Content-Type: application/json');
-            echo json_encode($data);
+            echo json_encode([
+                'animals' => $data,
+                'message' => $message
+            ]);
             exit;
         }
-
+    
         // Sinon, charge la page HTML normale
         Flight::render('situation');
     }
+    
 
 
     

@@ -100,7 +100,20 @@
                     xhr.onreadystatechange = function() {
                         if (xhr.readyState === 4 && xhr.status === 200) {
                             var data = JSON.parse(xhr.responseText);
-                            displayResults(data);
+                            
+                            // Afficher les animaux
+                            displayResults(data.animals);
+
+                            // Afficher le message si il existe
+                            if (data.message) {
+                                var alertDiv = document.createElement('div');
+                                alertDiv.className = 'alert alert-success'; // Ou utilisez alert-danger selon le message
+                                alertDiv.role = 'alert';
+                                alertDiv.textContent = data.message;
+                                
+                                // Afficher le message dans l'élément HTML
+                                document.body.appendChild(alertDiv); // Vous pouvez aussi spécifier un autre conteneur pour l'alerte
+                            }
                         }
                     };
                     xhr.send();
