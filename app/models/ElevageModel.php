@@ -242,7 +242,6 @@ class ElevageModel
 
         // Mettre à jour le capital de l'utilisateur
         $this->updateCapital($idUser, $capital);
-
         return true; // Vente réussie
     }
 
