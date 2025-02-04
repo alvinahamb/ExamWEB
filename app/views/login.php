@@ -43,8 +43,8 @@
                 <h1><span style="font-size: xx-large;">Bienvenue!</span></h1>
                 <br>
                 <form action="CheckLogin" method="POST">
-                    <p><input type="email" class="form-control" name="email" placeholder="Email" required></p>
-                    <p><input type="password" class="form-control" name="password" placeholder="Password" required></p>
+                    <p><input type="email" class="form-control"  value="bob@example.com" name="email" placeholder="Email" required></p>
+                    <p><input type="password" class="form-control" value="motdepasse456" name="password" placeholder="Password" required></p>
                     <p><button class="btn btn-lg btn-primary btn-block" type="submit">Login</button></p>
                     <p>
                         <center><a href="GoToSignUp">Sign Up</a></center>

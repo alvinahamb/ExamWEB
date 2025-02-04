@@ -67,7 +67,8 @@
                         <p>Prix par Kg:<?= $d['PrixVenteParKg'] ?> Ar</p>
                         <p>Jours sans manger:<?= $d['JoursSansManger'] ?> jour</p>
                         <p>Pourcentage perte de poids:<?= $d['PourcentagePertePoids'] ?> %</p>
-                        <form action="achatAnimaux" method="get">
+                        <!-- <form action="achatAnimaux" method="get"> -->
+                        <form action="autoventeAchat" method="get">
                             <input type="hidden" name="id" value="<?= $d['IdAnimal'] ?>">
                             <button type="submit">Acheter</button>
                         </form>
