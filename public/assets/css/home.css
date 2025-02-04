@@ -1,14 +1,12 @@
-body {
+body{
     font-family: 'Times New Roman', Times, serif;
 }
-
-.home {
+.home{
     height: 82vh;
     width: 100%;
     padding: 2vh;
 }
-
-.home div {
+.home div{
     height: 78vh;
     width: 100%;
     padding: 8%;
@@ -18,27 +16,10 @@ body {
     background-repeat: no-repeat;
     background-size: cover;
 }
-
-.home div h1 {
+.home div h1{
     font-weight: bolder;
 }
-
-.card img {
-    display: flex;
-    align-items: start;
-    width: 80%;
-    /* Assure que l'image prend toute la largeur de son conteneur */
-    height: 40vh;
-    /* Conserve les proportions de l'image */
-    object-fit: cover;
-    /* Remplie le conteneur sans déformer l'image */
-    border-radius: 10vh;
-    margin-top: 1vh;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.home button {
+.home button{
     height: 8vh;
     width: 70vh;
     font-size: larger;
@@ -47,38 +28,23 @@ body {
     background-color: #063203;
     color: #fcfcfc;
 }
-
-.btn {
-    height: 8vh;
-    width: 100%;
-    font-size: larger;
-    border: none;
-    border-radius: 2vh;
-    background-color: #063203;
-    color: #fcfcfc;
-}
-
-.home button:hover {
+.home button:hover{
     transform: scale(1.1);
 }
-
-#situation {
+#situation{
     min-height: 50vh;
     height: fit-content;
     width: 100%;
     margin-bottom: 8vh;
-    text-align: center;
 }
-
-.reintialisation {
+.reintialisation{
     margin-right: auto;
     margin-left: auto;
     width: 50%;
-    height: 50%;
+    height:50%;
     text-align: center;
 }
-
-button {
+button{
     height: 8vh;
     width: 100%;
     font-size: larger;
@@ -86,10 +52,4 @@ button {
     border-radius: 2vh;
     background-color: #063203;
     color: #fcfcfc;
-}
-
-.card{
-    background-color: rgba(0, 0, 0, 0.068);
-    padding: 10px;
-    border-radius: 1vh;
 }
