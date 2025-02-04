@@ -55,7 +55,7 @@
         <div class="home">
             <div>
                 <h1>Bienvenue sur Farm – Votre partenaire en élevage</h1>
-                <h3>Trouvez les meilleurs animaux<h3>
+                <h3>Trouvez les meilleurs animaux</h3>
                 <h3>Choisissez des aliments adaptés pour une croissance optimale</h3>
                 <h3>Optimisez vos revenus avec une bonne gestion</h3> 
                 <br>      
@@ -87,6 +87,7 @@
             </table>
 
             <script>
+                // Fonction pour obtenir les données
                 function getData() {
                     var debut = document.getElementById("debut").value;
 
@@ -101,6 +102,7 @@
                     xhr.send();
                 }
 
+                // Affichage des résultats dans le tableau
                 function displayResults(data) {
                     var table = document.getElementById("resultTable");
 
@@ -113,33 +115,24 @@
                     data.forEach(row => {
                         var tr = document.createElement("tr");
                         tr.innerHTML = `
-                    <td>${row.DateTransaction}</td>
-                    <td><b>${row.TypeAnimal}</b></td>
-                    <td>${row.Poids}</td>
-                    <td>${row.PoidsMax}</td>
-                    <td>${row.PrixVenteParKg}</td>
-                    <td>${row.JoursSansManger}</td>
-                    <td>${row.PourcentagePertePoids}</td>
-                    <td>${row.Montant_total}</td>
-                    <td>`
-                        if (row.TypeTransaction === "vente") {
-                            tr.innerHTML += `
-                        Vente en cours
+                            <td>${row.DateTransaction}</td>
+                            <td><b>${row.TypeAnimal}</b></td>
+                            <td>${row.Poids}</td>
+                            <td>${row.PoidsMax}</td>
+                            <td>${row.PrixVenteParKg}</td>
+                            <td>${row.JoursSansManger}</td>
+                            <td>${row.PourcentagePertePoids}</td>
+                            <td>${row.Montant_total}</td>
+                            <td>
+                                ${row.TypeTransaction === "vente" ? "Vente en cours" : `<button onclick="vendre(${row.IdTransaction},${row.IdAnimal})">Vendre</button>`}
+                                <button onclick="nourrir(${row.IdTransaction})">Nourrir</button>
+                            </td>
                         `;
-                        } else {
-                            tr.innerHTML += `
-                        <button onclick="vendre(${row.IdTransaction},${row.IdAnimal})">Vendre</button>
-                        `;
-                        }
-                        tr.innerHTML += `
-                        <button onclick="nourrir(${row.IdTransaction})">Nourrir</button>
-                    </td>
-                `;
-
                         table.appendChild(tr);
                     });
                 }
 
+                // Fonction de vente
                 function vendre(id, idAnimal) {
                     var xhr = new XMLHttpRequest();
                     xhr.open("GET", "vente?id=" + id + "&idAnimal=" + idAnimal, true);
@@ -152,8 +145,7 @@
                     xhr.send();
                 }
 
-
-
+                // Fonction pour nourrir l'animal
                 function nourrir(id) {
                     var xhr = new XMLHttpRequest();
                     xhr.open("GET", "nourrir?id=" + id, true);

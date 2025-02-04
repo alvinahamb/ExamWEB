@@ -71,35 +71,59 @@ class ElevageModel
         $stmt->execute([$id]);
         return $stmt->fetchAll();
     }
-
+    
     public function getAnimauxByUserDate($id, $date)
     {
-        // Requête SQL pour récupérer les animaux
-        $stmt = $this->db->prepare("SELECT a.IdAnimal, a.TypeAnimal, a.PoidsMin, a.PoidsMax, a.PrixVenteParKg, 
-                                        a.JoursSansManger, a.PourcentagePertePoids, t.DateTransaction
-                                    FROM TransactionsAnimaux_Elevage t
-                                    JOIN Animaux_Elevage a ON t.IdAnimal = a.IdAnimal 
-                                    WHERE t.IdUtilisateur = ? 
-                                    AND t.TypeTransaction = 'achat' 
-                                    AND t.DateTransaction = ?");
+        $stmt = $this->db->prepare("
+            SELECT a.IdAnimal, a.TypeAnimal, a.PoidsMin, a.PoidsMax, a.Poids, a.PrixVenteParKg, 
+                a.JoursSansManger, a.PourcentagePertePoids, t.DateTransaction
+            FROM TransactionsAnimaux_Elevage t
+            JOIN Animaux_Elevage a ON t.IdAnimal = a.IdAnimal
+            WHERE t.IdUtilisateur = ?
+            AND t.TypeTransaction = 'achat'
+            AND t.DateTransaction = (
+                SELECT MAX(t2.DateTransaction)
+                FROM TransactionsAnimaux_Elevage t2
+                WHERE t2.IdAnimal = t.IdAnimal
+                    AND t2.DateTransaction <= ?
+            )
+        ");
         $stmt->execute([$id, $date]);
-
-        // Récupération des résultats
         $animals = $stmt->fetchAll();
-
-        // Calcul de l'état de vie de chaque animal
+    
         foreach ($animals as &$animal) {
-            // Calcul du poids actuel après perte
-            $poidsActuel = $animal['PoidsMax'] - ($animal['PourcentagePertePoids'] * $animal['PoidsMax'] * $animal['JoursSansManger']);
-
-            // Vérification si l'animal est vivant (poids actuel >= poids minimum)
-            $animal['Vivant'] = $poidsActuel >= $animal['PoidsMin'];
+            if (empty($animal['DateTransaction'])) {
+                $animal['Vivant'] = "Non"; 
+                continue;
+            }
+    
+            $dateTransaction = new \DateTime($animal['DateTransaction']);
+            $dateNow = new \DateTime($date);
+            $diff = $dateTransaction->diff($dateNow)->days;
+    
+            if ($diff > $animal['JoursSansManger']) {
+                $animal['Vivant'] = "Non"; // L'animal est mort
+            } else {
+                $animal['Vivant'] = "Oui"; // L'animal est vivant
+            }
+    
+            if ($diff > 0) {
+                // Perte de poids par jour en fonction du pourcentage
+                $poidsPerdu = $diff * ($animal['PourcentagePertePoids'] / 100);
+                $nouveauPoids = $animal['Poids'] - $poidsPerdu;
+    
+                // Si le poids tombe en dessous du poids minimal, on rétablit le poids minimal
+                if ($nouveauPoids < $animal['PoidsMin']) {
+                    $nouveauPoids = $animal['PoidsMin'];
+                }
+    
+                // Mise à jour du poids de l'animal après la perte
+                $animal['Poids'] = $nouveauPoids;
+            }
         }
-
-        // Retourne les animaux avec la colonne 'Vivant' ajoutée
+    
         return $animals;
-    }
-
+    }    
 
     public function getAnimaux()
     {
@@ -134,9 +158,8 @@ class ElevageModel
         // Préparation et exécution de la requête pour récupérer les aliments correspondant au type d'animal
         $stmt = $this->db->prepare("SELECT * FROM Alimentation_Elevage WHERE TypeAnimal=?");
         $stmt->execute([$typeAnimal]);
-        return $stmt->fetch(); // Renvoie un tableau de résultats
+        return $stmt->fetchAll(); // Renvoie un tableau de résultats
     }
-
     
     public function getCapital($id)
     {
@@ -177,19 +200,33 @@ class ElevageModel
             return 1;
         }
     }
-
-    public function venteAnimaux($id,$idAnimal,$idUser)
+    public function venteAnimaux($id, $idAnimal, $idUser, $date)
     {
-        $animal = $this->getAnimalById($idAnimal);
+        $animals = $this->getAnimauxByUserDate($idUser, $date);
+        $animal = null;
+        foreach ($animals as $a) {
+            if ($a['IdAnimal'] == $idAnimal) {
+                $animal = $a;
+                break;
+            }
+        }
+    
+        if (!$animal || $animal['Vivant'] == "Non") {
+            return false; // L'animal est mort ou n'existe pas
+        }
+    
         $prixkg = $animal['PrixVenteParKg'];
         $poid = $animal['Poids']; 
         $Montant_total = $poid * $prixkg;
-        $capital = $this->getCapital($idUser)['Capital']+$Montant_total;
-        // var_dump($Montant_total,$prixkg,$poid,$capital); exit;	
+    
+        $capital = $this->getCapital($idUser)['Capital'] + $Montant_total;
+    
         $stmt = $this->db->prepare("UPDATE TransactionsAnimaux_Elevage SET TypeTransaction=? WHERE IdTransaction=?");
         $stmt->execute(['vente', $id]);
-        $this->updateCapital($idUser,$capital);
-    }
+        $this->updateCapital($idUser, $capital);
+    
+        return true;
+    }    
 
     public function reintialiser($id,$montant){
         $stmt1 = $this->db->prepare("DELETE FROM TransactionsAnimaux_Elevage");
@@ -214,7 +251,7 @@ class ElevageModel
     }
     
     public function checkSurPoidsAnimaux($idAnimal, $idAliment, $quantite){
-        $poidsPlus=$this->getAlimentByAnimaux($idAnimal)['PourcentageGainPoids'];
+        $poidsPlus=$this->getAlimentById($idAliment)['PourcentageGainPoids'];
         $poidsActuel=$this->getAnimalById($idAnimal)['Poids'];
         $poidsMax=$this->getAnimalById($idAnimal)['PoidsMax'];
         $supposePoids=$poidsPlus*$poidsActuel;
@@ -223,9 +260,20 @@ class ElevageModel
         }
         return true;
     }
-
     public function nourrirAnimaux($idAnimal, $idUtilisateur, $quantite, $aliment, $date) {
-        // Vérification du stock et du poids de l'animal
+        $animals = $this->getAnimauxByUserDate($idUtilisateur, $date);
+        $animal = null;
+        foreach ($animals as $a) {
+            if ($a['IdAnimal'] == $idAnimal) {
+                $animal = $a;
+                break;
+            }
+        }
+    
+        if (!$animal || $animal['Vivant'] == "Non") {
+            return false; 
+        }
+    
         if ($this->checkStockAliment($aliment, $quantite) && $this->checkSurPoidsAnimaux($idAnimal, $aliment, $quantite)) {
             $sql = "INSERT INTO Nutrition_Elevage (IdAnimal, IdUtilisateur, IdAliment, DateNourrissage, QuantiteNourriture)
                     VALUES (?, ?, ?, ?, ?)";
@@ -233,20 +281,20 @@ class ElevageModel
             $stmt = $this->db->prepare($sql);
             $stmt->execute([$idAnimal, $idUtilisateur, $aliment, $date, $quantite]);
     
-            $poidsPlus = $this->getAlimentByAnimaux($idAnimal)['PourcentageGainPoids'];
+            $poidsPlus = $this->getAlimentById($aliment)['PourcentageGainPoids'];
             $poidsActuel = $this->getAnimalById($idAnimal)['Poids'];
     
             $nouveauPoids = $poidsActuel + ($poidsActuel * $poidsPlus);
     
-            $updateSql = "UPDATE Animaux SET Poids = ? WHERE IdAnimal = ?";
+            $updateSql = "UPDATE Animaux_Elevage SET Poids = ? WHERE IdAnimal = ?";
             $updateStmt = $this->db->prepare($updateSql);
             $updateStmt->execute([$nouveauPoids, $idAnimal]);
+    
             return $stmt->rowCount() > 0 && $updateStmt->rowCount() > 0 ? true : false;
         }
-    
         return false;
     }
-    
+        
     public function VieAnimal($idAnimal) {
         // Récupérer les informations de l'animal
         $sql = "SELECT Poids, PoidsMin, PourcentagePertePoids, JoursSansManger FROM Animaux_Elevage WHERE IdAnimal = ?";
