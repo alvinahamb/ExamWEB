@@ -9,12 +9,12 @@
     <script src="public/assets/js/jquery.min.js"></script>
     <script src="public/assets/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="public/assets/css/base.css">
-    <link rel="stylesheet" href="public/assets/css/home.css">
     <link rel="icon" href="">
     <title>Elevage</title>
 </head>
 
 <body>
+
     <div class="menu-fixe-acceuil">
         <div>
             <ul class="nav nav-tabs nav-justified">
@@ -23,12 +23,7 @@
                         <button class="button">Admin</button>
                     </form>
                 </li>
-                <li>
-                    <form action="reintialiser" method="get">
-                        <button class="button">Reintialisation</button>
-                    </form>
-                </li>
-                <li><a href="home">Elevage</a></li>
+                <li><a href="/home">Elevage</a></li>
                 <li><a href="goToStock">Stock</a></li>
             </ul>
         </div>
@@ -47,117 +42,100 @@
             </ul>
         </div>
     </div>
-    <div style="margin-top: 12vh;">
-        <?php if (isset($data['message'])) { ?>
-            <div id="alert" class="alert alert-success" role="alert"><?= $data['message'] ?></div>
-        <?php }
-        ?>
-        <div class="home">
-            <div>
-                <h1>Bienvenue sur Farm – Votre partenaire en élevage</h1>
-                <h3>Trouvez les meilleurs animaux</h3>
-                <h3>Choisissez des aliments adaptés pour une croissance optimale</h3>
-                <h3>Optimisez vos revenus avec une bonne gestion</h3> 
-                <br>      
-                <form action="#situation" method="get">
-                    <button>Voir la situation de mon elevage</button>
-                </form>
-            </div>
-        </div>
-        <div id="situation">
-            <h1>Situation des Animaux</h1>
 
-            <form id="dateForm">
-                <input type="date" id="debut" name="debut" placeholder="Date de début">
-                <button type="button" onclick="getData()">Confirmer</button>
-            </form>
+    <div style="margin-top:15vh">
+        <h1>Situation des Animaux</h1>
+        <?php if (isset($message)): ?>
+            <div id="alert" class="alert alert-success" role="alert"><?= $message ?></div>
+        <?php endif; ?>
 
-            <table border="1" cellspacing="0" id="resultTable">
-                <tr>
-                    <th>Date</th>
-                    <th>Type</th>
-                    <th>Poids</th>
-                    <th>PoidsMax</th>
-                    <th>Prix Vente Par Kg</th>
-                    <th>JoursSansManger</th>
-                    <th>Perte Poids (%)</th>
-                    <th>Prix d'achat</th>
-                    <th>Actions</th>
-                </tr>
-            </table>
+        <form id="dateForm">
+            <input type="date" id="debut" name="debut" placeholder="Date de début">
+            <button type="button" onclick="getData()">Confirmer</button>
+        </form>
 
-            <script>
-                // Fonction pour obtenir les données
-                function getData() {
-                    var debut = document.getElementById("debut").value;
+        <table border="1" cellspacing="0" id="resultTable">
+            <tr>
+                <th>Date</th>
+                <th>Type</th>
+                <th>PoidsMin</th>
+                <th>PoidsMax</th>
+                <th>Prix Vente Par Kg</th>
+                <th>JoursSansManger</th>
+                <th>Perte Poids (%)</th>
+                <th>Vivant</th>
+                <th>Action</th>
+            </tr>
+        </table>
 
-                    var xhr = new XMLHttpRequest();
-                    xhr.open("GET", "getSituation?debut=" + debut, true);
-                    xhr.onreadystatechange = function() {
-                        if (xhr.readyState === 4 && xhr.status === 200) {
-                            var data = JSON.parse(xhr.responseText);
-                            displayResults(data);
-                        }
-                    };
-                    xhr.send();
-                }
+        <script>
+            function getData() {
+                var debut = document.getElementById("debut").value;
 
-                // Affichage des résultats dans le tableau
-                function displayResults(data) {
-                    var table = document.getElementById("resultTable");
-
-                    // Supprime les anciennes lignes (sauf l'en-tête)
-                    while (table.rows.length > 1) {
-                        table.deleteRow(1);
+                var xhr = new XMLHttpRequest();
+                xhr.open("GET", "getSituation?debut=" + debut, true);
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        var data = JSON.parse(xhr.responseText);
+                        displayResults(data);
                     }
+                };
+                xhr.send();
+            }
 
-                    // Ajoute les nouvelles données
-                    data.forEach(row => {
-                        var tr = document.createElement("tr");
-                        tr.innerHTML = `
-                            <td>${row.DateTransaction}</td>
-                            <td><b>${row.TypeAnimal}</b></td>
-                            <td>${row.Poids}</td>
-                            <td>${row.PoidsMax}</td>
-                            <td>${row.PrixVenteParKg}</td>
-                            <td>${row.JoursSansManger}</td>
-                            <td>${row.PourcentagePertePoids}</td>
-                            <td>${row.Montant_total}</td>
-                            <td>
-                                ${row.TypeTransaction === "vente" ? "Vente en cours" : `<button onclick="vendre(${row.IdTransaction},${row.IdAnimal})">Vendre</button>`}
-                                <button onclick="nourrir(${row.IdTransaction})">Nourrir</button>
-                            </td>
-                        `;
-                        table.appendChild(tr);
-                    });
+            function displayResults(data) {
+                var table = document.getElementById("resultTable");
+
+                // Supprime les anciennes lignes (sauf l'en-tête)
+                while (table.rows.length > 1) {
+                    table.deleteRow(1);
                 }
 
-                // Fonction de vente
-                function vendre(id, idAnimal) {
-                    var xhr = new XMLHttpRequest();
-                    xhr.open("GET", "vente?id=" + id + "&idAnimal=" + idAnimal, true);
-                    xhr.onreadystatechange = function() {
-                        if (xhr.readyState === 4 && xhr.status === 200) {
-                            window.location.reload();
-                            alert("Animal vendu !");
-                        }
-                    };
-                    xhr.send();
-                }
+                // Ajoute les nouvelles données
+                data.forEach(row => {
+                    var tr = document.createElement("tr");
+                    tr.innerHTML = `
+                        <td>${row.DateTransaction}</td>
+                        <td><b>${row.TypeAnimal}</b></td>
+                        <td>${row.PoidsMin}</td>
+                        <td>${row.PoidsMax}</td>
+                        <td>${row.PrixVenteParKg}</td>
+                        <td>${row.JoursSansManger}</td>
+                        <td>${row.PourcentagePertePoids}</td>
+                        <td>${row.Vivant}</td> <!-- Affiche 'Oui' ou 'Non' selon l'état de l'animal -->
+                        <td>
+                            <button onclick="vendre(${row.IdTransaction},${row.IdAnimal},${row.DateTransaction})">Vendre</button>
+                            <button onclick="nourrir(${row.IdAnimal})">Nourrir</button>
+                        </td>
+                    `;
+                    table.appendChild(tr);
+                });
+            }
 
-                // Fonction pour nourrir l'animal
-                function nourrir(id) {
-                    var xhr = new XMLHttpRequest();
-                    xhr.open("GET", "nourrir?id=" + id, true);
-                    xhr.onreadystatechange = function() {
-                        if (xhr.readyState === 4 && xhr.status === 200) {
-                            alert("Animal nourri !");
-                        }
-                    };
-                    xhr.send();
-                }
-            </script>
-        </div>
+
+            function vendre(id, idAnimal, date) {
+                var xhr = new XMLHttpRequest();
+                xhr.open("GET", "vente?id=" + id + "&idAnimal=" + idAnimal + "&date=" + date, true);
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        window.location.href = "vente?id=" + id + "&idAnimal=" + idAnimal + "&date=" + date;
+                    }
+                };
+                xhr.send();
+            }
+
+            function nourrir(id) {
+                var xhr = new XMLHttpRequest();
+                xhr.open("GET", "nourrir?idAnimal=" + id, true);  // Utilisation de 'id' au lieu de 'idAnimal'
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        window.location.href = "nourrir?idAnimal=" + id;  // Utilisation de 'id' au lieu de 'idAnimal'
+                    }
+                };
+                xhr.send();
+            }
+
+        </script>
     </div>
     <footer>
         <p>Kasaina ETU003287 & Blessed ETU003326 & Kiady ETU003244</p>
