@@ -72,7 +72,7 @@ class ElevageModel
         return $stmt->fetchAll();
     }
     
-    public function getAnimauxByUserDate($id, $date)
+    public function getAnimauxByUserDate2($id, $date)
     {
         $stmt = $this->db->prepare("
             SELECT a.Image, a.IdAnimal, a.TypeAnimal, a.PoidsMin, a.PoidsMax, a.Poids, a.PrixVenteParKg, 
@@ -134,7 +134,89 @@ class ElevageModel
 
         return $animals;
     }
-    
+
+    public function getAnimauxByUserDate($id, $date)
+    {
+        $stmt = $this->db->prepare("
+            SELECT a.Image, a.IdAnimal, a.TypeAnimal, a.PoidsMin, a.PoidsMax, a.Poids, a.PrixVenteParKg, 
+                a.JoursSansManger, a.PourcentagePertePoids, a.QuotaNourritureJournalier, t.DateTransaction, t.IdTransaction
+            FROM TransactionsAnimaux_Elevage t
+            JOIN Animaux_Elevage a ON t.IdAnimal = a.IdAnimal
+            WHERE t.IdUtilisateur = ?
+            AND t.TypeTransaction = 'achat'
+            AND t.DateTransaction = (
+                SELECT MAX(t2.DateTransaction)
+                FROM TransactionsAnimaux_Elevage t2
+                WHERE t2.IdAnimal = t.IdAnimal
+                    AND t2.DateTransaction <= ?
+            )
+        ");
+        $stmt->execute([$id, $date]);
+        $animals = $stmt->fetchAll();
+
+        foreach ($animals as &$animal) {
+            if (empty($animal['DateTransaction'])) {
+                $animal['Vivant'] = "Non";
+                $animal['DateMort'] = "Inconnue";
+                continue;
+            }
+
+            // Récupérer le pourcentage de gain de poids pour le type d'animal
+            $alimentStmt = $this->db->prepare("
+                SELECT AVG(PourcentageGainPoids) AS AvgPourcentageGainPoids
+                FROM Alimentation_Elevage
+                WHERE TypeAnimal = ?
+            ");
+            $alimentStmt->execute([$animal['TypeAnimal']]);
+            $aliment = $alimentStmt->fetch();
+            $pourcentageGainPoids = $aliment ? (float) $aliment['AvgPourcentageGainPoids'] : 0;
+
+            $animal['ImagePath'] = file_exists('public/assets/images/' . $animal['Image']) 
+                ? 'public/assets/images/' . $animal['Image'] 
+                : 'public/uploads/' . $animal['Image'];
+
+            $dateTransaction = new \DateTime($animal['DateTransaction']);
+            $dateNow = new \DateTime($date);
+            $diff = $dateTransaction->diff($dateNow)->days;
+
+            if ($diff > $animal['JoursSansManger']) {
+                $animal['Vivant'] = "Non"; // L'animal est mort
+
+                // Calcul de la date de décès
+                $dateMort = clone $dateTransaction;
+                $dateMort->modify('+' . $animal['JoursSansManger'] . ' days');
+                $animal['DateMort'] = $dateMort->format('Y-m-d');
+            } else {
+                $animal['Vivant'] = "Oui"; // L'animal est vivant
+                $animal['DateMort'] = "Encore vivant";
+
+                if ($diff > 0) {
+                    if (is_null($animal['QuotaNourritureJournalier']) || $animal['QuotaNourritureJournalier'] == 0) {
+                        // Si le quota journalier est NULL, appliquer la perte de poids
+                        $poidsPerdu = $diff * ($animal['PourcentagePertePoids'] / 100);
+                        $nouveauPoids = $animal['Poids'] - $poidsPerdu;
+                    } else {
+                        // Si le quota journalier est défini, appliquer le gain de poids avec le pourcentage
+                        $poidsGagne = $diff * $animal['QuotaNourritureJournalier'] * (1 + $pourcentageGainPoids / 100);
+                        $nouveauPoids = $animal['Poids'] + $poidsGagne;
+                    }
+
+                    // Vérification des limites du poids
+                    if ($nouveauPoids < $animal['PoidsMin']) {
+                        $nouveauPoids = $animal['PoidsMin'];
+                    } elseif ($nouveauPoids > $animal['PoidsMax']) {
+                        $nouveauPoids = $animal['PoidsMax'];
+                    }
+
+                    // Mise à jour du poids de l'animal
+                    $animal['Poids'] = $nouveauPoids;
+                }
+            }
+        }
+
+        return $animals;
+    }
+
 
     public function getAnimaux()
     {
