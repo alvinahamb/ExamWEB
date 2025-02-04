@@ -82,14 +82,8 @@ class ElevageController
         $date = $_GET['date'];
     
         $model = new ElevageModel(Flight::db());
-        $vrai = $model->venteAnimaux($id, $idAnimal, $_SESSION['IdUser'], $date);
-    
-        // Vérification du retour et message approprié
-        if ($vrai==1) {
-            $message = "Vente effectuée avec succès";
-        } else {
-            $message = "Échec de la vente. L'animal est peut-être mort ou inexistant.";
-        }
+        $message = $model->venteAnimaux($id, $idAnimal, $_SESSION['IdUser'], $date);
+
     
         // Récupération des données mises à jour
         $data = $model->getAnimaux();

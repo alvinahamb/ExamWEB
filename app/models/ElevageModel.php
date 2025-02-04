@@ -76,7 +76,7 @@ class ElevageModel
     {
         $stmt = $this->db->prepare("
             SELECT a.Image, a.IdAnimal, a.TypeAnimal, a.PoidsMin, a.PoidsMax, a.Poids, a.PrixVenteParKg, 
-                a.JoursSansManger, a.PourcentagePertePoids, t.DateTransaction
+                a.JoursSansManger, a.PourcentagePertePoids, t.DateTransaction, t.IdTransaction
             FROM TransactionsAnimaux_Elevage t
             JOIN Animaux_Elevage a ON t.IdAnimal = a.IdAnimal
             WHERE t.IdUtilisateur = ?
@@ -217,7 +217,6 @@ class ElevageModel
         $animals = $this->getAnimauxByUserDate($idUser, $date);
         $animal = null;
 
-        // Rechercher l'animal correspondant
         foreach ($animals as $a) {
             if ($a['IdAnimal'] == $idAnimal) {
                 $animal = $a;
@@ -226,13 +225,11 @@ class ElevageModel
         }
 
         if (!$animal) {
-            error_log("Animal non trouvé."); // Journaliser
-            return false;
+            return "L' animal n existe pas";
         }
 
         if ($animal['Vivant'] == "Non") {
-            error_log("L'animal est mort."); // Journaliser
-            return false;
+            return "L' animal est mort";
         }
 
         $prixkg = $animal['PrixVenteParKg'];
@@ -241,19 +238,16 @@ class ElevageModel
 
         $capital = $this->getCapital($idUser)['Capital'] + $Montant_total;
 
-        // Mettre à jour le type de transaction
         $stmt = $this->db->prepare("UPDATE TransactionsAnimaux_Elevage SET TypeTransaction=? WHERE IdTransaction=?");
         $success = $stmt->execute(['vente', $id]);
 
         if (!$success) {
-            error_log("Échec de la mise à jour de la transaction."); // Journaliser
-            return false;
+            return "Erreur lors de l'update";
         }
 
-        // Mettre à jour le capital de l'utilisateur
         $this->updateCapital($idUser, $capital);
 
-        return true; // Vente réussie
+        return "L' animal est bel et bien vendu"; 
     }
 
 
