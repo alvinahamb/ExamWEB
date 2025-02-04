@@ -79,6 +79,7 @@
                 <tr>
                     <th>Date</th>
                     <th>Type</th>
+                    <th>Poids</th>
                     <th>PoidsMin</th>
                     <th>PoidsMax</th>
                     <th>Prix Vente Par Kg</th>
@@ -119,6 +120,7 @@
                         tr.innerHTML = `
                         <td>${row.DateTransaction}</td>
                         <td><b>${row.TypeAnimal}</b></td>
+                        <td>${row.Poids}</td>
                         <td>${row.PoidsMin}</td>
                         <td>${row.PoidsMax}</td>
                         <td>${row.PrixVenteParKg}</td>
