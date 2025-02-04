@@ -53,27 +53,38 @@ class ElevageController
         }
         Flight::render('achatAliment', ['data' => $data, 'message' => $message]);
     }
-
     public function achatAnimaux()
     {
         $id = $_GET['id'];
         $date = null;
         $autovente = false;
+    
         if (isset($_GET['date'])) {
-            $date=$_GET['date'];
+            $date = $_GET['date'];
         }
         if (isset($_GET['autovente'])) {
-            $autovente=$_GET['autovente'];
+            $autovente = $_GET['autovente'];
         }
+    
         $model = new ElevageModel(Flight::db());
-        $confirmation = $model->achatAnimaux($id, $_SESSION['IdUser'],$autovente,$date);
-        $data = $model->getAnimaux();
+        $confirmation = $model->achatAnimaux($id, $_SESSION['IdUser'], $autovente, $date);
         $message = "Achat effectué avec succès";
         if ($confirmation == 1) {
-            $message = "Action impossible,solde insuffisant";
+            $message = "Action impossible, solde insuffisant";
         }
-        Flight::render('achatAnimaux', ['data' => $data, 'message' => $message]);
+    
+        // Vérification de l'option AJAX
+        if (isset($_GET['ajax']) && $_GET['ajax'] == 'true') {
+            // Renvoi de la réponse JSON
+            echo json_encode(['message' => $message]);
+            exit;
+        } else {
+            // Rendu normal de la page
+            $data = $model->getAnimaux();
+            Flight::render('achatAnimaux', ['data' => $data, 'message' => $message]);
+        }
     }
+    
     
     public function venteAnimaux()
     {
