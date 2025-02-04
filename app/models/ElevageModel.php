@@ -211,33 +211,51 @@ class ElevageModel
             return 1;
         }
     }
+    
     public function venteAnimaux($id, $idAnimal, $idUser, $date)
     {
         $animals = $this->getAnimauxByUserDate($idUser, $date);
         $animal = null;
+
+        // Rechercher l'animal correspondant
         foreach ($animals as $a) {
             if ($a['IdAnimal'] == $idAnimal) {
                 $animal = $a;
                 break;
             }
         }
-    
-        if (!$animal || $animal['Vivant'] == "Non") {
-            return false; // L'animal est mort ou n'existe pas
+
+        if (!$animal) {
+            error_log("Animal non trouvé."); // Journaliser
+            return false;
         }
-    
+
+        if ($animal['Vivant'] == "Non") {
+            error_log("L'animal est mort."); // Journaliser
+            return false;
+        }
+
         $prixkg = $animal['PrixVenteParKg'];
-        $poid = $animal['Poids']; 
+        $poid = $animal['Poids'];
         $Montant_total = $poid * $prixkg;
-    
+
         $capital = $this->getCapital($idUser)['Capital'] + $Montant_total;
-    
+
+        // Mettre à jour le type de transaction
         $stmt = $this->db->prepare("UPDATE TransactionsAnimaux_Elevage SET TypeTransaction=? WHERE IdTransaction=?");
-        $stmt->execute(['vente', $id]);
+        $success = $stmt->execute(['vente', $id]);
+
+        if (!$success) {
+            error_log("Échec de la mise à jour de la transaction."); // Journaliser
+            return false;
+        }
+
+        // Mettre à jour le capital de l'utilisateur
         $this->updateCapital($idUser, $capital);
-    
-        return true;
-    }    
+
+        return true; // Vente réussie
+    }
+
 
     public function reintialiser($id,$montant){
         $stmt1 = $this->db->prepare("DELETE FROM TransactionsAnimaux_Elevage");

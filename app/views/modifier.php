@@ -55,6 +55,7 @@
                         <th>Prix de vente (par kg)</th>
                         <th>Nombre de jour sans manger</th>
                         <th>% perte de poids</th>
+                        <th>Quota Nourriture Journalier (en kg)</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -77,6 +78,9 @@
                             </td>
                             <td>
                                 <input type="number" step="0.01" name="pourcentagePertePoids[<?= $animaux['IdAnimal'] ?>]" value="<?= $animaux['PourcentagePertePoids'] ?>" required>
+                            </td>
+                            <td>
+                                <input type="number" name="QuotaNourritureJournalier[<?= $animaux['IdAnimal'] ?>]" value="<?= $animaux['QuotaNourritureJournalier'] ?>">
                             </td>
                         </tr>
                     <?php endforeach; ?>

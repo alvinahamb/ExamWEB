@@ -118,6 +118,7 @@ class AdminController
             $prixVente = $_POST['prixVente'][$idAnimal];
             $joursSansManger = $_POST['joursSansManger'][$idAnimal];
             $pourcentagePertePoids = $_POST['pourcentagePertePoids'][$idAnimal];
+            $quota = $_POST['QuotaNourritureJournalier'][$idAnimal];
 
             $message = $modele->updateAnimaux(
                 $typeAnimal, 
@@ -126,6 +127,7 @@ class AdminController
                 $prixVente, 
                 $joursSansManger, 
                 $pourcentagePertePoids, 
+                $quota, 
                 $idAnimal
             );
         }
@@ -174,6 +176,7 @@ class AdminController
         $prixVente = $_POST['prixVente'];
         $joursSansManger = $_POST['joursSansManger'];
         $pourcentagePertePoids = $_POST['pourcentagePertePoids'];
+        $quota = $_POST['QuotaNourritureJournalier'];
         $image = $_FILES['image']['name'];
 
         if (!empty($image)) {
@@ -182,7 +185,7 @@ class AdminController
             move_uploaded_file($_FILES['image']['tmp_name'], $targetFile);
         }
 
-        $message = $modele->addAnimal($typeAnimal, $poidsMin, $poidsMax, $prixVente, $joursSansManger, $pourcentagePertePoids, $image);
+        $message = $modele->addAnimal($typeAnimal, $poidsMin, $poidsMax, $prixVente, $joursSansManger, $pourcentagePertePoids, $quota, $image);
 
         $data = $modele->getAnimaux();
         $data2 = ['message' => $message];

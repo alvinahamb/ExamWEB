@@ -71,7 +71,7 @@
                 <label for="poidsMax">Poids Max (kg) :</label>
                 <input type="number" class="form-control form-control-sm" id="poidsMax" name="poidsMax" step="0.01" required>
             </div>
-
+            
             <div class="form-group">
                 <label for="prixVente">Prix Vente (€/kg) :</label>
                 <input type="number" class="form-control form-control-sm" id="prixVente" name="prixVente" step="0.01" required>
@@ -85,6 +85,11 @@
             <div class="form-group">
                 <label for="pourcentagePertePoids">Perte de Poids (%) :</label>
                 <input type="number" class="form-control form-control-sm" id="pourcentagePertePoids" name="pourcentagePertePoids" step="0.01" required>
+            </div>
+
+            <div class="form-group">
+                <label for="QuotaNourritureJournalier">Quota Nourriture Journalier :</label>
+                <input type="number" class="form-control form-control-sm" id="QuotaNourritureJournalier" name="QuotaNourritureJournalier" step="0.01" value="null">
             </div>
 
             <div class="form-group">
