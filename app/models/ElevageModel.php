@@ -71,23 +71,7 @@ class ElevageModel
         $stmt->execute([$id]);
         return $stmt->fetchAll();
     }
-
-    public function getIdAlimentByAnimal($idAnimal)
-    {
-        // Préparer la requête pour récupérer l'ID de l'aliment associé à cet animal
-        $stmt = $this->db->prepare("
-            SELECT IdAliment
-            FROM Animaux_Aliments
-            WHERE IdAnimal = ?
-        ");
-        $stmt->execute([$idAnimal]);
-
-        // Récupérer le résultat
-        $aliment = $stmt->fetch();
-
-        // Si un aliment est trouvé, retourner son ID, sinon retourner null
-        return $aliment ? $aliment['IdAliment'] : null;
-    }
+    
 
     public function getAnimauxByUserDate($idUser, $date)
     {
@@ -147,7 +131,7 @@ class ElevageModel
                 $animal['DateMort'] = "Encore vivant";
 
                 // Vérification des aliments disponibles pour l'utilisateur
-                $idAlimentAnimal = $this->getIdAlimentByAnimal($animal['IdAnimal']);
+                $idAlimentAnimal = $this->getAlimentByAnimaux($animal['IdAnimal'])['IdAliment'];
                 if (isset($alimentsParUtilisateur[$idAlimentAnimal]) && $alimentsParUtilisateur[$idAlimentAnimal] > 0) {
                     // L'utilisateur possède l'aliment nécessaire
                     $animal['EtatAliment'] = "Disponible";
