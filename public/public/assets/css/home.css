@@ -1,0 +1,55 @@
+body{
+    font-family: 'Times New Roman', Times, serif;
+}
+.home{
+    height: 82vh;
+    width: 100%;
+    padding: 2vh;
+}
+.home div{
+    height: 78vh;
+    width: 100%;
+    padding: 8%;
+    text-align: center;
+    border-radius: 2vh;
+    background-image: url("../../design_images/Background_home.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.home div h1{
+    font-weight: bolder;
+}
+.home button{
+    height: 8vh;
+    width: 70vh;
+    font-size: larger;
+    border: none;
+    border-radius: 2vh;
+    background-color: #063203;
+    color: #fcfcfc;
+}
+.home button:hover{
+    transform: scale(1.1);
+}
+#situation{
+    min-height: 50vh;
+    height: fit-content;
+    width: 100%;
+    margin-bottom: 8vh;
+}
+.reintialisation{
+    margin-right: auto;
+    margin-left: auto;
+    width: 50%;
+    height:50%;
+    text-align: center;
+}
+button{
+    height: 8vh;
+    width: 100%;
+    font-size: larger;
+    border: none;
+    border-radius: 2vh;
+    background-color: #063203;
+    color: #fcfcfc;
+}
