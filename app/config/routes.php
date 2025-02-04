@@ -37,6 +37,7 @@ $router->get('/', [ $UserController, 'login' ]);
 $router->get('/GoToLogIn', [ $UserController, 'login' ]);
 $router->get('/GoToSignUp', [ $UserController, 'signup' ]);
 $router->post('/CheckLogin', [ $UserController, 'CheckLogin' ]);
+$router->get('/CheckLogin', [ $UserController, 'home' ]);
 $router->post('/CheckSignUp', [ $UserController, 'InsertSignup' ]);
 $router->get('/deconnexion', [ $UserController, 'deconnexion' ]);
 $router->get('/home', [ $UserController, 'home' ]);
