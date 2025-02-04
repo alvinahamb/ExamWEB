@@ -72,11 +72,12 @@ class ElevageModel
         return $stmt->fetchAll();
     }
     
-    public function getAnimauxByUserDate2($id, $date)
+    public function getAnimauxByUserDate($idUser, $date)
     {
         $stmt = $this->db->prepare("
             SELECT a.Image, a.IdAnimal, a.TypeAnimal, a.PoidsMin, a.PoidsMax, a.Poids, a.PrixVenteParKg, 
-                a.JoursSansManger, a.PourcentagePertePoids, t.DateTransaction, t.IdTransaction
+                a.JoursSansManger, a.PourcentagePertePoids, a.QuotaNourritureJournalier, t.DateTransaction, t.IdTransaction, 
+                t.AutoVente, t.DateVente, t.TypeTransaction
             FROM TransactionsAnimaux_Elevage t
             JOIN Animaux_Elevage a ON t.IdAnimal = a.IdAnimal
             WHERE t.IdUtilisateur = ?
@@ -88,92 +89,16 @@ class ElevageModel
                     AND t2.DateTransaction <= ?
             )
         ");
-        $stmt->execute([$id, $date]);
-        $animals = $stmt->fetchAll();
-
-        foreach ($animals as &$animal) {
-            if (empty($animal['DateTransaction'])) {
-                $animal['Vivant'] = "Non"; 
-                $animal['DateMort'] = "Inconnue"; 
-                continue;
-            }
-            $animal['ImagePath'] = file_exists('public/assets/images/' . $animal['Image']) 
-                ? 'public/assets/images/' . $animal['Image'] 
-                : 'public/uploads/' . $animal['Image'];
-
-            $dateTransaction = new \DateTime($animal['DateTransaction']);
-            $dateNow = new \DateTime($date);
-            $diff = $dateTransaction->diff($dateNow)->days;
-
-            if ($diff > $animal['JoursSansManger']) {
-                $animal['Vivant'] = "Non"; // L'animal est mort
-
-                // Calcul de la date de décès
-                $dateMort = clone $dateTransaction;
-                $dateMort->modify('+' . $animal['JoursSansManger'] . ' days');
-                $animal['DateMort'] = $dateMort->format('Y-m-d');
-            } else {
-                $animal['Vivant'] = "Oui"; // L'animal est vivant
-                $animal['DateMort'] = "Encore vivant";
-            }
-
-            if ($diff > 0 && $animal['Vivant'] === "Oui") {
-                // Perte de poids par jour en fonction du pourcentage
-                $poidsPerdu = $diff * ($animal['PourcentagePertePoids'] / 100);
-                $nouveauPoids = $animal['Poids'] - $poidsPerdu;
-
-                // Si le poids tombe en dessous du poids minimal, on rétablit le poids minimal
-                if ($nouveauPoids < $animal['PoidsMin']) {
-                    $nouveauPoids = $animal['PoidsMin'];
-                }
-
-                // Mise à jour du poids de l'animal après la perte
-                $animal['Poids'] = $nouveauPoids;
-            }
-        }
-
-        return $animals;
-    }
-
-    public function getAnimauxByUserDate($id, $date)
-    {
-        $stmt = $this->db->prepare("
-            SELECT a.Image, a.IdAnimal, a.TypeAnimal, a.PoidsMin, a.PoidsMax, a.Poids, a.PrixVenteParKg, 
-                a.JoursSansManger, a.PourcentagePertePoids, a.QuotaNourritureJournalier, t.DateTransaction, t.IdTransaction
-            FROM TransactionsAnimaux_Elevage t
-            JOIN Animaux_Elevage a ON t.IdAnimal = a.IdAnimal
-            WHERE t.IdUtilisateur = ?
-            AND t.TypeTransaction = 'achat'
-            AND t.DateTransaction = (
-                SELECT MAX(t2.DateTransaction)
-                FROM TransactionsAnimaux_Elevage t2
-                WHERE t2.IdAnimal = t.IdAnimal
-                    AND t2.DateTransaction <= ?
-            )
-        ");
-        $stmt->execute([$id, $date]);
+        $stmt->execute([$idUser, $date]);
         $animals = $stmt->fetchAll();
 
         foreach ($animals as &$animal) {
             if (empty($animal['DateTransaction'])) {
                 $animal['Vivant'] = "Non";
                 $animal['DateMort'] = "Inconnue";
+                $animal['ImagePath'] = 'public/uploads/default.png'; // Chemin par défaut si aucune image
                 continue;
             }
-
-            // Récupérer le pourcentage de gain de poids pour le type d'animal
-            $alimentStmt = $this->db->prepare("
-                SELECT AVG(PourcentageGainPoids) AS AvgPourcentageGainPoids
-                FROM Alimentation_Elevage
-                WHERE TypeAnimal = ?
-            ");
-            $alimentStmt->execute([$animal['TypeAnimal']]);
-            $aliment = $alimentStmt->fetch();
-            $pourcentageGainPoids = $aliment ? (float) $aliment['AvgPourcentageGainPoids'] : 0;
-
-            $animal['ImagePath'] = file_exists('public/assets/images/' . $animal['Image']) 
-                ? 'public/assets/images/' . $animal['Image'] 
-                : 'public/uploads/' . $animal['Image'];
 
             $dateTransaction = new \DateTime($animal['DateTransaction']);
             $dateNow = new \DateTime($date);
@@ -181,42 +106,101 @@ class ElevageModel
 
             if ($diff > $animal['JoursSansManger']) {
                 $animal['Vivant'] = "Non"; // L'animal est mort
-
-                // Calcul de la date de décès
                 $dateMort = clone $dateTransaction;
                 $dateMort->modify('+' . $animal['JoursSansManger'] . ' days');
                 $animal['DateMort'] = $dateMort->format('Y-m-d');
             } else {
-                $animal['Vivant'] = "Oui"; // L'animal est vivant
+                $animal['Vivant'] = "Oui";
                 $animal['DateMort'] = "Encore vivant";
 
-                if ($diff > 0) {
-                    if (is_null($animal['QuotaNourritureJournalier']) || $animal['QuotaNourritureJournalier'] == 0) {
-                        // Si le quota journalier est NULL, appliquer la perte de poids
-                        $poidsPerdu = $diff * ($animal['PourcentagePertePoids'] / 100);
-                        $nouveauPoids = $animal['Poids'] - $poidsPerdu;
-                    } else {
-                        // Si le quota journalier est défini, appliquer le gain de poids avec le pourcentage
-                        $poidsGagne = $diff * $animal['QuotaNourritureJournalier'] * (1 + $pourcentageGainPoids / 100);
-                        $nouveauPoids = $animal['Poids'] + $poidsGagne;
-                    }
-
-                    // Vérification des limites du poids
-                    if ($nouveauPoids < $animal['PoidsMin']) {
-                        $nouveauPoids = $animal['PoidsMin'];
-                    } elseif ($nouveauPoids > $animal['PoidsMax']) {
-                        $nouveauPoids = $animal['PoidsMax'];
-                    }
-
-                    // Mise à jour du poids de l'animal
-                    $animal['Poids'] = $nouveauPoids;
+                // Conditions de vente automatique
+                if ($animal['AutoVente'] == 1 && $animal['Poids'] >= $animal['PoidsMin']) {
+                    $this->venteAnimaux($animal['IdTransaction'], $animal['IdAnimal'], $idUser, $date);
+                } elseif ($animal['DateVente'] !== null && $dateNow >= new \DateTime($animal['DateVente'])) {
+                    $this->venteAnimaux($animal['IdTransaction'], $animal['IdAnimal'], $idUser, $date);
                 }
             }
+
+            // Ajouter le chemin de l'image
+            $animal['ImagePath'] = file_exists('public/assets/images/' . $animal['Image']) 
+                ? 'public/assets/images/' . $animal['Image'] 
+                : 'public/uploads/' . $animal['Image'];
         }
 
         return $animals;
     }
+    
+    public function getAnimauxByUserDate1($id, $date)
+    {
+        $stmt = $this->db->prepare("
+            SELECT a.Image, a.IdAnimal, a.TypeAnimal, a.PoidsMin, a.PoidsMax, a.Poids, a.PrixVenteParKg, 
+                a.JoursSansManger, a.PourcentagePertePoids, a.QuotaNourritureJournalier, 
+                t.DateTransaction, t.IdTransaction, t.AutoVente, t.DateVente, t.Etat
+            FROM TransactionsAnimaux_Elevage t
+            JOIN Animaux_Elevage a ON t.IdAnimal = a.IdAnimal
+            WHERE t.IdUtilisateur = ?
+            AND t.TypeTransaction = 'achat'
+            AND t.DateTransaction = (
+                SELECT MAX(t2.DateTransaction)
+                FROM TransactionsAnimaux_Elevage t2
+                WHERE t2.IdAnimal = t.IdAnimal
+                    AND t2.DateTransaction <= ?
+            )
+        ");
+        $stmt->execute([$id, $date]);
+        $animals = $stmt->fetchAll();
 
+        foreach ($animals as &$animal) {
+            $dateNow = new \DateTime($date);
+            $dateTransaction = new \DateTime($animal['DateTransaction']);
+            $diff = $dateTransaction->diff($dateNow)->days;
+
+            if ($diff > $animal['JoursSansManger']) {
+                // Si l'animal est mort
+                $animal['Vivant'] = "Non";
+                $dateMort = clone $dateTransaction;
+                $dateMort->modify('+' . $animal['JoursSansManger'] . ' days');
+                $animal['DateMort'] = $dateMort->format('Y-m-d');
+                $animal['Etat'] = "Mort";
+            } else {
+                // Si l'animal est vivant
+                $animal['Vivant'] = "Oui";
+                $animal['DateMort'] = "Encore vivant";
+
+                if ($diff > 0) {
+                    if (is_null($animal['QuotaNourritureJournalier']) || $animal['QuotaNourritureJournalier'] == 0) {
+                        // Appliquer la perte de poids
+                        $poidsPerdu = $diff * ($animal['PourcentagePertePoids'] / 100);
+                        $nouveauPoids = $animal['Poids'] - $poidsPerdu;
+                    } else {
+                        // Appliquer le gain de poids
+                        $poidsGagne = $diff * $animal['QuotaNourritureJournalier'] * (1 + $animal['PourcentagePertePoids'] / 100);
+                        $nouveauPoids = $animal['Poids'] + $poidsGagne;
+                    }
+
+                    // Vérification des limites du poids
+                    $nouveauPoids = max($animal['PoidsMin'], min($nouveauPoids, $animal['PoidsMax']));
+                    $animal['Poids'] = $nouveauPoids;
+                }
+
+                // Gestion de la vente
+                if ($animal['AutoVente'] == 1 && $animal['Poids'] >= $animal['PoidsMin']) {
+                    $animal['Etat'] = "Vendu";
+                } elseif ($animal['DateVente'] && new \DateTime($animal['DateVente']) <= $dateNow) {
+                    $animal['Etat'] = "Vendu";
+                } else {
+                    $animal['Etat'] = "Possession";
+                }
+            }
+
+            // Ajouter le chemin de l'image
+            $animal['ImagePath'] = file_exists('public/assets/images/' . $animal['Image']) 
+                ? 'public/assets/images/' . $animal['Image'] 
+                : 'public/uploads/' . $animal['Image'];
+        }
+
+        return $animals;
+    }
 
     public function getAnimaux()
     {
