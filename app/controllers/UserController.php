@@ -68,14 +68,14 @@ class UserController
             $model = new ElevageModel(Flight::db());
             $debut = $_GET['debut'];
             $result = $model->getAnimauxByUserDate($_SESSION['IdUser'], $debut);
-            $data = $result['animals'];
-            $message = $result['message'];
+            $data = $result;
+            // $message = $result['message'];
     
             // Retourne du JSON si AJAX
             header('Content-Type: application/json');
             echo json_encode([
                 'animals' => $data,
-                'message' => $message
+                // 'message' => $message
             ]);
             exit;
         }

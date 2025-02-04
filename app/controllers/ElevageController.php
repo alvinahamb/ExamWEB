@@ -65,14 +65,12 @@ class ElevageController
         if (isset($_GET['autovente'])) {
             $autovente = $_GET['autovente'];
         }
-    
         $model = new ElevageModel(Flight::db());
         $confirmation = $model->achatAnimaux($id, $_SESSION['IdUser'], $autovente, $date);
         $message = "Achat effectué avec succès";
         if ($confirmation == 1) {
             $message = "Action impossible, solde insuffisant";
         }
-    
         // Vérification de l'option AJAX
         if (isset($_GET['ajax']) && $_GET['ajax'] == 'true') {
             // Renvoi de la réponse JSON

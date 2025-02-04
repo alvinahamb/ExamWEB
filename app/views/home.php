@@ -57,8 +57,8 @@
                 <h1>Bienvenue sur Farm – Votre partenaire en élevage</h1>
                 <h3>Trouvez les meilleurs animaux</h3>
                 <h3>Choisissez des aliments adaptés pour une croissance optimale</h3>
-                <h3>Optimisez vos revenus avec une bonne gestion</h3> 
-                <br>      
+                <h3>Optimisez vos revenus avec une bonne gestion</h3>
+                <br>
                 <form action="#situation" method="get">
                     <button>Voir la situation de mon elevage</button>
                 </form>
@@ -70,26 +70,15 @@
                 <div id="alert" class="alert alert-success" role="alert"><?= $message ?></div>
             <?php endif; ?>
 
-            <form id="dateForm">
-                <input type="date" id="debut" name="debut" placeholder="Date de début">
+            <form id="dateForm" style="width: 50%;margin-left:auto;margin-right:auto;">
+                <br>
+                <input type="date" class="form-control" id="debut" name="debut" placeholder="Date de début">
+                <br>
                 <button type="button" onclick="getData()">Confirmer</button>
             </form>
-
-            <table border="1" cellspacing="0" id="resultTable">
-                <tr>
-                    <th>Date</th>
-                    <th>Type</th>
-                    <th>Poids</th>
-                    <th>PoidsMin</th>
-                    <th>PoidsMax</th>
-                    <th>Prix Vente Par Kg</th>
-                    <th>JoursSansManger</th>
-                    <th>Perte Poids (%)</th>
-                    <th>Date Mort</th>
-                    <th>Image</th>
-                    <th>Action</th>
-                </tr>
-            </table>
+            <div style="margin-top: 10vh;" class="container">
+                <div class="row" id="resultContainer"></div>
+            </div>
 
             <script>
                 function getData() {
@@ -100,19 +89,17 @@
                     xhr.onreadystatechange = function() {
                         if (xhr.readyState === 4 && xhr.status === 200) {
                             var data = JSON.parse(xhr.responseText);
-                            
+
                             // Afficher les animaux
                             displayResults(data.animals);
 
                             // Afficher le message si il existe
                             if (data.message) {
                                 var alertDiv = document.createElement('div');
-                                alertDiv.className = 'alert alert-success'; // Ou utilisez alert-danger selon le message
+                                alertDiv.className = 'alert alert-success';
                                 alertDiv.role = 'alert';
                                 alertDiv.textContent = data.message;
-                                
-                                // Afficher le message dans l'élément HTML
-                                document.body.appendChild(alertDiv); // Vous pouvez aussi spécifier un autre conteneur pour l'alerte
+                                document.body.appendChild(alertDiv);
                             }
                         }
                     };
@@ -120,36 +107,35 @@
                 }
 
                 function displayResults(data) {
-                    var table = document.getElementById("resultTable");
+                    var container = document.getElementById("resultContainer");
+                    container.innerHTML = ""; // Vider l'ancien contenu
 
-                    // Supprime les anciennes lignes (sauf l'en-tête)
-                    while (table.rows.length > 1) {
-                        table.deleteRow(1);
-                    }
-
-                    // Ajoute les nouvelles données
                     data.forEach(row => {
-                        var tr = document.createElement("tr");
-                        tr.innerHTML = `
-                        <td>${row.DateTransaction}</td>
-                        <td><b>${row.TypeAnimal}</b></td>
-                        <td>${row.Poids}</td>
-                        <td>${row.PoidsMin}</td>
-                        <td>${row.PoidsMax}</td>
-                        <td>${row.PrixVenteParKg}</td>
-                        <td>${row.JoursSansManger}</td>
-                        <td>${row.PourcentagePertePoids}</td>
-                        <td>${row.DateMort}</td> 
-                        <td><img src="${row.ImagePath}" alt="Image" width="100"></td>
-                        <td>
-                            <button onclick="vendre(${row.IdTransaction}, ${row.IdAnimal})">Vendre</button>
-                        </td>
-
-                    `;
-                        table.appendChild(tr);
+                        var div = document.createElement("div");
+                        div.className = "col-md-4 mb-3";
+                        div.innerHTML = `<hr>
+                <div class="card">
+                    <img src="${row.ImagePath}" class="card-img-top" alt="Image">
+                    <div class="card-body">
+                        <h4><b>${row.TypeAnimal}</b></h4>
+                        <p class="card-text">
+                            <strong>Date:</strong> ${row.DateTransaction} <br>
+                            <strong>Poids:</strong> ${row.Poids} kg (Min: ${row.PoidsMin}, Max: ${row.PoidsMax}) <br>
+                            <strong>Prix Vente/Kg:</strong> ${row.PrixVenteParKg} <br>
+                            <strong>Jours sans manger:</strong> ${row.JoursSansManger} <br>
+                            <strong>Perte Poids:</strong> ${row.PourcentagePertePoids}% <br>
+                            <strong>Date Mort:</strong> ${row.DateMort || "N/A"}
+                        </p>
+                        <button class="btn btn-primary" onclick="vendre(${row.IdTransaction}, ${row.IdAnimal})">Vendre</button>
+                    </div>
+                </div>
+            `;
+                        container.appendChild(div);
                     });
                 }
+            </script>
 
+            <script>
                 function vendre(id, idAnimal) {
                     // Récupérer la date du champ "debut"
                     var date = document.getElementById("debut").value;
@@ -163,7 +149,7 @@
                     // Envoi de la requête avec la date sélectionnée
                     var xhr = new XMLHttpRequest();
                     xhr.open("GET", "vente?id=" + id + "&idAnimal=" + idAnimal + "&date=" + date, true);
-                    xhr.onreadystatechange = function () {
+                    xhr.onreadystatechange = function() {
                         if (xhr.readyState === 4 && xhr.status === 200) {
                             window.location.href = "vente?id=" + id + "&idAnimal=" + idAnimal + "&date=" + date;
                         }
