@@ -93,7 +93,6 @@ class ElevageController
     
         // Récupération des données mises à jour
         $data = $model->getAnimaux();
-    
         // Rendu avec message
         Flight::render('home', ['data' => $data, 'message' => $message]);
     }
