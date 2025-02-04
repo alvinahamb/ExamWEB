@@ -38,9 +38,9 @@
         <?php }
         ?>
         <div style="height: 85vh;">
-            <div class="col-md-7"></div>
+            <div class="col-md-4"></div>
             <div class="col-md-3" id="formulaire">
-                <h1><span style="font-size: xx-large;">Bienvenue!</span></h1>
+                <h3>Bienvenue sur <span style="font-size: xx-large;"><br>FarmControl!</span></h3>
                 <br>
                 <form action="CheckLogin" method="POST">
                     <p><input type="email" class="form-control"  value="bob@example.com" name="email" placeholder="Email" required></p>

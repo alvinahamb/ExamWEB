@@ -16,7 +16,7 @@
 <body class="signup">
     <div class="menu-fixe">
         <div class="logo">
-            <a href="logo"><img width="150" src="public/assets/images/logo.png" alt="logo"></a>
+            <a href="logo"><img width="50" height="50" src="public/assets/images/logo.png" alt="logo"></a>
         </div>
         <div class="nav">
             <ul>
@@ -26,15 +26,15 @@
             </ul>
         </div>
     </div>
-    <div style="margin-top: 15vh;">
+    <div style="margin-top: 12vh;">
         <?php if (isset($erreur)) { ?>
             <div id="alert" class="alert alert-danger" role="alert"><?= $erreur ?></div>
         <?php }
         ?>
-        <div class="row">
-            <div class="col-md-2"></div>
+        <div >
+            <div class="col-md-4" ></div>
             <div class="col-md-3" id="formulaire">
-                <h1>Joignez-vous à nous!</h1>
+                <h2>Joignez-vous à nous!</h2>
                 <form action="CheckSignUp" method="post">
                     <p><input type="email" name="email" class="form-control" placeholder="Email" required></p>
                     <p><input type="text" name="username" class="form-control" placeholder="Username" required></p>
@@ -42,13 +42,16 @@
                     <p><input type="number" name="phone" class="form-control" placeholder="Phone number" required></p>
                     <p><button class="btn btn-lg btn-primary btn-block" type="submit">Sign Up</button></p>
                     <p>
-                        <center><a style="color:white;" href="GoToLogIn">Login</a></center>
+                        <center><a href="GoToLogIn">Login</a></center>
                     </p>
                 </form>
             </div>
-            <div class="col-md-7"></div>
+            <!-- <div class="col-md-7" id="image"></div> -->
         </div>
     </div>
+    <footer>
+            <p>Kasaina ETU003287 & Blessed ETU003326 & Kiady ETU3244</p>
+        </footer>
 </body>
 
 </html>

@@ -1,4 +1,8 @@
 /* header  */
+body{
+    font-family:'Times New Roman', Times, serif;
+    text-align: center;
+}
 .menu-fixe {
     position: fixed;
     top: 0;
@@ -38,7 +42,7 @@
 }
 
 #formulaire {
-    background-color: rgba(197, 197, 197, 0.342);
+    background-color: rgb(251, 251, 251);
     margin-top: 15vh;
     width: 60vh;
 }
@@ -56,13 +60,14 @@
     font-size: larger;
     border: none;
     border-radius: 2vh;
-    color: #ffffff;
-    background-color: #000000;
+    background-color: #063203;
+    color: #fcfcfc;
 }
 
 .btn:hover {
-    background-color: #868686;
-    color: #000000;
+    border: #063203 solid 1px;
+    background-color:  #93bd9b;
+    color:#063203;
 }
 
 footer {
@@ -76,7 +81,15 @@ footer {
 }
 
 .login {
+    background-image: url('../../design_images/back1\ \(1\).jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position-x: center;
+}
+.signup{
     background-image: url('../../design_images/back1 (1).jpg');
     background-repeat: no-repeat;
     background-size: cover;
+    background-position-x: center;
+    /* height:85vh; */
 }
