@@ -19,7 +19,7 @@
             <a href="home"><img width="80" height="80" src="public/assets/images/logo.png" alt="logo"></a>
         </div>
     </div>
-    <div style="margin-top: 15vh;">
+    <div style="margin-top: 15vh;margin-bottom:15vh;">
         <?php if (isset($erreur)) { ?>
             <div id="alert" class="alert alert-danger" role="alert"><?= $erreur ?></div>
         <?php }
