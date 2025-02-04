@@ -74,21 +74,30 @@ class ElevageController
         }
         Flight::render('achatAnimaux', ['data' => $data, 'message' => $message]);
     }
-
+    
     public function venteAnimaux()
     {
         $id = $_GET['id'];
         $idAnimal = $_GET['idAnimal'];
         $date = $_GET['date'];
+    
         $model = new ElevageModel(Flight::db());
-        $vrai = $model->venteAnimaux($id, $idAnimal, $_SESSION['IdUser'],$date);
-        $message = "Vente effectué avec succès";
-        if ($vrai == false) {
-            $message = "Echec de la vente";
+        $vrai = $model->venteAnimaux($id, $idAnimal, $_SESSION['IdUser'], $date);
+    
+        // Vérification du retour et message approprié
+        if ($vrai==1) {
+            $message = "Vente effectuée avec succès";
+        } else {
+            $message = "Échec de la vente. L'animal est peut-être mort ou inexistant.";
         }
+    
+        // Récupération des données mises à jour
         $data = $model->getAnimaux();
+    
+        // Rendu avec message
         Flight::render('home', ['data' => $data, 'message' => $message]);
     }
+    
 
     public function nourriAnimaux()
     {

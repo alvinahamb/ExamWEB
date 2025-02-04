@@ -55,6 +55,7 @@
                     <th>Prix de vente (par kg)</th>
                     <th>Nombre de jour sans manger</th>
                     <th>% perte de poids</th>
+                    <th>Quota Nourriture Journalier (en kg)</th>
                     <th>Image</th>
                     <th>Action</th>
                 </tr>
@@ -68,6 +69,7 @@
                         <td><?= $animaux['PrixVenteParKg'] ?>$</td>
                         <td><?= $animaux['JoursSansManger'] ?></td>
                         <td><?= $animaux['PourcentagePertePoids'] ?></td>
+                        <td><?= !empty($animaux['QuotaNourritureJournalier']) ? $animaux['QuotaNourritureJournalier'] : 'Sans quota' ?></td>
                         <td>
                             <?php if (!empty($animaux['Image'])) : ?>
                                 <img src="<?php echo file_exists('public/assets/images/' . $animaux['Image']) ? 'public/assets/images/' . $animaux['Image'] : 'public/uploads/' . $animaux['Image']; ?>" alt="Image" width="100">

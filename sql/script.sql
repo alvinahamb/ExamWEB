@@ -126,4 +126,3 @@ CREATE TABLE Nutrition_Elevage (
     FOREIGN KEY (IdAliment) REFERENCES Alimentation_Elevage(IdAliment)
 );
 
-

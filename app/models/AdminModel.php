@@ -38,14 +38,14 @@ class AdminModel {
         return $data;
     }
 
-    public function updateAnimaux($typeAnimal, $poidsMin, $poidsMax, $prixVente, $joursSansManger, $pourcentagePertePoids, $idAnimal)
+    public function updateAnimaux($typeAnimal, $poidsMin, $poidsMax, $prixVente, $joursSansManger, $pourcentagePertePoids, $quota, $idAnimal)
     {
         $stmt = $this->db->prepare("UPDATE Animaux_Elevage 
                                     SET TypeAnimal = ?, PoidsMin = ?, PoidsMax = ?, PrixVenteParKg = ?, 
-                                        JoursSansManger = ?, PourcentagePertePoids = ? 
+                                        JoursSansManger = ?, PourcentagePertePoids = ?, QuotaNourritureJournalier = ?
                                     WHERE IdAnimal = ?");
         
-        $stmt->execute([$typeAnimal, $poidsMin, $poidsMax, $prixVente, $joursSansManger, $pourcentagePertePoids, $idAnimal]);
+        $stmt->execute([$typeAnimal, $poidsMin, $poidsMax, $prixVente, $joursSansManger, $pourcentagePertePoids, $quota, $idAnimal]);
 
         return "Mise à jour réussie!";
     }
@@ -91,13 +91,13 @@ class AdminModel {
         }
     }
 
-    public function addAnimal($typeAnimal, $poidsMin, $poidsMax, $prixVente, $joursSansManger, $pourcentagePertePoids, $image) {
+    public function addAnimal($typeAnimal, $poidsMin, $poidsMax, $prixVente, $joursSansManger, $pourcentagePertePoids, $quota, $image) {
         // Préparation de la requête SQL pour insérer un nouvel animal
-        $stmt = $this->db->prepare("INSERT INTO Animaux_Elevage (TypeAnimal, PoidsMin, PoidsMax, PrixVenteParKg, JoursSansManger, PourcentagePertePoids, Image) 
-                                    VALUES (?, ?, ?, ?, ?, ?, ?)");
+        $stmt = $this->db->prepare("INSERT INTO Animaux_Elevage (TypeAnimal, PoidsMin, PoidsMax, PrixVenteParKg, JoursSansManger, PourcentagePertePoids, QuotaNourritureJournalier, Image) 
+                                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
 
         // Exécution de la requête avec les données du formulaire
-        $stmt->execute([$typeAnimal, $poidsMin, $poidsMax, $prixVente, $joursSansManger, $pourcentagePertePoids, $image]);
+        $stmt->execute([$typeAnimal, $poidsMin, $poidsMax, $prixVente, $joursSansManger, $pourcentagePertePoids, $quota, $image]);
 
         // Retourner un message de succès
         return "Animal ajouté avec succès!";
