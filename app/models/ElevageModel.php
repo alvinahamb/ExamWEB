@@ -197,15 +197,15 @@ class ElevageModel
         $stmt->execute([$montant, $id]);
     }
 
-    public function achatAnimaux($id, $idUser)
+    public function achatAnimaux($id, $idUser,$autovente,$date)
     {
         $poid = $this->getAnimalById($id)['Poids'];
         $prixkg = $this->getAnimalById($id)['PrixVenteParKg'];
         $Montant_total = $poid * $prixkg;
         $result = $this->updateCapitalAchat($idUser, $Montant_total);
         if ($result == 0) {
-            $stmt = $this->db->prepare("INSERT INTO TransactionsAnimaux_Elevage (TypeTransaction,DateTransaction, IdAnimal,IdUtilisateur, Poids, Montant_total)  VALUES (?,NOW(),?,?,?,?)");
-            $stmt->execute(['achat', $id, $idUser, $poid, $Montant_total]);
+            $stmt = $this->db->prepare("INSERT INTO TransactionsAnimaux_Elevage (TypeTransaction,DateTransaction, IdAnimal,IdUtilisateur, Poids, Montant_total,Autovente,DateVente)  VALUES (?,NOW(),?,?,?,?,?,?)");
+            $stmt->execute(['achat', $id, $idUser, $poid, $Montant_total,$autovente,$date]);
             return 0;
         } else {
             return 1;

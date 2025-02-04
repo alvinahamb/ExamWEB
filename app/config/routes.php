@@ -55,6 +55,8 @@ $router->get('/nourrir', [ $ElevageController, 'pageNourrir' ]);
 $router->post('/formulaireNourrir', [ $ElevageController, 'nourriAnimaux' ]);
 $router->get('/reintialiser', [ $ElevageController, 'goToReintialiser' ]);
 $router->get('/reintialisationCapital', [ $ElevageController, 'reintialisation' ]);
+// version 2 
+$router->get('/autoventeAchat', [ $ElevageController, 'ParamAutovente' ]);
 
 $router->get('/hello-world/@name', function($name) {
 	echo '<h1>Hello world! Oh hey '.$name.'!</h1>';
