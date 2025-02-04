@@ -201,7 +201,7 @@ class ElevageModel
     
         return $animals;
     }
-    
+
     public function venteAnimaux($id, $idAnimal, $idUser, $date)
     {
         $animals = $this->getAnimauxByUserDate($idUser, $date);
