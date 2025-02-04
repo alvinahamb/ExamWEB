@@ -92,6 +92,20 @@ class ElevageModel
         $stmt->execute([$idUser, $date]);
         $animals = $stmt->fetchAll();
 
+        // Requête pour récupérer les aliments possédés par l'utilisateur
+        $stmtAliments = $this->db->prepare("
+            SELECT IdAliment, Quantite
+            FROM TransactionsAlimentation_Elevage
+            WHERE IdUtilisateur = ?
+            AND DateTransaction <= ?
+        ");
+        $stmtAliments->execute([$idUser, $date]);
+        $alimentsPossedes = $stmtAliments->fetchAll();
+        $alimentsParUtilisateur = [];
+        foreach ($alimentsPossedes as $aliment) {
+            $alimentsParUtilisateur[$aliment['IdAliment']] = $aliment['Quantite'];
+        }
+
         foreach ($animals as &$animal) {
             if (empty($animal['DateTransaction'])) {
                 $animal['Vivant'] = "Non";
@@ -113,6 +127,16 @@ class ElevageModel
                 $animal['Vivant'] = "Oui";
                 $animal['DateMort'] = "Encore vivant";
 
+                // Vérification des aliments disponibles pour l'utilisateur
+                $idAlimentAnimal = $this->getIdAlimentByAnimaux($animal['IdAnimal']);
+                if (isset($alimentsParUtilisateur[$idAlimentAnimal]) && $alimentsParUtilisateur[$idAlimentAnimal] > 0) {
+                    // L'utilisateur possède l'aliment nécessaire
+                    $animal['EtatAliment'] = "Disponible";
+                } else {
+                    // L'utilisateur ne possède pas l'aliment
+                    $animal['EtatAliment'] = "Non disponible";
+                }
+
                 // Conditions de vente automatique
                 if ($animal['AutoVente'] == 1 && $animal['Poids'] >= $animal['PoidsMin']) {
                     $this->venteAnimaux($animal['IdTransaction'], $animal['IdAnimal'], $idUser, $date);
@@ -129,6 +153,7 @@ class ElevageModel
 
         return $animals;
     }
+
     
     public function getAnimauxByUserDate1($id, $date)
     {
