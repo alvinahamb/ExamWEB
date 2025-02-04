@@ -34,7 +34,7 @@
         <div >
             <div class="col-md-4" ></div>
             <div class="col-md-3" id="formulaire">
-                <h2>Joignez-vous à nous!</h2>
+                <h3>Joignez-vous à nous!</h3>
                 <form action="CheckSignUp" method="post">
                     <p><input type="email" name="email" class="form-control" placeholder="Email" required></p>
                     <p><input type="text" name="username" class="form-control" placeholder="Username" required></p>
