@@ -95,17 +95,22 @@
                         return;
                     }
                     let xhr = new XMLHttpRequest();
-                    let url = "achatAnimaux?id=" + idAnimal + "&date=" + dateVente + "&autovente=" + autovente;
+                    let url = "achatAnimaux?id=" + idAnimal + "&date=" + dateVente + "&autovente=" + autovente + "&ajax=true";
 
                     xhr.open("GET", url, true);
                     xhr.send();
 
                     xhr.onreadystatechange = function() {
                         if (xhr.readyState === 4 && xhr.status === 200) {
-                            xhr.onreadystatechange = null; 
-                            window.location.href = "goToAchatAnimaux?message=Achat effectué avec succès";
+                            // Si la réponse est en JSON, traite la réponse
+                            let response = JSON.parse(xhr.responseText);
+                            alert(response.message); // Affichage du message
+
+                            // Redirection après message
+                            window.location.href = "goToAchatAnimaux?message=" + encodeURIComponent(response.message);
                         }
                     };
+
                 }
             });
         });
