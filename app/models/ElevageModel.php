@@ -131,7 +131,7 @@ class ElevageModel
                 $animal['DateMort'] = "Encore vivant";
 
                 // Vérification des aliments disponibles pour l'utilisateur
-                $idAlimentAnimal = $this->getAlimentByAnimaux($animal['IdAnimal'])['IdAliment'];
+                $idAlimentAnimal = $this->getAlimentByAnimaux($animal['IdAnimal'])[0]['IdAliment'];
                 if (isset($alimentsParUtilisateur[$idAlimentAnimal]) && $alimentsParUtilisateur[$idAlimentAnimal] > 0) {
                     // L'utilisateur possède l'aliment nécessaire
                     $animal['EtatAliment'] = "Disponible";
