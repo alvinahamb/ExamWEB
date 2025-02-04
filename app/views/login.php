@@ -16,7 +16,7 @@
 <body class="login">
     <div class="menu-fixe">
         <div class="logo">
-            <a href="logo"><img width="150" src="public/assets/images/logo.png" alt="logo"></a>
+            <a href="logo"><img width="50" height="50" src="public/assets/images/logo.png" alt="logo"></a>
         </div>
         <div class="nav">
             <ul>

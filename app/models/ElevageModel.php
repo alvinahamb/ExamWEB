@@ -40,15 +40,17 @@ class ElevageModel
 
     public function achatAliment($id, $quantite, $idUser)
     {
+        $capital = $this->getUserById($idUser)['Capital'];
         $prixUnitaire = $this->getAlimentById($id)['PrixUnitaire'];
         $prix = $prixUnitaire * $quantite;
 
         if ($this->checkSoldeApresAchat($idUser, $prix)) {
-            $stmtUpdate = $this->updateCapital($idUser, $prix);
-
+            $stmtUpdate = $this->updateCapital($idUser,$capital-$prix);
             $stmt = $this->db->prepare("INSERT INTO TransactionsAlimentation_Elevage (DateTransaction, IdAliment, Quantite, IdUtilisateur) VALUES (NOW(), ?, ?, ?)");
             $stmt->execute([$id, $quantite, $idUser]);
+            return 0;
         }
+        return 1;
     }
 
 
