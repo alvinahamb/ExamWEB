@@ -5,10 +5,10 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
-    <script src="/assets/js/jquery.min.js"></script>
-    <script src="/assets/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="/assets/css/connexion.css">
+    <link href="public/assets/css/bootstrap.min.css" rel="stylesheet">
+    <script src="public/assets/js/jquery.min.js"></script>
+    <script src="public/assets/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="public/assets/css/connexion.css">
     <link rel="icon" href="">
     <title></title>
 </head>
@@ -16,7 +16,7 @@
 <body>
     <div class="menu-fixe" style="box-shadow: 5px 5px 5px rgba(126, 126, 126, 0.575);">
         <div class="logo">
-            <a href="home"><img width="80" height="80" src="/assets/images/logo.png" alt="logo"></a>
+            <a href="home"><img width="80" height="80" src="public/assets/images/logo.png" alt="logo"></a>
         </div>
         <div>
             <ul class="nav nav-tabs nav-justified">
@@ -55,6 +55,7 @@
                     <th>Prix de vente (par kg)</th>
                     <th>Nombre de jour sans manger</th>
                     <th>% perte de poids</th>
+                    <th>Quota Nourriture Journalier (en kg)</th>
                     <th>Image</th>
                     <th>Action</th>
                 </tr>
@@ -68,9 +69,10 @@
                         <td><?= $animaux['PrixVenteParKg'] ?>$</td>
                         <td><?= $animaux['JoursSansManger'] ?></td>
                         <td><?= $animaux['PourcentagePertePoids'] ?></td>
+                        <td><?= !empty($animaux['QuotaNourritureJournalier']) ? $animaux['QuotaNourritureJournalier'] : 'Sans quota' ?></td>
                         <td>
                             <?php if (!empty($animaux['Image'])) : ?>
-                                <img src="<?php echo file_exists('/assets/images/' . $animaux['Image']) ? '/assets/images/' . $animaux['Image'] : '/uploads/' . $animaux['Image']; ?>" alt="Image" width="100">
+                                <img src="<?php echo file_exists('public/assets/images/' . $animaux['Image']) ? 'public/assets/images/' . $animaux['Image'] : 'public/uploads/' . $animaux['Image']; ?>" alt="Image" width="100">
                             <?php else : ?>
                                 <span>Pas d'image</span>
                             <?php endif; ?>

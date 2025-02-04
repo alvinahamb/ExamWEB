@@ -5,11 +5,11 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- <link href="/assets/css/bootstrap.min.css" rel="stylesheet"> -->
-    <script src="/assets/js/jquery.min.js"></script>
-    <script src="/assets/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="/assets/css/login.css">
-    <!-- <link rel="stylesheet" href="/assets/css/admin.css"> -->
+    <link href="public/assets/css/bootstrap.min.css" rel="stylesheet">
+    <script src="public/assets/js/jquery.min.js"></script>
+    <script src="public/assets/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="public/assets/css/base.css">
+    <link rel="stylesheet" href="public/assets/css/home.css">
     <link rel="icon" href="">
     <title>Elevage</title>
 </head>
@@ -33,7 +33,7 @@
             </ul>
         </div>
         <div class="logo">
-            <a href="home"><img width="50" height="50" src="/assets/images/logo.png" alt="logo"></a>
+            <a href="home"><img width="50" height="50" src="public/assets/images/logo.png" alt="logo"></a>
         </div>
         <div>
             <ul class="nav nav-tabs nav-justified">
@@ -79,12 +79,14 @@
                 <tr>
                     <th>Date</th>
                     <th>Type</th>
+                    <th>Poids</th>
                     <th>PoidsMin</th>
                     <th>PoidsMax</th>
                     <th>Prix Vente Par Kg</th>
                     <th>JoursSansManger</th>
                     <th>Perte Poids (%)</th>
-                    <th>Vivant</th>
+                    <th>Date Mort</th>
+                    <th>Image</th>
                     <th>Action</th>
                 </tr>
             </table>
@@ -98,7 +100,20 @@
                     xhr.onreadystatechange = function() {
                         if (xhr.readyState === 4 && xhr.status === 200) {
                             var data = JSON.parse(xhr.responseText);
-                            displayResults(data);
+                            
+                            // Afficher les animaux
+                            displayResults(data.animals);
+
+                            // Afficher le message si il existe
+                            if (data.message) {
+                                var alertDiv = document.createElement('div');
+                                alertDiv.className = 'alert alert-success'; // Ou utilisez alert-danger selon le message
+                                alertDiv.role = 'alert';
+                                alertDiv.textContent = data.message;
+                                
+                                // Afficher le message dans l'élément HTML
+                                document.body.appendChild(alertDiv); // Vous pouvez aussi spécifier un autre conteneur pour l'alerte
+                            }
                         }
                     };
                     xhr.send();
@@ -118,32 +133,44 @@
                         tr.innerHTML = `
                         <td>${row.DateTransaction}</td>
                         <td><b>${row.TypeAnimal}</b></td>
+                        <td>${row.Poids}</td>
                         <td>${row.PoidsMin}</td>
                         <td>${row.PoidsMax}</td>
                         <td>${row.PrixVenteParKg}</td>
                         <td>${row.JoursSansManger}</td>
                         <td>${row.PourcentagePertePoids}</td>
-                        <td>${row.Vivant}</td> <!-- Affiche 'Oui' ou 'Non' selon l'état de l'animal -->
+                        <td>${row.DateMort}</td> 
+                        <td><img src="${row.ImagePath}" alt="Image" width="100"></td>
                         <td>
-                            <button onclick="vendre(${row.IdTransaction},${row.IdAnimal},${row.DateTransaction})">Vendre</button>
-                            <button onclick="nourrir(${row.IdAnimal})">Nourrir</button>
+                            <button onclick="vendre(${row.IdTransaction}, ${row.IdAnimal})">Vendre</button>
                         </td>
+
                     `;
                         table.appendChild(tr);
                     });
                 }
 
+                function vendre(id, idAnimal) {
+                    // Récupérer la date du champ "debut"
+                    var date = document.getElementById("debut").value;
 
-                function vendre(id, idAnimal, date) {
+                    // Vérifier si une date a été saisie
+                    if (!date) {
+                        alert("Veuillez sélectionner une date dans le champ 'debut'.");
+                        return;
+                    }
+
+                    // Envoi de la requête avec la date sélectionnée
                     var xhr = new XMLHttpRequest();
                     xhr.open("GET", "vente?id=" + id + "&idAnimal=" + idAnimal + "&date=" + date, true);
-                    xhr.onreadystatechange = function() {
+                    xhr.onreadystatechange = function () {
                         if (xhr.readyState === 4 && xhr.status === 200) {
                             window.location.href = "vente?id=" + id + "&idAnimal=" + idAnimal + "&date=" + date;
                         }
                     };
                     xhr.send();
                 }
+
 
                 function nourrir(id) {
                     var xhr = new XMLHttpRequest();

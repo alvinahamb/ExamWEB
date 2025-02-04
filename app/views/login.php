@@ -1,57 +1,61 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connexion</title>
-    <link rel="stylesheet" href="/assets/css/admin.css">
-    <link rel="stylesheet" href="/assets/css/login.css">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="public/assets/css/bootstrap.min.css" rel="stylesheet">
+    <script src="public/assets/js/jquery.min.js"></script>
+    <script src="public/assets/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="public/assets/css/connexion.css">
+    <link rel="icon" href="">
+    <title></title>
 </head>
-<body>
-    <div style="margin-top: 15vh;">
-        <?php if (isset($erreur)): ?>
-            <div id="alert" class="alert alert-danger" role="alert">
-                <?= htmlspecialchars($erreur) ?>
-            </div>
-        <?php endif; ?>
-        
-        <div class="card">
-            <h2>Connexion</h2>
-            <form action="CheckLogin" method="POST">
-                <div class="input-container">
-                    <input 
-                        type="email" 
-                        class="input-field" 
-                        name="email" 
-                        placeholder="Email" 
-                        required 
-                        autocomplete="email">
-                    <label for="email" class="input-label">Email</label>
-                </div>
-                
-                <div class="input-container">
-                    <input 
-                        type="password" 
-                        class="input-field" 
-                        name="password" 
-                        placeholder="Mot de passe" 
-                        required 
-                        autocomplete="current-password">
-                    <label for="password" class="input-label">Mot de passe</label>
-                </div>
-                <center><button type="submit" class="button">
-    Se connecter
-    <div class="hoverEffect"><div></div></div>
-</button>
-<p>
-    <button class="button" type="button" onclick="location.href='admin'">Admin Login</button>
-</p></center>
-                </div>
-            </form>
+
+<body class="login">
+    <div class="menu-fixe">
+        <div class="logo">
+            <a href="#"><img width="50" height="50" src="public/assets/images/logo.png" alt="logo"></a>
+        </div>
+        <div class="nav">
+            <ul>
+                <form action="admin" method="get">
+                    <li><button class="button">Admin</button></li>
+                </form>
+            </ul>
         </div>
     </div>
+    <div style="margin-top: 12vh;">
+        <?php if (isset($erreur)) { ?>
+            <div id="alert" class="alert alert-danger" role="alert"><?= $erreur ?></div>
+        <?php }
+        if (isset($succes)) { ?>
+            <div id="alert" class="alert alert-success" role="alert"><?= $succes ?></div>
+        <?php }
+        if (isset($message)) { ?>
+            <div id="alert" class="alert alert-warning" role="alert"><?= $message ?></div>
+        <?php }
+        ?>
+        <div style="height: 85vh;">
+            <div class="col-md-4"></div>
+            <div class="col-md-3" id="formulaire">
+                <h3>Bienvenue sur <span style="font-size: xx-large;"><br>FarmControl!</span></h3>
+                <br>
+                <form action="CheckLogin" method="POST">
+                    <p><input type="email" class="form-control"  value="bob@example.com" name="email" placeholder="Email" required></p>
+                    <p><input type="password" class="form-control" value="motdepasse456" name="password" placeholder="Password" required></p>
+                    <p><button class="btn btn-lg btn-primary btn-block" type="submit">Login</button></p>
+                    <p>
+                        <center><a href="GoToSignUp">Sign Up</a></center>
+                    </p>
+                </form>
+            </div>
+        </div>
+        <footer>
+            <p>Kasaina ETU003287 & Blessed ETU003326 & Kiady ETU3244</p>
+        </footer>
+    </div>
 </body>
-<footer>
-    <p>&copy; <?= date('Y') ?>Kasaina ETU003287 & Blessed ETU003326 & Kiady ETU003244</p>
-</footer>
+
 </html>
