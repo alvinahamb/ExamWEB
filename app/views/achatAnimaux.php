@@ -58,7 +58,7 @@
         foreach ($data as $d) { ?>
             <div class="col-md-4">
                 <div class="card">
-                    <div id="card-img" class="col-md-4"><img src="public/assets/images/Foin.png" alt=""></div>
+                    <div id="card-img" class="col-md-4"><img src="<?php echo file_exists('public/assets/images/' . $d['Image']) ? 'public/assets/images/' . $d['Image'] : 'public/uploads/' . $d['Image']; ?>" alt="Image" width="100"></div>
                     <div class="col-md-8">
                         <h4><b><?= $d['TypeAnimal'] ?></b></h4>
                         <p>Poids:<?= $d['Poids'] ?> kg</p>
